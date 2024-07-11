@@ -1,93 +1,73 @@
-# mikrotik-alp_rc_upgrade-server
+# **Information & Theory**
 
+## mikrotik-alp_rc_upgrade-server  - Docker-image for Mikrotik®-devices
 
+This docker-image for Mikrotik®-devices is intended to install inside a container-enabled device.<br />
+If your Mikrotik®-device is able to run docker-images mainly depends on the device and the used RouterOS (ROS®).<br />
+Versions beginning from 7.5 (roughly) are able to run containers on the device. The current version this image is build for <br />
+is RouterOS 7.10 (at the time this documentation is written). Also container-functionality is current only available for AMD64-,<br />
+ARM64- and ARM-architectures/devices.<br /> 
+<br />
+First you need to enable the container-feature on your device. Please use the Mikrotik®-documentation for enabling the container-mode.<br />
+The documentation can be found here: https://help.mikrotik.com/docs/display/ROS/Container
+<br />
+Also some preliminaries should be kept in mind. First be sure that the system is powerful enough to run a docker-container.<br />
+This means that your device must have enough available RAM and disk space (external storage), and also a powerful CPU.<br />
+Currently the following CPU-architectures are available for docker-container: ARM, ARM64 and X86_64(AMD64).<br />
+For external storage there is the paket "rose-storage" available, this can be used to mount SMB, NFS and iSCSI-devices into<br /> 
+the Mikrotik®-device. Please keep in mind, that NFS-shares may lack of not allowing "chmod"- and "chown"-commands<br />
+on the shares. Also you could use a external-disk (SSD/USB-Stick) as a storage-device.<br />
+<br />
+This image is build using Docker-in-Docker-techniques on a CI/CD-system. The images are tested on several CHR-<br /> 
+(CloudHostedRouter)-systems on  AMD64(x86_64)-hosts (virtual/non-virtual) and also on different<br /> ARM/ARM64-devices (hAP ax2, hAP ax3, RB3011 and others).<br />
 
-## Getting started
+### Theory of the image   
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+Mainly a docker-image consists of one process, which is running alone in the container on the host-system. This means when this<br /> 
+process has ended, the whole container ends. At this point this image is different. Because of using a very small Linux (Alpine Linux),<br />
+it is possible to run the openrc-init-system in the container as the main process. This openrc-process breaks the historical way a<br /> 
+container is meant to run, but gives also to control running tasks inside the container.<br /> 
+So mainly the openrc-(init) -process is running all the time, giving the chance to add several more tasks to the container. <br />
+Also it is possible to restart the processes beside openrc running inside the container without killing the complete container itself.<br />
+This is the main theory of this image - no magic for far...<br />
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+### Installation of docker-image
 
-## Add your files
+First open WinBox® and connect to the device.<br />
+Install docker-image to Mikrotik®-device and attach via "New Terminal" and  <code>/container shell number=X </code> (where X is the number of container).<br />
+There are three arch-versions available: <br />
+amd64 => for chr-devices (x86_64)<br />
+arm64 => for arm64/aarch64-devices<br />
+arm => for arm-devices<br />
+If you don't now the number of the container, please type on the console in WInBox®:<br />
+<code> /container print</code> - The number of the container is given on the output.<br />
+In the previous opened shell of the container in terminal of WinBox® do:<br />
+1.) Set root-password: $ <code>passwd root </code><br />
+2.) Run <code>/sbin/first_start.sh</code> to complete configuration of the image.<br />
+3.) Assign under IP/Firewall/NAT a DST-NAT-rule to ip of docker-container (defined under /interfaces/veth) and needed port of service in container. <br />
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+### Remarks
 
-```
-cd existing_repo
-git remote add origin https://cb3.lampart-web.de/internal/docker-projects/mikrotik-docker-images/mikrotik-alp_rc_upgrade-server.git
-git branch -M main
-git push -uf origin main
-```
+The tag beside -devel and -latest displays the version of the image, devided in two parts with a "-" between them.<br /> 
+Left part of image-tag reflects the used AlpineLinux-version (v3.18.2-..).The right part is the version of the image itself (..-0.0.1).<br />
+Tag -latest is the actual and latest (highest tag) stable running version.<br />
+Tag -devel is the current development version, not advised for production. Also the -devel-tag may not run, as development in going on.<br />
+***Please be advised again NOT to use the -devel-version in a production-environment.***<br /> 
+Because of development is made with Gitlab and therefore with CI/CD-techniques, these version are created automatically without further notice<br /> 
+and will not be revised or tested permanently. A tagged version with version-number or the -latest-tagged-images are tested on the target-system <br />
+before getting tagged !<br /> 
+</p>
+It is useful at the beginning to assign the container a root-directory (Root-Dir) to get a "stable" filesystem for the container.<br />
+Using rose-storage-package for filesystem of container may not work if nfs-shares are used.
+Depending on the service and/or first_start.sh-script<br /> a chown or chmod in the script may not work on nfs-shares.<br />
 
-## Integrate with your tools
+### Disclaimer
 
-- [ ] [Set up project integrations](https://cb3.lampart-web.de/internal/docker-projects/mikrotik-docker-images/mikrotik-alp_rc_upgrade-server/-/settings/integrations)
-
-## Collaborate with your team
-
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
-
-## Test and Deploy
-
-Use the built-in continuous integration in GitLab.
-
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
-
-***
-
-# Editing this README
-
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
-
-## Suggestions for a good README
-
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
-
-## Name
-Choose a self-explaining name for your project.
-
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
-
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
-
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
-
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
-
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
-
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
-
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
-
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+Mikrotik®, WInBox®, RouterOS, ROS®, hap x2, hap x3, RB3011 and others are or maybe trademarks or registered names of SIA Mikrotīkls.<br />
+This project is not affliated with SIA Mikrotīkls and SIA Mikrotīkls is not responsible for this project. Link: https://mikrotik.com/aboutus<br />
+All names, trademarks or other techniques are only used to illustrate ths project.<br />
+There is not responsibilty for any faults, errors, defects and so on regarding using this images.<br />
+This is a private project and all information stated here are given you as it is and with no responsibilty for any defects, errors and harm using this software.<br />
+Alpine Linux is copyrighted by the Alpine Linux Development Team with all rights reserved.<br />
+Also all names and symbols from Alpine Linux are used for illustration purposes only with no responsibilty<br /> 
+of the Alpine Linux Development Team. Link: https://www.alpinelinux.org/<br />
