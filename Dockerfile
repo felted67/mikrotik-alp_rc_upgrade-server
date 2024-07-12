@@ -66,7 +66,7 @@ RUN apk update && \
     apk --no-cache add apache2 apache2-proxy apache-mod-fcgid tzdata
 
 RUN apk update && \
-    apk --no-cache add sed 
+    apk --no-cache add sed bash bash-completion
 
 COPY ./config_files/auto_init /etc/init.d/
 COPY ./config_files/auto_init.sh /sbin/
