@@ -58,9 +58,9 @@ RUN apk add --no-cache openrc \
 RUN apk update && \
     apk add --no-cache openssh mc unzip bzip2 screen wget curl iptraf-ng htop
 
-RUN apk update && \
-    apk add --no-cache bash build-base gcc wget git autoconf libmcrypt-dev libzip-dev zip \
-    g++ make openssl-dev 
+#RUN apk update && \
+#    apk add --no-cache bash build-base gcc wget git autoconf libmcrypt-dev libzip-dev zip \
+#    g++ make openssl-dev 
     
 RUN apk update && \
     apk --no-cache add apache2 apache2-proxy apache-mod-fcgid tzdata
