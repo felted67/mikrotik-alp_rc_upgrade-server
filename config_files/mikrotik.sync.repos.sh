@@ -1,0 +1,222 @@
+#!/bin/bash
+#
+#**********************************
+#***   Mikrotik.sync.repos.sh   ***
+#**********************************
+#*  (C) 2024 DL7DET               *
+#*   Detlef Lampart               *
+#**********************************
+
+# Clear screen
+tput reset
+
+# Versioninformation
+pgmvers="v 0.9.3"
+
+# Debugging functions
+debug=1
+# debug=0: debug off/quiet/no annoying text
+# debug=1: informational (default) 
+# debug=2: don't be destructive
+# debug=3: don't download repo-files
+
+#
+# Local Definitions
+#
+
+pgmprefix=/opt/mikrotik.mirror
+startdir=$pgmprefix/tools
+configdir=$startdir/mikrotik.configs.active
+baseurl=https://download.mikrotik.com
+tempdir=$startdir/temp
+repodir=$pgmprefix/repo
+ltversion=NEWESTa7.long-term
+stableversion=NEWESTa7.stable
+betaversion=NEWESTa7.testing
+devversion=NEWESTa7.development
+
+# Show startup infos
+echo "**********************************"
+echo "***   Mikrotik.sync.repos.sh   ***"
+echo "***      "$pgmvers "               ***"
+echo "**********************************"
+echo "*  (C) 2024 DL7DET               *"
+echo "*   Detlef Lampart               *"
+echo "**********************************"
+echo "* This program is open source    *"
+echo "**********************************"
+echo
+echo ".........initializing."
+echo
+sleep 10
+echo "... Starting at $(date -u)."
+echo
+
+# Useful logging
+logdir=$startdir/mikrotik.sync.log
+logfile=$logdir/mikrotik.sync.repos.log
+if [ ! -d $logdir ]; then
+    mkdir $logdir
+    echo "... LOGDIR created."
+fi
+exec > >(tee -a ${logfile} )
+exec 2> >(tee -a ${logfile} >&2)
+echo " Starting at $(date -u)." >> $logfile 2>&1
+
+# Check and create needed directories
+if [ ! -d $tempdir ]; then
+    mkdir $tempdir
+    echo "... TEMPDIR created."
+fi
+if [ ! -d $repodir ]; then
+    mkdir $repodir
+    echo "... REPODIR created."
+fi
+if [ ! -d $repodir/routeros ]; then
+    mkdir $repodir/routeros
+    echo "... REPODIR/routeros created."
+fi
+echo
+# Get latest versions LATESTa7.XXX from download.mikrotik.com
+wget -N $baseurl/routeros/$ltversion -q -P $repodir/routeros/
+if [ $debug -gt 0 ] 
+    then
+    echo "... Downloaded LATEST-file long-term version."
+fi
+wget -N $baseurl/routeros/$stableversion -q -P $repodir/routeros/
+if [ $debug -gt 0 ] 
+    then
+    echo "... Downloaded LATEST-file stable version."
+fi
+wget -N $baseurl/routeros/$betaversion -q -P $repodir/routeros/
+if [ $debug -gt 0 ] 
+    then
+    echo "... Downloaded LATEST-file beta version."
+fi
+wget -N $baseurl/routeros/$devversion -q -P $repodir/routeros/
+if [ $debug -gt 0 ] 
+    then
+    echo "... Downloaded LATEST-file development version."
+fi
+
+# Empty TEMP-directory from prevoius run
+if [ $debug -lt 3 ] 
+    then
+    rm -rf $tempdir/*
+fi
+
+# Give some nice informations on the screen
+echo
+echo "... Starting Sync-Loop ..."
+echo "... Downloading repo-packages."
+echo "... Please be patient - could take some time."
+
+#
+# Start loop for read parameters
+# Read each *.config-file 
+# 
+
+# Reset index variables
+    i=0
+    j=0
+for filename in $configdir/*.conf; do
+    while IFS= read -r varname; do
+	var[$i]=$varname
+	i=$(expr $i + 1)    
+        done < "$filename"    
+    rptext="${var[0]}"
+    rptype="${var[1]}"
+    rpvers="${var[2]}"
+
+    if [ $debug -gt 0 ]
+    then
+	echo
+	echo "... Downloading REPO-type: "$rptype
+	echo "... with the release-version of the packages: "$rpvers
+	echo
+    fi
+    
+    for (( j=3; j<i; j++ )); do
+	package=$(echo "${var[j]}" | sed "s/VERSION/$rpvers/g")
+	if [ $debug -gt 0 ]
+	then
+	    echo "... Loading package: "$baseurl/$rptype/$rpvers/$package
+	fi		
+	if [ $debug -lt 3 ]
+	then
+	    wget -N $baseurl/$rptype/$rpvers/$package -q -P $tempdir	
+	fi
+    done
+
+    if [ $debug -gt 0 ]
+    then
+        sleep 10
+    fi
+    
+# reset index variables
+    i=0
+    j=0
+    
+# Check and create repo-dir    
+    if [ ! -d $pgmprefix/repo/$rptype/$rpvers ]; then
+	mkdir $pgmprefix/repo/$rptype/$rpvers
+	if [ $debug -gt 0 ] 
+	then
+	    echo "... Repo-directory for version: "$rpvers" created."
+	fi
+    fi
+
+# Copy or move  from temp-directory to created repo-dir
+    if [ $debug -gt 1 ]
+    then
+	cp -f $tempdir/* $pgmprefix/repo/$rptype/$rpvers/
+        echo "... Downloaded packages copied to Repo-directory."
+    else
+	mv -f $tempdir/* $pgmprefix/repo/$rptype/$rpvers/
+        echo "... Downloaded packages moved to Repo-directory."
+    fi
+
+# Extract all_packages* in repo-directory for update-server to recognize singles packages
+    cd $pgmprefix/repo/$rptype/$rpvers
+    unzip -o 'all_packages-*.zip' -d $pgmprefix/repo/$rptype/$rpvers/
+    if [ $debug -gt 0 ] 
+    then
+	echo "... Downloaded all-packages-*.zip extracted for update function."
+    fi
+    
+# Clear temp-directory for next download run
+    if [ $debug -lt 3 ] 
+    then
+	rm -rf $tempdir/*
+	if [ $debug -gt 0 ] 
+	then
+	    echo "... Temp-directory has been emptied."
+	fi
+    fi
+
+# End of sync loop
+done
+
+if [ $debug -gt 0 ] 
+    then
+    echo " All packages have been downloaded and all-packages-* have been extracted."
+    echo " Please link the repo-directory to your webserver and configure the webserver"
+    echo " to serve the repo-directory as root-dir. Then you can add 'upgrade.mikrotik.com'"
+    echo " to your Mikrotik©-device as a DNS-static entry with its local IP to update your" 
+    echo " devices with the downloaded packages."
+    echo
+fi
+echo
+echo " Script ended successfully..."
+echo " Completed  at $(date -u)." 
+echo
+echo " C:\ ... bye-bye"
+
+echo "Completed  at $(date -u)." >> $logfile 2>&1
+
+#gzip -f $logfile
+#mv $logfile.gz $logfile-$(date +%Y%m%d).gz
+
+#
+# This is the end, my lonely friend
+#
