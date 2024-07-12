@@ -56,7 +56,7 @@ RUN apk add --no-cache openrc \
     && sed -i 's/VSERVER/DOCKER/Ig' /lib/rc/sh/init.sh
 
 RUN apk update && \
-    apk add --no-cache openssh mc unzip bzip2 screen wget curl iptraf-ng htop
+    apk add --no-cache openssh mc unzip wget htop
 
 #RUN apk update && \
 #    apk add --no-cache bash build-base gcc wget git autoconf libmcrypt-dev libzip-dev zip \
@@ -66,7 +66,7 @@ RUN apk update && \
     apk --no-cache add apache2 apache2-proxy apache-mod-fcgid tzdata
 
 RUN apk update && \
-    apk --no-cache add sed bash bash-completion
+    apk --no-cache add sed bash bash-completion ncurses
 
 COPY ./config_files/auto_init /etc/init.d/
 COPY ./config_files/auto_init.sh /sbin/

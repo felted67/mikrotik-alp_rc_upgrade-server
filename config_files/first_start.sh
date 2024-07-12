@@ -11,7 +11,7 @@ mv /etc/apache2/httpd.new.conf /etc/apache2/httpd.conf
 mv /root/mikrotikmirror.conf /etc/apache2/conf.d/
 mv /root/upgrade.mikrotik.com.conf /etc/apache2/conf.d/
 mv /root/index.html /var/www/localhost/htdocs/
-tar xvfz /root/webserver.data.tar.gz /var/www/localhost/htdocs/mikrotikmirror
+tar xvfz /root/webserver.data.tar.gz --directory /var/www/localhost/htdocs/mikrotikmirror/
 mv /root/mikrotik.sync.repos.sh /opt/mikrotik.upgrade.server/tools/
 mv /root/routeros.7.15.conf /opt/mikrotik.upgrade.server/tools/mikrotik.configs/
 chmod 0775 /opt/mikrotik.upgrade.server/tools/mikrotik.sync.repos.sh
