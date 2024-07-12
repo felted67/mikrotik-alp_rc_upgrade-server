@@ -72,7 +72,6 @@ COPY ./config_files/auto_init /etc/init.d/
 COPY ./config_files/auto_init.sh /sbin/
 COPY ./config_files/first_start.sh /sbin/
 
-COPY ./config_files/php_configure.sh /sbin/
 COPY ./config_files/httpd.new.conf /etc/apache2/
 COPY ./config_files/index.html /root/
 
