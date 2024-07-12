@@ -1,0 +1,118 @@
+stages:
+  - docker-local-build
+  - docker-multiarch-build-devel
+  - docker-multiarch-build-devel-version
+  - docker-multiarch-build-devel-version-latest
+
+include:  /.gitlab-ci-vars.yml  
+
+docker-local-mikrotik-build:
+  stage: docker-local-build
+  image: $DIND_TAG   
+  tags:
+    - $RUNNER_TAGS
+  services:
+    - name: $DIND_TAG
+      command: ["dockerd", "--host=tcp://0.0.0.0:2375"]
+      alias: 'docker' 
+  variables:    
+    DOCKER_DRIVER: overlay2
+    DOCKER_TLS_CERTDIR: ""  
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_DOCKERHUB_ACCESS_TOKEN" $CI_REGISTRY
+    - docker context create builder 
+    - docker buildx create builder --name multiarch-builder --driver docker-container --use 
+    - apk update
+    - apk add git
+    - docker info   
+  script:
+    - docker buildx build --no-cache --build-arg BUILD=$(date -u +'%Y-%m-%dT%H:%M:%SZ') --platform linux/amd64 --output=type=docker -t $CI_REGISTRY_IMAGE-amd64:$CI_COMMIT_DEVEL .
+    - docker buildx build --no-cache --build-arg BUILD=$(date -u +'%Y-%m-%dT%H:%M:%SZ') --platform linux/arm64 --output=type=docker -t $CI_REGISTRY_IMAGE-arm64:$CI_COMMIT_DEVEL .
+    - docker buildx build --no-cache --build-arg BUILD=$(date -u +'%Y-%m-%dT%H:%M:%SZ') --platform linux/arm --output=type=docker -t $CI_REGISTRY_IMAGE-arm:$CI_COMMIT_DEVEL .
+    - docker save $CI_REGISTRY_IMAGE-amd64:$CI_COMMIT_DEVEL | pigz --fast > $CI_REGISTRY_IMAGE-$CI_COMMIT_DEVEL-amd64.tar.gz
+    - docker save $CI_REGISTRY_IMAGE-arm64:$CI_COMMIT_DEVEL | pigz --fast > $CI_REGISTRY_IMAGE-$CI_COMMIT_DEVEL-arm64.tar.gz
+    - docker save $CI_REGISTRY_IMAGE-arm:$CI_COMMIT_DEVEL | pigz --fast > $CI_REGISTRY_IMAGE-$CI_COMMIT_DEVEL-arm.tar.gz
+  artifacts:
+    expire_in: 30 days
+    paths:
+            - $CI_REGISTRY_IMAGE-$CI_COMMIT_DEVEL-amd64.tar.gz
+            - $CI_REGISTRY_IMAGE-$CI_COMMIT_DEVEL-arm64.tar.gz
+            - $CI_REGISTRY_IMAGE-$CI_COMMIT_DEVEL-arm.tar.gz
+
+docker-multiarch-mikrotik-build-devel:  
+  stage: docker-multiarch-build-devel
+  needs: [docker-local-mikrotik-build]
+  image: $DIND_TAG   
+  tags:
+    - $RUNNER_TAGS
+  services:
+    - name: $DIND_TAG
+      command: ["dockerd", "--host=tcp://0.0.0.0:2375"]
+      alias: 'docker' 
+  variables:    
+    DOCKER_DRIVER: overlay2
+    DOCKER_TLS_CERTDIR: ""  
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_DOCKERHUB_ACCESS_TOKEN" $CI_REGISTRY
+    - docker context create builder 
+    - docker buildx create builder --name multiarch-builder --driver docker-container --use 
+    - apk update
+    - apk add git    
+    - docker info
+  script:    
+    - docker buildx build --no-cache --build-arg BUILD=$(date -u +'%Y-%m-%dT%H:%M:%SZ') --push --platform linux/arm64,linux/arm,linux/amd64 -t "$CI_REGISTRY_USER/$CI_REGISTRY_IMAGE:$CI_COMMIT_DEVEL" .    
+  rules:
+    - if: ($CI_PRODUCTION_VERSION_SWITCH != "true" && $CI_PRODUCTION_LATEST_SWITCH != "true")
+  when: always
+  
+docker-multiarch-mikrotik-build-devel-version:
+  stage: docker-multiarch-build-devel-version
+  needs: [docker-local-mikrotik-build]
+  image: $DIND_TAG
+  tags:
+    - $RUNNER_TAGS
+  services:
+    - name: $DIND_TAG
+      command: ["dockerd", "--host=tcp://0.0.0.0:2375"]
+      alias: 'docker' 
+  variables:    
+    DOCKER_DRIVER: overlay2
+    DOCKER_TLS_CERTDIR: ""  
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_DOCKERHUB_ACCESS_TOKEN" $CI_REGISTRY
+    - docker context create builder 
+    - docker buildx create builder --name multiarch-builder --driver docker-container --use 
+    - apk update
+    - apk add git    
+    - docker info
+  script:
+    - docker buildx build --no-cache --build-arg BUILD=$(date -u +'%Y-%m-%dT%H:%M:%SZ') --push --platform linux/arm64,linux/arm,linux/amd64 -t "$CI_REGISTRY_USER/$CI_REGISTRY_IMAGE:$CI_COMMIT_DEVEL" -t "$CI_REGISTRY_USER/$CI_REGISTRY_IMAGE:$CI_COMMIT_VERSION" .    
+  rules:
+    - if: ($CI_PRODUCTION_VERSION_SWITCH == "true" && $CI_PRODUCTION_LATEST_SWITCH != "true")      
+      when: always
+
+docker-multiarch-mikrotik-build-devel-version-latest:
+  stage: docker-multiarch-build-devel-version-latest
+  needs: [docker-local-mikrotik-build]
+  image: $DIND_TAG
+  tags:
+    - $RUNNER_TAGS
+  services:
+    - name: $DIND_TAG
+      command: ["dockerd", "--host=tcp://0.0.0.0:2375"]
+      alias: 'docker' 
+  variables:    
+    DOCKER_DRIVER: overlay2
+    DOCKER_TLS_CERTDIR: ""  
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_DOCKERHUB_ACCESS_TOKEN" $CI_REGISTRY
+    - docker context create builder 
+    - docker buildx create builder --name multiarch-builder --driver docker-container --use 
+    - apk update
+    - apk add git    
+    - docker info
+  script:
+    - docker buildx build --no-cache --build-arg BUILD=$(date -u +'%Y-%m-%dT%H:%M:%SZ') --push --platform linux/arm64,linux/arm,linux/amd64  -t "$CI_REGISTRY_USER/$CI_REGISTRY_IMAGE:$CI_COMMIT_DEVEL" -t "$CI_REGISTRY_USER/$CI_REGISTRY_IMAGE:$CI_COMMIT_VERSION" -t "$CI_REGISTRY_USER/$CI_REGISTRY_IMAGE:$CI_COMMIT_LATEST" -t "$CI_REGISTRY_USER/$CI_REGISTRY_IMAGE:$CI_COMMIT_LATEST_LONG" .    
+  rules:
+    - if: ($CI_PRODUCTION_LATEST_SWITCH == "true" &&  $CI_PRODUCTION_VERSION_SWITCH == "true")   
+      when: always 

@@ -1,0 +1,2 @@
+#!/sbin/openrc-run
+command=/sbin/auto_init.sh
