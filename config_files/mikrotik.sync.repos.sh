@@ -24,7 +24,7 @@ debug=1
 # Local Definitions
 #
 
-pgmprefix=/opt/mikrotik.mirror
+pgmprefix=/opt/mikrotik.upgrade.server
 startdir=$pgmprefix/tools
 configdir=$startdir/mikrotik.configs
 baseurl=https://download.mikrotik.com

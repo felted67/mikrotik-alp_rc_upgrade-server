@@ -3,7 +3,7 @@ mkdir /etc/apache2/conf.d
 mkdir /opt/mikrotik.upgrade.server
 mkdir /opt/mikrotik.upgrade.server/tools
 mkdir /opt/mikrotik.upgrade.server/repo
-mkdir /opt/mikrotik.upgrade.server/mikrotik.configs
+mkdir /opt/mikrotik.upgrade.server/tools/mikrotik.configs
 mkdir /var/www/localhost/htdocs/mikrotikmirror
 ln -s  /opt/mikrotik.upgrade.server/repo /var/www/localhost/htdocs/mikrotikmirror/repo
 mv /etc/apache2/httpd.conf /etc/apache2/httpd.conf.orig
@@ -14,6 +14,7 @@ mv /root/index.html /var/www/localhost/htdocs/
 tar xvfz /root/webserver.data.tar.gz /var/www/localhost/htdocs/mikrotikmirror
 mv /root/mikrotik.sync.repos.sh /opt/mikrotik.upgrade.server/tools/
 mv /root/routeros.7.15.conf /opt/mikrotik.upgrade.server/tools/mikrotik.configs/
+chmod 0775 /opt/mikrotik.upgrade.server/tools/mikrotik.sync.repos.sh
 chown apache:apache /var/www/localhost/htdocs/index.html
 chown -r apache:apache /var/www/localhost/htdocs/
 echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
