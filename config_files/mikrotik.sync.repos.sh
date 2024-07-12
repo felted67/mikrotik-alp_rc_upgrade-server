@@ -26,7 +26,7 @@ debug=1
 
 pgmprefix=/opt/mikrotik.mirror
 startdir=$pgmprefix/tools
-configdir=$startdir/mikrotik.configs.active
+configdir=$startdir/mikrotik.configs
 baseurl=https://download.mikrotik.com
 tempdir=$startdir/temp
 repodir=$pgmprefix/repo

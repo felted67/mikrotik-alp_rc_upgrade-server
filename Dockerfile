@@ -73,7 +73,10 @@ COPY ./config_files/auto_init.sh /sbin/
 COPY ./config_files/first_start.sh /sbin/
 
 COPY ./config_files/httpd.new.conf /etc/apache2/
-COPY ./config_files/index.html /root/
+COPY ./config_files/mikrotikmirror.conf /root/
+COPY ./config_files/upgrade.mikrotik.com.conf /root/
+COPY ./config_files/routeros.7.15.conf /root/
+COPY ./config_files/webserver.data.tar.gz /root/
 
 RUN chown root:root /etc/init.d/auto_init && chmod 0755 /etc/init.d/auto_init
 RUN chown root:root /sbin/first_start.sh && chmod 0700 /sbin/first_start.sh
