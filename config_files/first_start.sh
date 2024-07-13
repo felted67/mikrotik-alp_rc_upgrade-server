@@ -14,8 +14,10 @@ mv /root/index.html /var/www/localhost/htdocs/
 tar xvfz /root/webserver.data.tar.gz --directory /var/www/localhost/htdocs/mikrotikmirror/
 rm /root/webserver.data.tar.gz
 mv /root/mikrotik.sync.repos.sh /opt/mikrotik.upgrade.server/tools/
-mv /root/routeros.7.15.conf /opt/mikrotik.upgrade.server/tools/mikrotik.configs/
+mv /root/routeros.7.15.2.conf /opt/mikrotik.upgrade.server/tools/mikrotik.configs/
+mv /root/routeros.7.16beta4.conf /opt/mikrotik.upgrade.server/tools/mikrotik.configs/
 chmod 0775 /opt/mikrotik.upgrade.server/tools/mikrotik.sync.repos.sh
+ln -s /opt/mikrotik.upgrade.server/tools/mikrotik.sync.repos.sh /usr/local/bin
 chown apache:apache /var/www/localhost/htdocs/index.html
 chown -r apache:apache /var/www/localhost/htdocs/
 echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
