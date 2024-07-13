@@ -19,7 +19,7 @@ docker-local-mikrotik-build:
     DOCKER_DRIVER: overlay2
     DOCKER_TLS_CERTDIR: ""  
   before_script:
-    - if [ -d './config_files/version.info' ] then rm ./config_files/version.info; && touch ./config_files/version.info && echo $CI_IMAGE_VERSION > ./config_files/version.info
+    - if [ -f './config_files/version.info' ] then rm ./config_files/version.info; && touch ./config_files/version.info && echo $CI_IMAGE_VERSION > ./config_files/version.info
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_DOCKERHUB_ACCESS_TOKEN" $CI_REGISTRY
     - docker context create builder 
     - docker buildx create builder --name multiarch-builder --driver docker-container --use 
@@ -54,7 +54,7 @@ docker-multiarch-mikrotik-build-devel:
     DOCKER_DRIVER: overlay2
     DOCKER_TLS_CERTDIR: ""  
   before_script:
-    - if [ -d './config_files/version.info' ] then rm ./config_files/version.info; && touch ./config_files/version.info && echo $CI_IMAGE_VERSION > ./config_files/version.info
+    - if [ -f './config_files/version.info' ] then rm ./config_files/version.info; && touch ./config_files/version.info && echo $CI_IMAGE_VERSION > ./config_files/version.info
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_DOCKERHUB_ACCESS_TOKEN" $CI_REGISTRY
     - docker context create builder 
     - docker buildx create builder --name multiarch-builder --driver docker-container --use 
@@ -81,7 +81,7 @@ docker-multiarch-mikrotik-build-devel-version:
     DOCKER_DRIVER: overlay2
     DOCKER_TLS_CERTDIR: ""  
   before_script:
-    - if [ -d './config_files/version.info' ] then rm ./config_files/version.info; && touch ./config_files/version.info && echo $CI_IMAGE_VERSION > ./config_files/version.info
+    - if [ -f './config_files/version.info' ] then rm ./config_files/version.info; && touch ./config_files/version.info && echo $CI_IMAGE_VERSION > ./config_files/version.info
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_DOCKERHUB_ACCESS_TOKEN" $CI_REGISTRY
     - docker context create builder 
     - docker buildx create builder --name multiarch-builder --driver docker-container --use 
@@ -108,7 +108,7 @@ docker-multiarch-mikrotik-build-devel-version-latest:
     DOCKER_DRIVER: overlay2
     DOCKER_TLS_CERTDIR: ""  
   before_script:
-    - if [ -d './config_files/version.info' ] then rm ./config_files/version.info; && touch ./config_files/version.info && echo $CI_IMAGE_VERSION > ./config_files/version.info
+    - if [ -f './config_files/version.info' ] then rm ./config_files/version.info; && touch ./config_files/version.info && echo $CI_IMAGE_VERSION > ./config_files/version.info
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_DOCKERHUB_ACCESS_TOKEN" $CI_REGISTRY
     - docker context create builder 
     - docker buildx create builder --name multiarch-builder --driver docker-container --use 
