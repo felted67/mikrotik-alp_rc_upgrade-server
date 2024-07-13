@@ -12,6 +12,8 @@ mv /root/mikrotikmirror.conf /etc/apache2/conf.d/
 mv /root/upgrade.mikrotik.com.conf /etc/apache2/conf.d/
 tar xvfz /root/webserver.data.tar.gz --directory /var/www/localhost/htdocs/mikrotikmirror/
 rm /root/webserver.data.tar.gz
+version=$( cat /root/version.info)
+sed "s/VERSION/$version/g" /var/www/localhost/htdocs/mikrotikmirror/index-style/header.html
 mv /root/mikrotik.sync.repos.sh /opt/mikrotik.upgrade.server/tools/
 mv /root/routeros.7.15.2.conf /opt/mikrotik.upgrade.server/tools/mikrotik.configs/
 mv /root/routeros.7.16beta4.conf /opt/mikrotik.upgrade.server/tools/mikrotik.configs/

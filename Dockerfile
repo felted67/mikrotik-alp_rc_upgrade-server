@@ -79,7 +79,7 @@ COPY ./config_files/routeros.7.15.2.conf /root/
 COPY ./config_files/routeros.7.16beta4.conf /root/
 COPY ./config_files/mikrotik.sync.repos.sh /root/
 COPY ./config_files/webserver.data.tar.gz /root/
-COPY ./version.info /root/
+COPY ./config_files/version.info /root/
 
 RUN chown root:root /etc/init.d/auto_init && chmod 0755 /etc/init.d/auto_init
 RUN chown root:root /sbin/first_start.sh && chmod 0700 /sbin/first_start.sh
