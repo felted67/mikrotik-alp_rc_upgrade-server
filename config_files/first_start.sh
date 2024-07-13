@@ -12,6 +12,7 @@ mv /root/mikrotikmirror.conf /etc/apache2/conf.d/
 mv /root/upgrade.mikrotik.com.conf /etc/apache2/conf.d/
 mv /root/index.html /var/www/localhost/htdocs/
 tar xvfz /root/webserver.data.tar.gz --directory /var/www/localhost/htdocs/mikrotikmirror/
+rm /root/webserver.data.tar.gz
 mv /root/mikrotik.sync.repos.sh /opt/mikrotik.upgrade.server/tools/
 mv /root/routeros.7.15.conf /opt/mikrotik.upgrade.server/tools/mikrotik.configs/
 chmod 0775 /opt/mikrotik.upgrade.server/tools/mikrotik.sync.repos.sh
@@ -22,6 +23,8 @@ rc-update add sshd
 rc-update add apache2
 rc-service sshd start
 rc-service apache2 start
+sleep 15
+/opt/mikrotik.upgrade.server/tools/mikrotik.sync.repos.sh
 echo "****"
 echo "'"
 echo "Don't forget to set root-ssh password !!!"
