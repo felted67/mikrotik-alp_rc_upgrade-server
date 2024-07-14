@@ -1,17 +1,17 @@
 #!/bin/bash
-#
 #**********************************
 #***   Mikrotik.sync.repos.sh   ***
 #**********************************
 #*  (C) 2024 DL7DET               *
-#*   Detlef Lampart               *
+#*  Detlef Lampart                *
+#*  This program is open source   *
 #**********************************
 
 # Clear screen
 tput reset
 
 # Versioninformation
-pgmvers="v 0.9.3"
+pgmvers="v 0.9.4"
 
 # Debugging functions
 debug=1
@@ -197,6 +197,7 @@ for filename in $configdir/*.conf; do
 # End of sync loop
 done
 
+# Some end of job informations
 if [ $debug -gt 0 ] 
     then
     echo " All packages have been downloaded and all-packages-* have been extracted."
@@ -206,16 +207,18 @@ if [ $debug -gt 0 ]
     echo " devices with the downloaded packages."
     echo
 fi
+
 echo
 echo " Script ended successfully..."
 echo " Completed  at $(date -u)." 
 echo
 echo " C:\ ... bye-bye"
 
-echo "Completed  at $(date -u)." >> $logfile 2>&1
-
+# Optional compression of logfile for space-saving
 #gzip -f $logfile
 #mv $logfile.gz $logfile-$(date +%Y%m%d).gz
+
+echo "Completed  at $(date -u)." >> $logfile 2>&1
 
 #
 # This is the end, my lonely friend
