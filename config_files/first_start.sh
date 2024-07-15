@@ -28,6 +28,8 @@ rc-update add sshd
 rc-update add apache2
 rc-service sshd start
 rc-service apache2 start
+rc-update add rsyslog
+rc-service rsyslog start
 rc-update add crond
 rc-service crond start
 sleep 15
