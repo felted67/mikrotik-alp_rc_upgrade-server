@@ -1,0 +1,2 @@
+# m h dom mon dow  user  command
+0 * * * *   root /opt/mikrotik.upgrade.server/tools/mikrotik.sync.repos.checker.sh

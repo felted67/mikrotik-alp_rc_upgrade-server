@@ -23,10 +23,13 @@ ln -s /opt/mikrotik.upgrade.server/tools/mikrotik.sync.repos.sh /usr/local/bin
 ln -s /opt/mikrotik.upgrade.server/tools/mikrotik.sync.repos.checker.sh /usr/local/bin
 chown -r apache:apache /var/www/localhost/htdocs/
 echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
+ln", "-sf", "/opt/mikrotik.upgrade.server/tools/mikrotik.sync.repos.checker.sh", "/etc/periodic/daily/run"
 rc-update add sshd 
 rc-update add apache2
 rc-service sshd start
 rc-service apache2 start
+rc-update add crond
+rc-service crond start
 sleep 15
 /opt/mikrotik.upgrade.server/tools/mikrotik.sync.repos.checker.sh
 echo "****"

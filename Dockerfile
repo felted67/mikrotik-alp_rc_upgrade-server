@@ -66,7 +66,7 @@ RUN apk update && \
     apk --no-cache add apache2 apache2-proxy apache-mod-fcgid tzdata
 
 RUN apk update && \
-    apk --no-cache add sed bash bash-completion ncurses
+    apk --no-cache add sed bash bash-completion ncurses busybox-suid busybox-openrc rsyslog
 
 COPY ./config_files/auto_init /etc/init.d/
 COPY ./config_files/auto_init.sh /sbin/
@@ -79,8 +79,10 @@ COPY ./config_files/routeros.raw /root/
 COPY ./config_files/mikrotik.sync.repos.sh /root/
 COPY ./config_files/mikrotik.sync.repos.checker.sh /root
 COPY ./config_files/webserver.data.tar.gz /root/
+COPY ./config_files/crond /etc/init.d/
 COPY ./config_files/version.info /root/
 
+RUN chown root:root /etc/init.d/crond && chmod 0775 /etc/init.d/crond
 RUN chown root:root /etc/init.d/auto_init && chmod 0755 /etc/init.d/auto_init
 RUN chown root:root /sbin/first_start.sh && chmod 0700 /sbin/first_start.sh
 RUN chown root:root /sbin/auto_init.sh && chmod 0700 /sbin/auto_init.sh
