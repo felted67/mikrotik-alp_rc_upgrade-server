@@ -15,10 +15,12 @@ rm /root/webserver.data.tar.gz
 version=$( cat /root/version.info )
 sed -i "s/VERSION/$version/g" /var/www/localhost/htdocs/mikrotikmirror/index-style/header.html
 mv /root/mikrotik.sync.repos.sh /opt/mikrotik.upgrade.server/tools/
-mv /root/routeros.7.15.2.conf /opt/mikrotik.upgrade.server/tools/mikrotik.configs/
-mv /root/routeros.7.16beta4.conf /opt/mikrotik.upgrade.server/tools/mikrotik.configs/
+mv /root/mikrotik.sync.repos.checker.sh /opt/mikrotik.upgrade.server/tools/
+mv /root/routeros.raw /opt/mikrotik.upgrade.server/tools/mikrotik.configs/
 chmod 0775 /opt/mikrotik.upgrade.server/tools/mikrotik.sync.repos.sh
+chmod 0775 /opt/mikrotik.upgrade.server/tools/mikrotik.sync.repos.checker.sh
 ln -s /opt/mikrotik.upgrade.server/tools/mikrotik.sync.repos.sh /usr/local/bin
+ln -s /opt/mikrotik.upgrade.server/tools/mikrotik.sync.repos.checker.sh /usr/local/bin
 chown -r apache:apache /var/www/localhost/htdocs/
 echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
 rc-update add sshd 
@@ -26,7 +28,7 @@ rc-update add apache2
 rc-service sshd start
 rc-service apache2 start
 sleep 15
-/opt/mikrotik.upgrade.server/tools/mikrotik.sync.repos.sh
+/opt/mikrotik.upgrade.server/tools/mikrotik.sync.repos.checker.sh
 echo "****"
 echo "'"
 echo "Don't forget to set root-ssh password !!!"

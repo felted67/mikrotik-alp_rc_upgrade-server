@@ -75,9 +75,9 @@ COPY ./config_files/first_start.sh /sbin/
 COPY ./config_files/httpd.new.conf /etc/apache2/
 COPY ./config_files/mikrotikmirror.conf /root/
 COPY ./config_files/upgrade.mikrotik.com.conf /root/
-COPY ./config_files/routeros.7.15.2.conf /root/
-COPY ./config_files/routeros.7.16beta4.conf /root/
+COPY ./config_files/routeros.raw /root/
 COPY ./config_files/mikrotik.sync.repos.sh /root/
+COPY ./config_files/mikrotik.sync.repos.checker.sh /root
 COPY ./config_files/webserver.data.tar.gz /root/
 COPY ./config_files/version.info /root/
 

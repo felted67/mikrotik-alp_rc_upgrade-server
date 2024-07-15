@@ -11,7 +11,7 @@
 tput reset
 
 # Versioninformation
-pgmvers="v 0.9.4"
+pgmvers="v 0.9.6"
 
 # Debugging functions
 debug=1
@@ -77,6 +77,7 @@ if [ ! -d $repodir/routeros ]; then
     echo "... REPODIR/routeros created."
 fi
 echo
+
 # Get latest versions LATESTa7.XXX from download.mikrotik.com
 wget -N $baseurl/routeros/$ltversion -q -P $repodir/routeros/
 if [ $debug -gt 0 ] 
@@ -99,7 +100,7 @@ if [ $debug -gt 0 ]
     echo "... Downloaded LATEST-file development version."
 fi
 
-# Empty TEMP-directory from prevoius run
+# Empty TEMP-directory from previous run
 if [ $debug -lt 3 ] 
     then
     rm -rf $tempdir/*
@@ -209,7 +210,7 @@ if [ $debug -gt 0 ]
 fi
 
 echo
-echo " Script ended successfully..."
+echo " Script(s) ended successfully..."
 echo " Completed  at $(date -u)." 
 echo
 echo " C:\ ... bye-bye"
