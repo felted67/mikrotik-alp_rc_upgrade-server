@@ -24,7 +24,8 @@ docker-local-mikrotik-build:
     - docker buildx create builder --name multiarch-builder --driver docker-container --use 
     - apk update
     - apk add git
-    - docker info   
+    - docker info
+    - rm ./config_files/version.info && touch ./config_files/version.info && echo $CI_IMAGE_VERSION >> ./config_files/version.info    
   script:
     - docker buildx build --no-cache --build-arg BUILD=$(date -u +'%Y-%m-%dT%H:%M:%SZ') --platform linux/amd64 --output=type=docker -t $CI_REGISTRY_IMAGE-amd64:$CI_COMMIT_DEVEL .
     - docker buildx build --no-cache --build-arg BUILD=$(date -u +'%Y-%m-%dT%H:%M:%SZ') --platform linux/arm64 --output=type=docker -t $CI_REGISTRY_IMAGE-arm64:$CI_COMMIT_DEVEL .
@@ -59,6 +60,7 @@ docker-multiarch-mikrotik-build-devel:
     - apk update
     - apk add git    
     - docker info
+    - rm ./config_files/version.info && touch ./config_files/version.info && echo $CI_IMAGE_VERSION >> ./config_files/version.info
   script:    
     - docker buildx build --no-cache --build-arg BUILD=$(date -u +'%Y-%m-%dT%H:%M:%SZ') --push --platform linux/arm64,linux/arm,linux/amd64 -t "$CI_REGISTRY_USER/$CI_REGISTRY_IMAGE:$CI_COMMIT_DEVEL" .    
   rules:
@@ -85,6 +87,7 @@ docker-multiarch-mikrotik-build-devel-version:
     - apk update
     - apk add git    
     - docker info
+    - rm ./config_files/version.info && touch ./config_files/version.info && echo $CI_IMAGE_VERSION >> ./config_files/version.info
   script:
     - docker buildx build --no-cache --build-arg BUILD=$(date -u +'%Y-%m-%dT%H:%M:%SZ') --push --platform linux/arm64,linux/arm,linux/amd64 -t "$CI_REGISTRY_USER/$CI_REGISTRY_IMAGE:$CI_COMMIT_DEVEL" -t "$CI_REGISTRY_USER/$CI_REGISTRY_IMAGE:$CI_COMMIT_VERSION" .    
   rules:
@@ -111,6 +114,7 @@ docker-multiarch-mikrotik-build-devel-version-latest:
     - apk update
     - apk add git    
     - docker info
+    - rm ./config_files/version.info && touch ./config_files/version.info && echo $CI_IMAGE_VERSION >> ./config_files/version.info
   script:
     - docker buildx build --no-cache --build-arg BUILD=$(date -u +'%Y-%m-%dT%H:%M:%SZ') --push --platform linux/arm64,linux/arm,linux/amd64  -t "$CI_REGISTRY_USER/$CI_REGISTRY_IMAGE:$CI_COMMIT_DEVEL" -t "$CI_REGISTRY_USER/$CI_REGISTRY_IMAGE:$CI_COMMIT_VERSION" -t "$CI_REGISTRY_USER/$CI_REGISTRY_IMAGE:$CI_COMMIT_LATEST" -t "$CI_REGISTRY_USER/$CI_REGISTRY_IMAGE:$CI_COMMIT_LATEST_LONG" .    
   rules:
