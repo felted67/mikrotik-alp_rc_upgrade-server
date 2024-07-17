@@ -91,8 +91,8 @@ then
 fi		
 if [ $debug -lt 3 ]
 then
-    wget -N $winboxurl/winbox -q -P $tempdir
-    wget -N $winboxurl/winbox64 -q -P $tempdir	
+    wget -N $winboxurl/winbox -q -O $tempdir/winbox.exe 
+    wget -N $winboxurl/winbox64 -q -O $tempdir/winbox64.exe	
 fi
 
 # Copy or move from temp-directory to created WINBOX®-dir
