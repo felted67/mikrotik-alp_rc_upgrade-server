@@ -11,7 +11,7 @@
 tput reset
 
 # Versioninformation
-pgmvers="v 0.9.6"
+pgmvers="v 1.0.1"
 
 # Debugging functions
 debug=1
