@@ -28,8 +28,10 @@ pgmprefix=/opt/mikrotik.upgrade.server
 startdir=$pgmprefix/tools
 configdir=$startdir/mikrotik.configs
 baseurl=https://download.mikrotik.com
+winboxurl=https://mt.lv
 tempdir=$startdir/temp
 repodir=$pgmprefix/repo
+winboxdir=$pgmprefix/winbox
 ltversion=NEWESTa7.long-term
 stableversion=NEWESTa7.stable
 betaversion=NEWESTa7.testing
@@ -75,6 +77,37 @@ fi
 if [ ! -d $repodir/routeros ]; then
     mkdir $repodir/routeros
     echo "... REPODIR/routeros created."
+fi
+if [ ! -d $winboxdir ]; then
+    mkdir $winboxdir
+    echo "... WINBOXDIR created."
+fi
+echo
+
+# Download WINBOX®-packages
+if [ $debug -gt 0 ]
+then
+    echo "... Loading WINBOX®packages: winbox64.exe/winbox.exe"
+fi		
+if [ $debug -lt 3 ]
+then
+    wget -N $winboxurl/winbox -q -P $tempdir
+    wget -N $winboxurl/winbox64 -q -P $tempdir	
+fi
+
+# Copy or move from temp-directory to created WINBOX®-dir
+if [ $debug -gt 1 ]
+then
+    cp -f $tempdir/* $winboxdir/
+    echo "... Downloaded WINBOX®-packages copied to Winbox-directory."
+else
+    mv -f $tempdir/* $winboxdir/
+    echo "... Downloaded WINBOX®-packages moved to Winbox-directory."
+fi
+# Empty TEMP-directory from previous run
+if [ $debug -lt 3 ] 
+    then
+    rm -rf $tempdir/*
 fi
 echo
 
