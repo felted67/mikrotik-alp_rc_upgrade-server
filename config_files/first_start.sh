@@ -13,8 +13,6 @@ mv /root/mikrotikmirror.conf /etc/apache2/conf.d/
 mv /root/upgrade.mikrotik.com.conf /etc/apache2/conf.d/
 tar xvfz /root/webserver.data.tar.gz --directory /var/www/localhost/htdocs/mikrotikmirror/
 rm /root/webserver.data.tar.gz
-chown -r apache:apache /var/www/localhost/htdocs/mikrotikmirror/
-chmod -r 0775 /var/www/localhost/htdocs/mikrotikmirror/
 version=$( cat /root/version.info )
 sed -i "s/VERSION/$version/g" /var/www/localhost/htdocs/mikrotikmirror/index-style/header.html
 mv /root/mikrotik.sync.repos.sh /opt/mikrotik.upgrade.server/tools/
