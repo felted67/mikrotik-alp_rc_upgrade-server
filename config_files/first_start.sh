@@ -6,6 +6,7 @@ mkdir /opt/mikrotik.upgrade.server/repo
 mkdir /opt/mikrotik.upgrade.server/tools/mikrotik.configs
 mkdir /var/www/localhost/htdocs/mikrotikmirror
 ln -s  /opt/mikrotik.upgrade.server/repo /var/www/localhost/htdocs/mikrotikmirror/repo
+ln -s  /opt/mikrotik.upgrade.server/winbox /var/www/localhost/htdocs/mikrotikmirror/winbox
 mv /etc/apache2/httpd.conf /etc/apache2/httpd.conf.orig
 mv /etc/apache2/httpd.new.conf /etc/apache2/httpd.conf
 mv /root/mikrotikmirror.conf /etc/apache2/conf.d/
