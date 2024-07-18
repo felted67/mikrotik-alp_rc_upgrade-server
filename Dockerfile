@@ -21,7 +21,7 @@ LABEL maintainer="DL7DET <detlef@lampart.de>" \
     org.label-schema.vcs-url="https://cb3.lampart-web.de/internal/docker-projects/mikrotik-docker-images/mikrotik-alp_rc_upgrade-server.git" \
     org.label-schema.vcs-ref=${VCS_REF} \
     org.label-schema.docker.dockerfile="/Dockerfile" \
-    org.label-schema.description="alpine-linux-rc-apache2-php83 mikrotik-docker-image" \
+    org.label-schema.description="alpine-linux-rc-upgrade-server mikrotik-docker-image" \
     org.label-schema.schema-version="1.0"
 
 RUN echo 'https://ftp.halifax.rwth-aachen.de/alpine/v3.20/main/' >> /etc/apk/repositories \
