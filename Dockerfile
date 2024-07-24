@@ -3,7 +3,7 @@
 # (C) 2023-2024 DL7DET
 #
 
-FROM --platform=$TARGETPLATFORM alpine:3.20.1 AS base
+FROM --platform=$TARGETPLATFORM alpine:3.20.2 AS base
 
 # Preset Metadata parameters
 ARG BUILD
