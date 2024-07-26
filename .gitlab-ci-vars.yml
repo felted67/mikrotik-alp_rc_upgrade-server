@@ -3,15 +3,14 @@
 variables:
   CI_REGISTRY_IMAGE: 'mikrotik-alp_rc_upgrade-server'
   
-  RUNNER_TAGS: 'arm64,docker,homenet'
   DIND_TAG: 'docker:27.0.3-dind'
 
   CI_PRODUCTION_LATEST_SWITCH: 'true' 
   CI_PRODUCTION_VERSION_SWITCH: 'true'
 
   CI_LINUX_VERSION: 'v3.20.2'
-  CI_IMAGE_VERSION: '0.4.6'
-  CI_DEVEL_VERSION: '0.4.6'
+  CI_IMAGE_VERSION: '0.5.0'
+  CI_DEVEL_VERSION: '0.5.0'
   CI_IMAGE_DEVEL: 'devel'
   CI_IMAGE_LATEST: 'latest'
   CI_COMMIT_DEVEL: "$CI_LINUX_VERSION-$CI_IMAGE_DEVEL-$CI_DEVEL_VERSION"
