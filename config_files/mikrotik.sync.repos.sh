@@ -221,7 +221,7 @@ for filename in $configdir/*.conf; do
 # Add informational entry to CHANGELOG
     cd $pgmprefix/repo/$rptype/$rpvers
     version=$( cat /root/version.info )
-    echo "\r\n+++ provided my mikrotik-upgrade-server "$version" +++\r" >> $pgmprefix/repo/$rptype/$rpvers/CHANGELOG
+    echo "\r\n+++ provided my mikrotik-upgrade-server v"$version" +++\r" >> $pgmprefix/repo/$rptype/$rpvers/CHANGELOG
     
     if [ $debug -gt 0 ] 
     then
