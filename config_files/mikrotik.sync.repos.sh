@@ -11,7 +11,7 @@
 tput reset
 
 # Versioninformation
-pgmvers="v 1.0.1"
+pgmvers="v 1.1.1"
 
 # Debugging functions
 debug=1
@@ -220,7 +220,9 @@ for filename in $configdir/*.conf; do
 
 # Add informational entry to CHANGELOG
     cd $pgmprefix/repo/$rptype/$rpvers
-    echo "\r\n+++ provided my mikrotik-upgrade-server +++\n" >> $pgmprefix/repo/$rptype/$rpvers/CHANGELOG
+    version=$( cat /root/version.info )
+    echo "\r\n+++ provided my mikrotik-upgrade-server "$version" +++\r" >> $pgmprefix/repo/$rptype/$rpvers/CHANGELOG
+    
     if [ $debug -gt 0 ] 
     then
 	echo "... Added informational entry to CHANGELOG."
