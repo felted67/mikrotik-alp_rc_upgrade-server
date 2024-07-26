@@ -217,7 +217,15 @@ for filename in $configdir/*.conf; do
     then
 	echo "... Downloaded all-packages-*.zip extracted for update function."
     fi
-    
+
+# Add informational entry to CHANGELOG
+    cd $pgmprefix/repo/$rptype/$rpvers
+    echo "\r\n+++ provided my mikrotik-upgrade-server +++\n" >> $pgmprefix/repo/$rptype/$rpvers/CHANGELOG
+    if [ $debug -gt 0 ] 
+    then
+	echo "... Added informational entry to CHANGELOG."
+    fi
+
 # Clear temp-directory for next download run
     if [ $debug -lt 3 ] 
     then
