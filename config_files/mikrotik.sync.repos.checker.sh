@@ -2,16 +2,16 @@
 #**********************************
 #* mikrotik.sync.repos.checker.sh *
 #**********************************
-#*  (C) 2024 DL7DET               *
-#*  Detlef Lampart                *
-#*  This program is open source   *
+#*       (C) 2024 DL7DET          *
+#*        Detlef Lampart          *
+#*         MIT License            *
 #**********************************
 
 # Clear screen
 tput reset
 
 # Versioninformation
-pgmvers="v 0.9.0"
+pgmvers="v 1.0.0"
 
 # Debugging functions
 debug=1
@@ -40,10 +40,10 @@ echo "**********************************"
 echo "* Mikrotik.sync.repos.checker.sh *"
 echo "***      "$pgmvers "               ***"
 echo "**********************************"
-echo "*  (C) 2024 DL7DET               *"
-echo "*   Detlef Lampart               *"
+echo "*       (C) 2024 DL7DET          *"
+echo "*        Detlef Lampart          *"
 echo "**********************************"
-echo "* This program is open source    *"
+echo "*         MIT License            *"
 echo "**********************************"
 echo
 echo ".........initializing."

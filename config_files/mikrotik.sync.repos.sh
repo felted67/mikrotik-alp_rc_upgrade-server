@@ -2,16 +2,16 @@
 #**********************************
 #***   Mikrotik.sync.repos.sh   ***
 #**********************************
-#*  (C) 2024 DL7DET               *
-#*  Detlef Lampart                *
-#*  This program is open source   *
+#*       (C) 2024 DL7DET          *
+#*        Detlef Lampart          *
+#*         MIT License            *
 #**********************************
 
 # Clear screen
 tput reset
 
 # Versioninformation
-pgmvers="v 1.1.2"
+pgmvers="v 1.4.0"
 
 # Debugging functions
 debug=1
@@ -31,7 +31,7 @@ baseurl=https://download.mikrotik.com
 winboxurl=https://mt.lv
 tempdir=$startdir/temp
 repodir=$pgmprefix/repo
-winboxdir=$pgmprefix/winbox
+winboxdir=$pgmprefix/repo/winbox
 ltversion=NEWESTa7.long-term
 stableversion=NEWESTa7.stable
 betaversion=NEWESTa7.testing
@@ -42,10 +42,10 @@ echo "**********************************"
 echo "***   Mikrotik.sync.repos.sh   ***"
 echo "***      "$pgmvers "               ***"
 echo "**********************************"
-echo "*  (C) 2024 DL7DET               *"
-echo "*   Detlef Lampart               *"
+echo "*        (C) 2024 DL7DET         *"
+echo "*         Detlef Lampart         *"
 echo "**********************************"
-echo "* This program is open source    *"
+echo "*          MIT License           *"
 echo "**********************************"
 echo
 echo ".........initializing."
