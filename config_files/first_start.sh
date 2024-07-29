@@ -1,7 +1,7 @@
 #!/bin/bash
 mkdir /etc/apache2/conf.d
-mkdir /opt/mikrotik.upgrade.server
-mkdir /opt/mikrotik.upgrade.server/tools
+mkdir -p /opt/mikrotik.upgrade.server
+mkdir -p /opt/mikrotik.upgrade.server/tools
 mkdir -p /opt/mikrotik.upgrade.server/repo
 mkdir -p /opt/mikrotik.upgrade.server/tools/mikrotik.configs
 mkdir /var/www/localhost/htdocs/mikrotikmirror
