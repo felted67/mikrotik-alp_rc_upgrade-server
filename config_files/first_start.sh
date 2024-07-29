@@ -4,7 +4,7 @@ mkdir -p /opt/mikrotik.upgrade.server
 mkdir -p /opt/mikrotik.upgrade.server/tools
 mkdir -p /opt/mikrotik.upgrade.server/repo
 mkdir -p /opt/mikrotik.upgrade.server/tools/mikrotik.configs
-mkdir /var/www/localhost/htdocs/mikrotikmirror
+mkdir -p /var/www/localhost/htdocs/mikrotikmirror
 ln -s  /opt/mikrotik.upgrade.server/repo /var/www/localhost/htdocs/mikrotikmirror/repo
 mv /etc/apache2/httpd.conf /etc/apache2/httpd.conf.orig
 mv /etc/apache2/httpd.new.conf /etc/apache2/httpd.conf
