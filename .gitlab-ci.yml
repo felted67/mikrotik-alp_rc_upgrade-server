@@ -39,6 +39,7 @@ docker-local-mikrotik-build:
             - $CI_REGISTRY_IMAGE-$CI_COMMIT_DEVEL-amd64.tar.gz
             - $CI_REGISTRY_IMAGE-$CI_COMMIT_DEVEL-arm64.tar.gz
             - $CI_REGISTRY_IMAGE-$CI_COMMIT_DEVEL-arm.tar.gz
+  when: always
 
 docker-multiarch-mikrotik-build-devel:  
   stage: docker-multiarch-build-devel
@@ -65,8 +66,12 @@ docker-multiarch-mikrotik-build-devel:
     - docker buildx build --no-cache --build-arg BUILD=$(date -u +'%Y-%m-%dT%H:%M:%SZ') --push --platform linux/arm64,linux/arm,linux/amd64 -t "$CI_REGISTRY_USER/$CI_REGISTRY_IMAGE:$CI_COMMIT_DEVEL" .    
   rules:
     - if: ($CI_PRODUCTION_VERSION_SWITCH != "true" && $CI_PRODUCTION_LATEST_SWITCH != "true")
+      changes:
+        - Dockerfile
+        - .gitlab-ci-vars.yml
+        - ./config_files/*
   when: always
-  
+
 docker-multiarch-mikrotik-build-devel-version:
   stage: docker-multiarch-build-devel-version
   needs: [docker-local-mikrotik-build]
@@ -91,8 +96,12 @@ docker-multiarch-mikrotik-build-devel-version:
   script:
     - docker buildx build --no-cache --build-arg BUILD=$(date -u +'%Y-%m-%dT%H:%M:%SZ') --push --platform linux/arm64,linux/arm,linux/amd64 -t "$CI_REGISTRY_USER/$CI_REGISTRY_IMAGE:$CI_COMMIT_DEVEL" -t "$CI_REGISTRY_USER/$CI_REGISTRY_IMAGE:$CI_COMMIT_VERSION" .    
   rules:
-    - if: ($CI_PRODUCTION_VERSION_SWITCH == "true" && $CI_PRODUCTION_LATEST_SWITCH != "true")      
-      when: always
+    - if: ($CI_PRODUCTION_VERSION_SWITCH == "true" && $CI_PRODUCTION_LATEST_SWITCH != "true")  
+      changes:
+        - Dockerfile
+        - .gitlab-ci-vars.yml
+        - ./config_files/*        
+  when: always
 
 docker-multiarch-mikrotik-build-devel-version-latest:
   stage: docker-multiarch-build-devel-version-latest
@@ -119,4 +128,8 @@ docker-multiarch-mikrotik-build-devel-version-latest:
     - docker buildx build --no-cache --build-arg BUILD=$(date -u +'%Y-%m-%dT%H:%M:%SZ') --push --platform linux/arm64,linux/arm,linux/amd64  -t "$CI_REGISTRY_USER/$CI_REGISTRY_IMAGE:$CI_COMMIT_DEVEL" -t "$CI_REGISTRY_USER/$CI_REGISTRY_IMAGE:$CI_COMMIT_VERSION" -t "$CI_REGISTRY_USER/$CI_REGISTRY_IMAGE:$CI_COMMIT_LATEST" -t "$CI_REGISTRY_USER/$CI_REGISTRY_IMAGE:$CI_COMMIT_LATEST_LONG" .    
   rules:
     - if: ($CI_PRODUCTION_LATEST_SWITCH == "true" &&  $CI_PRODUCTION_VERSION_SWITCH == "true")   
-      when: always 
+      changes:
+        - Dockerfile
+        - .gitlab-ci-vars.yml
+        - ./config_files/*
+  when: always
