@@ -3,7 +3,7 @@
 variables:
   CI_REGISTRY_IMAGE: 'mikrotik-alp_rc_upgrade-server'
   
-  DIND_TAG: 'docker:27.0.3-dind'
+  DIND_TAG: 'docker:27.1.2-dind'
 
   CI_PRODUCTION_LATEST_SWITCH: 'true' 
   CI_PRODUCTION_VERSION_SWITCH: 'true'
