@@ -10,6 +10,8 @@ ARG BUILD
 ARG APP_VERSION=${CI_IMAGE_VERSION}
 ARG DEVEL_VERSION=${CI_DEVEL_VERSION}
 ARG ALPINE_VERSION=${CI_LINUX_VERSION}
+ARG USER=mikrotik
+ENV HOME /home/$USER
 
 # Set Metadata for docker-image
 LABEL maintainer="DL7DET <detlef@lampart.de>" \
@@ -27,6 +29,15 @@ LABEL maintainer="DL7DET <detlef@lampart.de>" \
 RUN echo 'https://ftp.halifax.rwth-aachen.de/alpine/v3.20/main/' >> /etc/apk/repositories \
     && echo 'https://ftp.halifax.rwth-aachen.de/alpine/v3.20/community' >> /etc/apk/repositories \
     && apk add --no-cache --update --upgrade su-exec ca-certificates
+
+# install sudo as root
+RUN apk add --update sudo
+
+# add new user
+RUN adduser -D $USER \
+    && mkdir -p /etc/sudoers.d \
+    && echo "$USER ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/$USER \
+    && chmod 0440 /etc/sudoers.d/$USER
 
 FROM base AS openrc
 
@@ -69,14 +80,14 @@ COPY ./config_files/auto_init.sh /sbin/
 COPY ./config_files/first_start.sh /sbin/
 
 COPY ./config_files/httpd.new.conf /etc/apache2/
-COPY ./config_files/mikrotikmirror.conf /root/
-COPY ./config_files/upgrade.mikrotik.com.conf /root/
-COPY ./config_files/routeros.raw /root/
-COPY ./config_files/mikrotik.sync.repos.sh /root/
-COPY ./config_files/mikrotik.sync.repos.checker.sh /root
-COPY ./config_files/webserver.data.tar.gz /root/
+COPY ./config_files/mikrotikmirror.conf $HOME
+COPY ./config_files/upgrade.mikrotik.com.conf $HOME
+COPY ./config_files/routeros.raw $HOME
+COPY ./config_files/mikrotik.sync.repos.sh $HOME
+COPY ./config_files/mikrotik.sync.repos.checker.sh $HOME
+COPY ./config_files/webserver.data.tar.gz $HOME
 COPY ./config_files/crond /etc/init.d/
-COPY ./config_files/version.info /root/
+COPY ./config_files/version.info $HOME
 
 RUN ["ln", "-sf", "/opt/mikrotik.upgrade.server/tools/mikrotik.sync.repos.checker.sh", "/etc/periodic/daily/run"]
 RUN ["ln", "-s", "/usr/share/zoneinfo/Europe/Berlin", "/etc/localtime"]
@@ -92,3 +103,6 @@ EXPOSE 80/tcp
 # EXPOSE 443/tcp
 
 CMD ["/sbin/init"]
+
+USER $USER
+WORKDIR $HOME
