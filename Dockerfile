@@ -104,5 +104,5 @@ EXPOSE 80/tcp
 
 CMD ["/sbin/init"]
 
-USER $USER
-WORKDIR $HOME
+#USER $USER
+#WORKDIR $HOME

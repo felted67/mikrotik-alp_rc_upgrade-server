@@ -11,6 +11,8 @@ routeros-VERSION-mipsbe.npk
 all_packages-mipsbe-VERSION.zip
 routeros-VERSION-mmips.npk
 all_packages-mmips-VERSION.zip
+routeros-VERSION-smips.npk
+all_packages-smips-VERSION.zip
 routeros-VERSION-ppc.npk
 all_packages-ppc-VERSION.zip
 routeros-VERSION-smips.npk
