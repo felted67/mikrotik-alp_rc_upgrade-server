@@ -69,7 +69,7 @@ docker-multiarch-mikrotik-build-devel:
       changes:
         - Dockerfile
         - .gitlab-ci-vars.yml
-        - ./config_files/*
+        - .$CI_PROJECT_DIR/config_files/*
   when: always
 
 docker-multiarch-mikrotik-build-devel-version:
@@ -100,7 +100,7 @@ docker-multiarch-mikrotik-build-devel-version:
       changes:
         - Dockerfile
         - .gitlab-ci-vars.yml
-        - ./config_files/*        
+        - $CI_PROJECT_DIR/config_files/*        
   when: always
 
 docker-multiarch-mikrotik-build-devel-version-latest:
@@ -131,5 +131,5 @@ docker-multiarch-mikrotik-build-devel-version-latest:
       changes:
         - Dockerfile
         - .gitlab-ci-vars.yml
-        - ./config_files/*
+        - $CI_PROJECT_DIR/config_files/*
   when: always
