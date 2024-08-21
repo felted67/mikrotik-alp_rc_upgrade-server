@@ -165,10 +165,10 @@ if [ $debug -gt 0 ]
     then
     echo "... Copied LATEST-file development version to repo-dir."
 fi
-cp $tempdir/$winboxversion $repodir/routeros/
+cp $tempdir/$winboxversion $repodir/routeros/winbox/
 if [ $debug -gt 0 ] 
     then
-    echo "... Copied LATEST-WINBOX-file to repo-dir."
+    echo "... Copied LATEST-WINBOX-file to repo/winbox-dir."
 fi
 
 # Empty TEMP-directory from previous run
