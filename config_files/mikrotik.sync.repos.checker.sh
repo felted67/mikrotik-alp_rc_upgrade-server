@@ -34,6 +34,7 @@ ltversion=NEWESTa7.long-term
 stableversion=NEWESTa7.stable
 betaversion=NEWESTa7.testing
 devversion=NEWESTa7.development
+winboxversion=LATEST.3
 
 # Show startup infos
 echo "**********************************"
@@ -108,6 +109,11 @@ if [ $debug -gt 0 ]
     then
     echo "... Downloaded LATEST-version-file for development version."
 fi
+wget -N $baseurl/routeros/$winboxversion -q -P $tempdir/
+if [ $debug -gt 0 ] 
+    then
+    echo "... Downloaded LATEST-WINBOX-version-file."
+fi
 echo
 
 # Reset index variables
@@ -158,6 +164,11 @@ cp $tempdir/$devversion $repodir/routeros/
 if [ $debug -gt 0 ] 
     then
     echo "... Copied LATEST-file development version to repo-dir."
+fi
+cp $tempdir/$winboxversion $repodir/routeros/
+if [ $debug -gt 0 ] 
+    then
+    echo "... Copied LATEST-WINBOX-file to repo-dir."
 fi
 
 # Empty TEMP-directory from previous run
