@@ -232,11 +232,22 @@ for filename in $configdir/*.conf; do
 # Add informational entry to CHANGELOG
     cd $pgmprefix/repo/$rptype/$rpvers
     version=$( cat /root/version.info )
-    echo -e "\n " >> $pgmprefix/repo/$rptype/$rpvers/CHANGELOG
-    echo "+++ Provided by mikrotik-upgrade-server v"$version" +++" >> $pgmprefix/repo/$rptype/$rpvers/CHANGELOG
-    if [ $debug -gt 0 ] 
+    isInFile=$(cat $pgmprefix/repo/$rptype/$rpvers/CHANGELOG | grep -c "+++ Provided by mikrotik-upgrade-server")
+    if [ $isInFile -eq 0 ]
     then
-	echo "... Added informational entry to CHANGELOG."
+        echo -e "\n " >> $pgmprefix/repo/$rptype/$rpvers/CHANGELOG
+        echo "+++ Provided by mikrotik-upgrade-server v"$version" +++" >> $pgmprefix/repo/$rptype/$rpvers/CHANGELOG
+        if [ $debug -gt 0 ] 
+        then
+	    echo "... Added informational entry to CHANGELOG."
+        fi
+    else 
+        sed -i '/^+++ Provided by mikrotik-upgrade-server/d' $pgmprefix/repo/$rptype/$rpvers/CHANGELOG
+        echo "+++ Provided by mikrotik-upgrade-server v"$version" +++" >> $pgmprefix/repo/$rptype/$rpvers/CHANGELOG
+        if [ $debug -gt 0 ] 
+        then
+	    echo "... Changed informational entry to CHANGELOG."
+        fi
     fi
 
 # Clear temp-directory for next download run
