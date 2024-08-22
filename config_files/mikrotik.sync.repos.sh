@@ -107,7 +107,7 @@ else
 fi
 
 # Rename WINBOX®-files to reflect version
-if [ $debug -gt 1 ]
+if [ $debug -lt 3 ]
 then
     wbversion=$( cat $winboxdir/$winboxversion )
     cp -f $winboxdir/winbox.exe $winboxdir/winbox_$wbversion.exe
