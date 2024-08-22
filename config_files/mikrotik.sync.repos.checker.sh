@@ -117,7 +117,9 @@ if [ $debug -gt 0 ]
     then
     echo "... Downloaded LATEST-version-file for development version."
 fi
-wget -N $baseurl/routeros/$winboxversion -q -P $tempdir/
+
+# Get latest version for WINBOX 'LATEST.3' from download.mikrotik.com
+wget -N $baseurl/routeros/winbox/$winboxversion -q -P $tempdir/
 if [ $debug -gt 0 ] 
     then
     echo "... Downloaded LATEST-WINBOX-version-file."
