@@ -16,6 +16,9 @@ tar xvfz /root/webserver.data.tar.gz --directory /var/www/localhost/htdocs/mikro
 rm /root/webserver.data.tar.gz
 version=$( cat /root/version.info )
 sed -i "s/VERSION/$version/g" /var/www/localhost/htdocs/mikrotikmirror/index-style/header.html
+mv /etc/motd /etc/motd.orig
+sed -i "s/VERSION/$version/g" /root/motd.new
+mv /root/motd.new /etc/motd
 mv /root/mikrotik.sync.repos.sh /opt/mikrotik.upgrade.server/tools/
 mv /root/mikrotik.sync.repos.checker.sh /opt/mikrotik.upgrade.server/tools/
 mv /root/routeros.raw /opt/mikrotik.upgrade.server/tools/mikrotik.configs/
