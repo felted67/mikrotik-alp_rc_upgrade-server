@@ -11,7 +11,7 @@
 tput reset
 
 # Versioninformation
-pgmvers="v 1.1.0"
+pgmvers="v 1.2.0"
 
 # Debugging functions
 debug=1
@@ -63,7 +63,7 @@ exec > >(tee -a ${logfile} )
 exec 2> >(tee -a ${logfile} >&2)
 echo " Starting at $(date -u)." >> $logfile 2>&1
 
-# Check and create needed directories
+# Check, create and symlink needed directories
 if [ ! -d $tempdir ]; then
     mkdir $tempdir
     echo "... TEMPDIR created."
@@ -79,6 +79,10 @@ fi
 if [ ! -d $repodir/routeros/winbox ]; then
     mkdir $repodir/routeros/winbox
     echo "... REPODIR/routeros/winbox created."
+fi
+if [ ! -d $repodir/winbox ]; then
+    ln -s $repodir/routeros/winbox $repodir/winbox
+    echo "... Symlink REPODIR/routeros/winbox to REPODIR/winbox created."
 fi
 echo
 

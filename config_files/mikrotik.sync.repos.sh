@@ -11,7 +11,7 @@
 tput reset
 
 # Versioninformation
-pgmvers="v 1.4.1"
+pgmvers="v 1.5.0"
 
 # Debugging functions
 debug=1
@@ -31,7 +31,7 @@ baseurl=https://download.mikrotik.com
 winboxurl=https://mt.lv
 tempdir=$startdir/temp
 repodir=$pgmprefix/repo
-winboxdir=$pgmprefix/repo/winbox
+winboxdir=$pgmprefix/repo/routeros/winbox
 ltversion=NEWESTa7.long-term
 stableversion=NEWESTa7.stable
 betaversion=NEWESTa7.testing
