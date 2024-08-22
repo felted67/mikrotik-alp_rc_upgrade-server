@@ -8,7 +8,8 @@ mkdir -p /var/www/localhost/htdocs/mikrotikmirror
 ln -s  /opt/mikrotik.upgrade.server/repo /var/www/localhost/htdocs/mikrotikmirror/repo
 mv /etc/apache2/httpd.conf /etc/apache2/httpd.conf.orig
 mv /etc/apache2/httpd.new.conf /etc/apache2/httpd.conf
-mv /etc/apache2/mpm.new.conf /etc/apache2/mpm.conf
+mv /etc/apache2/conf.d/mpm.conf /etc/apache2/conf.d/mpm.conf.orig
+mv /etc/apache2/conf.d/mpm.new.conf /etc/apache2/conf.d/mpm.conf
 mv /root/mikrotikmirror.conf /etc/apache2/conf.d/
 mv /root/upgrade.mikrotik.com.conf /etc/apache2/conf.d/
 tar xvfz /root/webserver.data.tar.gz --directory /var/www/localhost/htdocs/mikrotikmirror/
