@@ -11,7 +11,7 @@
 tput reset
 
 # Versioninformation
-pgmvers="v 1.5.0"
+pgmvers="v 1.5.1"
 
 # Debugging functions
 debug=1
@@ -36,6 +36,7 @@ ltversion=NEWESTa7.long-term
 stableversion=NEWESTa7.stable
 betaversion=NEWESTa7.testing
 devversion=NEWESTa7.development
+winboxversion=LATEST.3
 
 # Show startup infos
 echo "**********************************"
@@ -104,6 +105,16 @@ else
     mv -f $tempdir/* $winboxdir/
     echo "... Downloaded WINBOX®-packages moved to Winbox-directory."
 fi
+
+# Rename WINBOX®-files to reflect version
+if [ $debug -gt 1 ]
+then
+    wbversion=$( cat $winboxdir/$winboxversion )
+    cp -f $winboxdir/winbox.exe $winboxdir/winbox_$wbversion.exe
+    cp -f $winboxdir/winbox64.exe $winboxdir/winbox64_$wbversion.exe
+    echo "...WINBOX®-files renamed to reflect version."
+fi
+
 # Empty TEMP-directory from previous run
 if [ $debug -lt 3 ] 
     then
