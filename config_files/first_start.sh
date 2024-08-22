@@ -22,6 +22,7 @@ mv /root/motd.new /etc/motd
 mv /root/mikrotik.sync.repos.sh /opt/mikrotik.upgrade.server/tools/
 mv /root/mikrotik.sync.repos.checker.sh /opt/mikrotik.upgrade.server/tools/
 mv /root/routeros.raw /opt/mikrotik.upgrade.server/tools/mikrotik.configs/
+mv /root/mus-documentation.pdf /var/www/localhost/htdocs/mikrotikmirror/doc/
 chmod 0775 /opt/mikrotik.upgrade.server/tools/mikrotik.sync.repos.sh
 chmod 0775 /opt/mikrotik.upgrade.server/tools/mikrotik.sync.repos.checker.sh
 ln -s /opt/mikrotik.upgrade.server/tools/mikrotik.sync.repos.sh /usr/local/bin/

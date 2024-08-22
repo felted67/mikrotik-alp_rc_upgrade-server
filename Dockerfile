@@ -90,6 +90,7 @@ COPY ./config_files/webserver.data.tar.gz /root/
 COPY ./config_files/crond /etc/init.d/
 COPY ./config_files/version.info /root/
 COPY ./config_files/motd.new /root/
+COPY ./doc/mus-documentation.pdf /root/
 
 RUN ["ln", "-sf", "/opt/mikrotik.upgrade.server/tools/mikrotik.sync.repos.checker.sh", "/etc/periodic/daily/run"]
 RUN ["ln", "-s", "/usr/share/zoneinfo/Europe/Berlin", "/etc/localtime"]
