@@ -2,6 +2,9 @@
 
 ## mikrotik-alp_rc_upgrade-server  - Docker-image for Mikrotik®-devices
 
+The complete documentation is available here: https://github.com/felted67/mikrotik-alp_rc_upgrade-server/blob/main/doc/mus-documentation.pdf</br>
+The source-code is also available here: https://github.com/felted67/mikrotik-alp_rc_upgrade-server/tree/main</br>
+
 This docker-image for Mikrotik®-devices is intended to install inside a container-enabled device.</br>
 If your Mikrotik®-device is able to run docker-images mainly depends on the device and the used RouterOS (ROS®).</br>
 Versions beginning from 7.5 (roughly) are able to run containers on the device. The current version this image is build for </br>
