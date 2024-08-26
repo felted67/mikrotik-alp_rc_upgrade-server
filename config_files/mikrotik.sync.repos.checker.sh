@@ -111,12 +111,12 @@ if [ $? -gt 0 ]
         exit 7
 fi
 
-# Check if MikrotikÂ®-master-servers are reachable, if not exit
+# Check if Mikrotik®-master-servers are reachable, if not exit
 
 ping -q -c5 download.mikrotik.com > /dev/null
 if [ $? -gt 0 ]
     then
-        echo "... MIKROTIKÂ®-master-servers a not reachable. Please check status !"
+        echo "... MIKROTIK®-master-servers a not reachable. Please check status !"
         echo "... Script stopped - please check you configuration !!!"
         exit 7
 fi

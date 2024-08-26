@@ -141,7 +141,7 @@ then
     wbversion=$( cat $winboxdir/$winboxversion )
     cp -f $winboxdir/winbox.exe $winboxdir/winbox_$wbversion.exe
     cp -f $winboxdir/winbox64.exe $winboxdir/winbox64_$wbversion.exe
-    echo "...WINBOX®-files renamed to reflect version."
+    echo "... WINBOX®-files renamed to reflect version."
 fi
 
 # Empty TEMP-directory from previous run
