@@ -25,7 +25,7 @@ docker-local-mikrotik-build:
     - apk update
     - apk add git
     - docker info
-    - rm $CI_PROJECT_DIR/config_files/version.info && touch $CI_PROJECT_DIR/config_files/version.info && echo $CI_IMAGE_VERSION >> $CI_PROJECT_DIR/config_files/version.info    
+    - rm $CI_PROJECT_DIR/config_files/version.info && touch $CI_PROJECT_DIR/config_files/version.info && echo $CI_DEVEL_VERSION >> $CI_PROJECT_DIR/config_files/version.info    
   script:
     - docker buildx build --no-cache --build-arg BUILD=$(date -u +'%Y-%m-%dT%H:%M:%SZ') --platform linux/amd64 --output=type=docker -t $CI_REGISTRY_IMAGE-amd64:$CI_COMMIT_DEVEL .
     - docker buildx build --no-cache --build-arg BUILD=$(date -u +'%Y-%m-%dT%H:%M:%SZ') --platform linux/arm64 --output=type=docker -t $CI_REGISTRY_IMAGE-arm64:$CI_COMMIT_DEVEL .
