@@ -100,6 +100,7 @@ if [ $inetOK -ne 0]
         exit 1
 fi
 
+# Check if dns-resolution is possible, if not exit
 inetOK=$(ping -cq 10 google.com)
 if [ $inetOK -ne 0]
     then
