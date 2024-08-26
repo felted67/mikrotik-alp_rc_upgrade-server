@@ -189,7 +189,7 @@ for filename in $configdir/*.conf; do
         dos2unix $filename
         if [ $debug -gt 0 ] 
         then
-            echo "... Changed dos-style-edited *.conf-file to unix-style."
+            echo "... Changed dos-style-config-file $filename to unix-style."
         fi
     fi
 done
