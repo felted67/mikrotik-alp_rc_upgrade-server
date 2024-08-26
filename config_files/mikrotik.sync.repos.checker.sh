@@ -35,7 +35,7 @@ stableversion=NEWESTa7.stable
 betaversion=NEWESTa7.testing
 devversion=NEWESTa7.development
 winboxversion=LATEST.3
-datestamp=$(date +"%H':'%M' '%Z' on '%A', '%d'.'%B' '%Y")
+datestamp=$(date +"%H:%M %Z on %A, %d.%B %Y")
 
 # Show startup infos
 echo "**********************************"
@@ -98,7 +98,7 @@ ping -q -c5 8.8.8.8 > /dev/null
 if [ $? -ne 0 ]
     then
         echo "... NO internet-connection available. Please check routes !"
-        echo "... Script stopped - please check you configuration !!!"
+        echo "... Script stopped - please check your configuration !!!"
         exit 7
 fi
 
@@ -107,7 +107,7 @@ ping -q -c5 google.com > /dev/null
 if [ $? -gt 0 ]
     then
         echo "... NO name resolution (DNS) available. Please check DNS-configuration !"
-        echo "... Script stopped - please check you configuration !!!"
+        echo "... Script stopped - please check your configuration !!!"
         echo
         exit 7
 fi
@@ -118,7 +118,7 @@ ping -q -c5 download.mikrotik.com > /dev/null
 if [ $? -gt 0 ]
     then
         echo "... MIKROTIK®-master-servers a not reachable. Please check status !"
-        echo "... Script stopped - please check you configuration !!!"
+        echo "... Script stopped - please check your configuration !!!"
         exit 7
 fi
 
