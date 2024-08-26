@@ -93,29 +93,34 @@ if [ $debug -lt 3 ]
 fi
 
 # Check if internet-connection is possible, if not exit
-inetOK=$(ping -q -c 10 8.8.8.8)
-if [ $inetOK -ne 0 ]
+ping -q -c5 8.8.8.8 > /dev/null
+if [ $? -ne 0 ]
     then
         echo "... NO internet-connection available. Please check routes !"
+        echo "... Script stopped - please check you configuration !!!"
         exit 1
 fi
 
 # Check if dns-resolution is possible, if not exit
-inetOK=$(ping -q -c 10 google.com)
-if [ $inetOK -ne 0 ]
+ping -q -c5 google.com > /dev/null
+if [ $? -gt 0 ]
     then
         echo "... NO name resolution (DNS) available. Please check DNS-configuration !"
+        echo "... Script stopped - please check you configuration !!!"
+        echo
         exit 1
 fi
 
-# Check if Mikrotik®-master-servers are reachable, if not exit
+# Check if MikrotikÂ®-master-servers are reachable, if not exit
 
-inetOK=$(ping -q -c 10 download.mikrotik.com)
-if [ $inetOK -ne 0 ]
+ping -q -c5 download.mikrotik.com > /dev/null
+if [ $? -gt 0 ]
     then
-        echo "... MIKROTIK®-master-servers a not reachable. Please check status !"
+        echo "... MIKROTIKÂ®-master-servers a not reachable. Please check status !"
+        echo "... Script stopped - please check you configuration !!!"
         exit 1
 fi
+
 
 # Give some nice informations on the screen
 echo "... Checking latest versions."
