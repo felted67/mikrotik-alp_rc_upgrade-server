@@ -61,7 +61,7 @@ docker-multiarch-mikrotik-build-devel:
     - apk update
     - apk add git    
     - docker info
-    - rm $CI_PROJECT_DIR/config_files/version.info && touch $CI_PROJECT_DIR/config_files/version.info && echo $CI_IMAGE_VERSION >> $CI_PROJECT_DIR/config_files/version.info
+    - rm $CI_PROJECT_DIR/config_files/version.info && touch $CI_PROJECT_DIR/config_files/version.info && echo $CI_DEVEL_VERSION >> $CI_PROJECT_DIR/config_files/version.info
   script:    
     - docker buildx build --no-cache --sbom=true --provenance=true --build-arg BUILD=$(date -u +'%Y-%m-%dT%H:%M:%SZ') --push --platform linux/arm64,linux/arm,linux/amd64 -t "$CI_REGISTRY_USER/$CI_REGISTRY_IMAGE:$CI_COMMIT_DEVEL" .    
   rules:
