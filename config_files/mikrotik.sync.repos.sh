@@ -151,9 +151,18 @@ if [ $debug -lt 3 ]
 fi
 
 # Check if *.conf-file is DOS-mode file and convert to unix-mode
-
-
-
+isInFile=0
+for filename in $configdir/*.conf; do
+    isInFile=$(cat $configdir/$filename | grep -c "\r")    
+    if [ $isInFile -eq 1 ]
+    then 
+        dos2unix $filename
+        if [ $debug -gt 0 ] 
+        then
+            echo "... Changed dos-style-edited *.conf-file to unix-style."
+        fi
+    fi
+done
 
 
 # Give some nice informations on the screen
@@ -168,8 +177,10 @@ echo "... Please be patient - could take some time."
 # 
 
 # Reset index variables
-    i=0
-    j=0
+i=0
+j=0
+
+# Start loop
 for filename in $configdir/*.conf; do
     while IFS= read -r varname; do
 	var[$i]=$varname
