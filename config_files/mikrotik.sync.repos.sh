@@ -37,6 +37,7 @@ stableversion=NEWESTa7.stable
 betaversion=NEWESTa7.testing
 devversion=NEWESTa7.development
 winboxversion=LATEST.3
+datestamp=$(date +%H':'%M' '%Z' on '%A', '%d'.'%B' '%Y)
 
 # Show startup infos
 echo "**********************************"
@@ -52,7 +53,7 @@ echo
 echo "... initializing."
 echo
 sleep 10
-echo "... Starting at $(date +%H':'%M' '%Z' on '%A', '%d'.'%B' '%Y)."
+echo "... Starting at $datestamp."
 echo
 
 # Useful logging
@@ -323,7 +324,7 @@ fi
 
 echo
 echo " Script(s) ended successfully..."
-echo " Completed  at $(date +%H':'%M' '%Z' on '%A', '%d'.'%B' '%Y)." 
+echo " Completed  at $datestamp." 
 echo
 echo " C:\ ... bye-bye"
 
@@ -331,7 +332,7 @@ echo " C:\ ... bye-bye"
 #gzip -f $logfile
 #mv $logfile.gz $logfile-$(date +%Y%m%d).gz
 
-echo "Completed  at $(date +%H':'%M' '%Z' on '%A', '%d'.'%B' '%Y)." >> $logfile 2>&1
+echo "Completed  at $datestamp." >> $logfile 2>&1
 
 #
 # This is the end, my lonely friend

@@ -35,6 +35,7 @@ stableversion=NEWESTa7.stable
 betaversion=NEWESTa7.testing
 devversion=NEWESTa7.development
 winboxversion=LATEST.3
+datestamp=$(date +%H':'%M' '%Z' on '%A', '%d'.'%B' '%Y)
 
 # Show startup infos
 echo "**********************************"
@@ -50,7 +51,7 @@ echo
 echo "... initializing."
 echo
 sleep 10
-echo "... Starting at $(date +%H':'%M' '%Z' on '%A', '%d'.'%B' '%Y)."
+echo "... Starting at $datestamp."
 
 # Useful logging
 logdir=$startdir/mikrotik.sync.log
