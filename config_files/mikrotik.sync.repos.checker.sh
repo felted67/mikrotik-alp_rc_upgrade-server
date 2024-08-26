@@ -50,7 +50,7 @@ echo
 echo "... initializing."
 echo
 sleep 10
-echo "... Starting at $(date +%c' '%Z)."
+echo "... Starting at $(date +%H':'%M' '%Z' on '%A', '%d'.'%B' '%Y)."
 
 # Useful logging
 logdir=$startdir/mikrotik.sync.log
