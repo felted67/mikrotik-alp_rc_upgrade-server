@@ -52,7 +52,7 @@ echo
 echo "... initializing."
 echo
 sleep 10
-echo "... Starting at $(date +%c" "%Z)."
+echo "... Starting at $(date +%c' '%Z)."
 echo
 
 # Useful logging
@@ -323,7 +323,7 @@ fi
 
 echo
 echo " Script(s) ended successfully..."
-echo " Completed  at $(date -u)." 
+echo " Completed  at $(date +%c' '%Z)." 
 echo
 echo " C:\ ... bye-bye"
 
@@ -331,7 +331,7 @@ echo " C:\ ... bye-bye"
 #gzip -f $logfile
 #mv $logfile.gz $logfile-$(date +%Y%m%d).gz
 
-echo "Completed  at $(date -u)." >> $logfile 2>&1
+echo "Completed  at $(date +%c' '%Z)." >> $logfile 2>&1
 
 #
 # This is the end, my lonely friend
