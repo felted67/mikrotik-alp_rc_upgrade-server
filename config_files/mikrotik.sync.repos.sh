@@ -85,6 +85,30 @@ if [ ! -d $winboxdir ]; then
 fi
 echo
 
+# Check if internet-connection is possible, if not exit
+inetOK=$(ping -c 10 8.8.8.8)
+if [ $inetOK -ne 0]
+    then
+        echo "... NO internet-connection available. Please check routes !"
+        exit 1
+fi
+
+inetOK=$(ping -c 10 google.com)
+if [ $inetOK -ne 0]
+    then
+        echo "... NO name resolution (DNS) available. Please check DNS-configuration !"
+        exit 1
+fi
+
+# Check if Mikrotik®-master-servers are reachable, if not exit
+
+inetOK=$(ping -c 10 download.mikrotik.com)
+if [ $inetOK -ne 0]
+    then
+        echo "... MIKROTIK®-master-servers a not reachable. Please check status !"
+        exit 1
+fi
+
 # Download WINBOX®-packages
 if [ $debug -gt 0 ]
 then
