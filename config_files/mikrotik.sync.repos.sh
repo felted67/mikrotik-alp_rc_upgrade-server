@@ -104,7 +104,7 @@ if [ $? -gt 0 ]
         exit 1
 fi
 
-# Check if MikrotikÂ®-master-servers are reachable, if not exit
+# Check if Mikrotik®-master-servers are reachable, if not exit
 
 ping -q -c5 download.mikrotik.com > /dev/null
 if [ $? -gt 0 ]
