@@ -39,7 +39,7 @@ winboxversion=LATEST.3
 # Show startup infos
 echo "**********************************"
 echo "* Mikrotik.sync.repos.checker.sh *"
-echo "***      "$pgmvers "               ***"
+echo "***      "$pgmvers "              ***"
 echo "**********************************"
 echo "*       (C) 2024 DL7DET          *"
 echo "*        Detlef Lampart          *"

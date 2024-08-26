@@ -41,7 +41,7 @@ winboxversion=LATEST.3
 # Show startup infos
 echo "**********************************"
 echo "***   Mikrotik.sync.repos.sh   ***"
-echo "***      "$pgmvers "               ***"
+echo "***      "$pgmvers "              ***"
 echo "**********************************"
 echo "*        (C) 2024 DL7DET         *"
 echo "*         Detlef Lampart         *"
@@ -182,7 +182,7 @@ fi
 # Check if *.conf-file is DOS-mode file and convert to unix-mode
 isInFile=0
 for filename in $configdir/*.conf; do
-    isInFile=$(cat $configdir/$filename | grep -c "\r")    
+    isInFile=$(cat $filename | grep -c "\r")    
     if [ $isInFile -eq 1 ]
     then 
         dos2unix $filename
@@ -208,6 +208,7 @@ echo "... Please be patient - could take some time."
 # Reset index variables
 i=0
 j=0
+isInFile=0
 
 # Start loop
 for filename in $configdir/*.conf; do
