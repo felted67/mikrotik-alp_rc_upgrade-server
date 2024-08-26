@@ -184,7 +184,7 @@ fi
 isInFile=0
 for filename in $configdir/*.conf; do
     isInFile=$(cat $filename | grep -c "\r")    
-    if [ $isInFile -eq 1 ]
+    if [ $isInFile -gt 0 ]
     then 
         dos2unix $filename
         if [ $debug -gt 0 ] 
