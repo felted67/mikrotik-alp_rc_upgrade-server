@@ -49,10 +49,10 @@ echo "**********************************"
 echo "*          MIT License           *"
 echo "**********************************"
 echo
-echo ".........initializing."
+echo "... initializing."
 echo
 sleep 10
-echo "... Starting at $(date -u)."
+echo "... Starting at $(date +%c" "%Z)."
 echo
 
 # Useful logging
