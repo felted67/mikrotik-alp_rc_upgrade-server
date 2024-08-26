@@ -91,7 +91,7 @@ if [ $? -ne 0 ]
     then
         echo "... NO internet-connection available. Please check routes !"
         echo "... Script stopped - please check you configuration !!!"
-        exit 1
+        exit 7
 fi
 
 # Check if dns-resolution is possible, if not exit
@@ -101,7 +101,7 @@ if [ $? -gt 0 ]
         echo "... NO name resolution (DNS) available. Please check DNS-configuration !"
         echo "... Script stopped - please check you configuration !!!"
         echo
-        exit 1
+        exit 7
 fi
 
 # Check if Mikrotik®-master-servers are reachable, if not exit
@@ -111,7 +111,7 @@ if [ $? -gt 0 ]
     then
         echo "... The MIKROTIK®-master-servers are not reachable. Please check status !"
         echo "... Script stopped - please check you configuration and/or the reachability of the servers !!!"
-        exit 1
+        exit 7
 fi
 
 # Download WINBOX®-packages
