@@ -11,7 +11,7 @@
 tput reset
 
 # Versioninformation
-pgmvers="v 1.5.1"
+pgmvers="v 1.6.0"
 
 # Debugging functions
 debug=1
@@ -149,6 +149,12 @@ if [ $debug -lt 3 ]
     then
     rm -rf $tempdir/*
 fi
+
+# Check if *.conf-file is DOS-mode file and convert to unix-mode
+
+
+
+
 
 # Give some nice informations on the screen
 echo

@@ -11,7 +11,7 @@
 tput reset
 
 # Versioninformation
-pgmvers="v 1.2.0"
+pgmvers="v 1.3.0"
 
 # Debugging functions
 debug=1
@@ -91,6 +91,16 @@ if [ $debug -lt 3 ]
     then
     rm -rf $tempdir/*
 fi
+
+# Check if internet-connection is possible, if not exit
+
+
+
+
+# Check if Mikrotik®-master-servers are reachable, if not exit
+
+
+
 
 # Give some nice informations on the screen
 echo "... Checking latest versions."
