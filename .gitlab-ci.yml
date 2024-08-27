@@ -25,7 +25,7 @@ docker-local-mikrotik-build:
     - apk update
     - apk add git
     - docker info
-    - rm $CI_PROJECT_DIR/config_files/version.info && touch $CI_PROJECT_DIR/config_files/version.info && echo $CI_DEVEL_VERSION-dev >> $CI_PROJECT_DIR/config_files/version.info    
+    - rm $CI_PROJECT_DIR/config_files/version.info && touch $CI_PROJECT_DIR/config_files/version.info && echo $CI_DEVEL_VERSION"-dev" >> $CI_PROJECT_DIR/config_files/version.info    
   script:
     - docker buildx build --no-cache --build-arg COMMIT_SHA=$CI_COMMIT_SHA --build-arg LINUX_VERSION=$CI_LINUX_VERSION --build-arg DEVEL_VERSION=$CI_DEVEL_VERSION --build-arg ALPINE_VERSION=$CI_ALPINE_VERSION --build-arg BUILD=$(date -u +'%Y-%m-%dT%H:%M:%SZ') --platform linux/amd64 --output=type=docker -t $CI_REGISTRY_IMAGE-amd64:$CI_COMMIT_DEVEL .
     - docker buildx build --no-cache --build-arg COMMIT_SHA=$CI_COMMIT_SHA --build-arg LINUX_VERSION=$CI_LINUX_VERSION --build-arg DEVEL_VERSION=$CI_DEVEL_VERSION --build-arg ALPINE_VERSION=$CI_ALPINE_VERSION --build-arg BUILD=$(date -u +'%Y-%m-%dT%H:%M:%SZ') --platform linux/arm64 --output=type=docker -t $CI_REGISTRY_IMAGE-arm64:$CI_COMMIT_DEVEL .
@@ -61,7 +61,7 @@ docker-multiarch-mikrotik-build-devel:
     - apk update
     - apk add git    
     - docker info
-    - rm $CI_PROJECT_DIR/config_files/version.info && touch $CI_PROJECT_DIR/config_files/version.info && echo $CI_DEVEL_VERSION-dev >> $CI_PROJECT_DIR/config_files/version.info
+    - rm $CI_PROJECT_DIR/config_files/version.info && touch $CI_PROJECT_DIR/config_files/version.info && echo $CI_DEVEL_VERSION"-dev" >> $CI_PROJECT_DIR/config_files/version.info
   script:    
     - docker buildx build --no-cache --sbom=true --provenance=true --build-arg COMMIT_SHA=$CI_COMMIT_SHA --build-arg LINUX_VERSION=$CI_LINUX_VERSION --build-arg PROD_VERSION=$CI_PROD_VERSION --build-arg DEVEL_VERSION=$CI_DEVEL_VERSION --build-arg ALPINE_VERSION=$CI_ALPINE_VERSION --build-arg BUILD=$(date -u +'%Y-%m-%dT%H:%M:%SZ') --push --platform linux/arm64,linux/arm,linux/amd64 -t "$CI_REGISTRY_USER/$CI_REGISTRY_IMAGE:$CI_COMMIT_DEVEL" .    
   rules:
