@@ -13,7 +13,7 @@ ARG DEVEL_VERSION
 ARG ALPINE_VERSION
 ARG COMMIT_SHA
 ENV USER=mikrotik
-ENV HOME /home/$USER
+ENV HOME=/home/$USER
 
 # Set Metadata for docker-image
 LABEL org.opencontainers.image.authors="DL7DET <detlef@lampart.de>" \
