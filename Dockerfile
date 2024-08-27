@@ -11,6 +11,7 @@ ARG BUILD
 ARG PROD_VERSION
 ARG DEVEL_VERSION
 ARG ALPINE_VERSION
+ARG COMMIT_SHA
 ENV USER=mikrotik
 ENV HOME /home/$USER
 
@@ -22,7 +23,7 @@ LABEL org.opencontainers.image.authors="DL7DET <detlef@lampart.de>" \
     org.label-schema.build-date=$BUILD \
     org.label-schema.version_alpine=$ALPINE_VERSION \
     org.label-schema.vcs-url="https://cb3.lampart-web.de/internal/docker-projects/mikrotik-docker-images/mikrotik-alp_rc_upgrade-server.git" \
-    org.label-schema.vcs-ref=${VCS_REF} \
+    org.label-schema.vcs-ref=$COMMIT_SHA \
     org.label-schema.docker.dockerfile="/Dockerfile" \
     org.label-schema.description="alpine-linux-rc-upgrade-server mikrotik-docker-image" \
     org.label-schema.schema-version="1.0"
