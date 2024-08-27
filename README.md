@@ -1,14 +1,16 @@
 # **Information & Theory**
 
-## mikrotik-alp_rc_upgrade-server  - Docker-image for Mikrotik®-devices
+## mikrotik-alp_rc_upgrade-server  - mikrotik.upgrade.server - Docker-image for Mikrotik®-devices
 
-The complete documentation is available here: https://github.com/felted67/mikrotik-alp_rc_upgrade-server/blob/main/doc/mus-documentation.pdf</br>
-The source-code is also available here: https://github.com/felted67/mikrotik-alp_rc_upgrade-server/tree/main</br>
+The complete documentation is available here: <br>
+https://github.com/felted67/mikrotik-alp_rc_upgrade-server/blob/main/doc/mus-documentation.pdf</br>
+The source-code is also available here: <br>
+https://github.com/felted67/mikrotik-alp_rc_upgrade-server</br>
 
 This docker-image for Mikrotik®-devices is intended to install inside a container-enabled device.</br>
-If your Mikrotik®-device is able to run docker-images mainly depends on the device and the used RouterOS (ROS®).</br>
+If your Mikrotik®-device is able to run docker-images mainly depends on the device and the used RouterOS® (ROS®).</br>
 Versions beginning from 7.5 (roughly) are able to run containers on the device. The current version this image is build for </br>
-is RouterOS 7.10 (at the time this documentation is written). Also container-functionality is current only available for AMD64-,</br>
+is RouterOS 7.15.3 (at the time this documentation is written). Also container-functionality is current only available for AMD64-,</br>
 ARM64- and ARM-architectures/devices.</br>
 </br>
 First you need to enable the container-feature on your device. Please use the Mikrotik®-documentation for enabling the container-mode.</br>
@@ -22,7 +24,7 @@ the Mikrotik®-device. Please keep in mind, that NFS-shares may lack of not allo
 on the shares. Also you could use a external-disk (SSD/USB-Stick) as a storage-device.</br>
 </br>
 This image is build using Docker-in-Docker-techniques on a CI/CD-system. The images are tested on several CHR-</br>
-(CloudHostedRouter)-systems on  AMD64(x86_64)-hosts (virtual/non-virtual) and also on different</br> ARM/ARM64-devices (hAP ax2, hAP ax3, RB3011 and others).</br>
+(CloudHostedRouter)-systems on  AMD64(x86_64)-hosts (virtual/non-virtual) and also on different</br> ARM/ARM64-devices (hAP ax2, hAP ax3, RB5009 and others).</br>
 
 ### Theory of the image
 
@@ -42,7 +44,7 @@ There are three arch-versions available: </br>
 amd64 => for chr-devices (x86_64)</br>
 arm64 => for arm64/aarch64-devices</br>
 arm => for arm-devices</br>
-If you don't now the number of the container, please type on the console in WInBox®:</br>
+If you don't now the number of the container, please type on the console in WINBOX®:</br>
 <code> /container print</code> - The number of the container is given on the output.</br>
 In the previous opened shell of the container in terminal of WinBox® do:</br>
 1.) Set root-password: $ <code>passwd root </code></br>
