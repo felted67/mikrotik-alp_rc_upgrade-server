@@ -6,12 +6,12 @@
 ARG ALPINE_VERSION
 FROM --platform=$TARGETPLATFORM $ALPINE_VERSION AS base
 
-# Preset Metadata parameters
+# Preset Metadata parameters and build-arg parameters
 ARG BUILD
 ARG PROD_VERSION
 ARG DEVEL_VERSION
 ARG ALPINE_VERSION
-ARG USER=mikrotik
+ENV USER=mikrotik
 ENV HOME /home/$USER
 
 # Set Metadata for docker-image
