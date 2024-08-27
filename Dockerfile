@@ -4,7 +4,7 @@
 #
 
 ARG ALPINE_VERSION
-FROM --platform=$TARGETPLATFORM alpine:$ALPINE_VERSION AS base
+FROM --platform=$TARGETPLATFORM $ALPINE_VERSION AS base
 
 # Preset Metadata parameters
 ARG BUILD
