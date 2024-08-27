@@ -25,7 +25,7 @@ LABEL org.opencontainers.image.authors="DL7DET <detlef@lampart.de>" \
     org.label-schema.vcs-url="https://cb3.lampart-web.de/internal/docker-projects/mikrotik-docker-images/mikrotik-alp_rc_upgrade-server.git" \
     org.label-schema.vcs-ref=$COMMIT_SHA \
     org.label-schema.docker.dockerfile="/Dockerfile" \
-    org.label-schema.description="alpine-linux-rc-upgrade-server mikrotik-docker-image" \
+    org.label-schema.description="alpine-linux-rc-upgrade-server mus mikrotik.upgrade.server" \
     org.label-schema.schema-version="1.0"
 
 RUN echo 'https://ftp.halifax.rwth-aachen.de/alpine/v3.20/main/' >> /etc/apk/repositories \
