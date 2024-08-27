@@ -18,14 +18,17 @@ ENV HOME=/home/$USER
 # Set Metadata for docker-image
 LABEL org.opencontainers.image.authors="DL7DET <detlef@lampart.de>" \
     org.label-schema.url="https://cb3.lampart-web.de/internal/docker-projects/mikrotik-docker-images/mikrotik-alp_rc_upgrade-server" \
-    org.label-schema.version=$PROD_VERSION \
+    org.label-schema.version=$ALPINE_VERSION-$PROD_VERSION \
+    org.label-schema.version-prod=$PROD_VERSION \
     org.label-schema.version-devel=$DEVEL_VERSION \
     org.label-schema.build-date=$BUILD \
-    org.label-schema.version_alpine=$ALPINE_VERSION \
+    org.label-schema.version_alpine_version=$ALPINE_VERSION \
     org.label-schema.vcs-url="https://cb3.lampart-web.de/internal/docker-projects/mikrotik-docker-images/mikrotik-alp_rc_upgrade-server.git" \
     org.label-schema.vcs-ref=$COMMIT_SHA \
     org.label-schema.docker.dockerfile="/Dockerfile" \
     org.label-schema.description="alpine-linux-rc-upgrade-server mus mikrotik.upgrade.server" \
+    org.label-schema.usage="https://github.com/felted67/mikrotik-alp_rc_upgrade-server/blob/main/doc/mus-documentation.pdf" \
+    org.label-schema.url="https://github.com/felted67/mikrotik-alp_rc_upgrade-server" \
     org.label-schema.schema-version="1.0"
 
 RUN echo 'https://ftp.halifax.rwth-aachen.de/alpine/v3.20/main/' >> /etc/apk/repositories \
