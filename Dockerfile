@@ -3,7 +3,8 @@
 # (C) 2023-2024 DL7DET
 #
 
-FROM --platform=$TARGETPLATFORM alpine:3.20.2 AS base
+ARG ALPINE_VERSION
+FROM --platform=$TARGETPLATFORM alpine:$ALPINE_VERSION AS base
 
 # Preset Metadata parameters
 ARG BUILD
@@ -14,7 +15,7 @@ ARG USER=mikrotik
 ENV HOME /home/$USER
 
 # Set Metadata for docker-image
-LABEL maintainer="DL7DET <detlef@lampart.de>" \
+LABEL org.opencontainers.image.authors="DL7DET <detlef@lampart.de>" \
     org.label-schema.url="https://cb3.lampart-web.de/internal/docker-projects/mikrotik-docker-images/mikrotik-alp_rc_upgrade-server" \
     org.label-schema.version=${APP_VERSION} \
     org.label-schema.version-devel=${DEVEL_VERSION} \
