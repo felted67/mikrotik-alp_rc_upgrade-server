@@ -43,7 +43,7 @@ RUN apk add --update sudo
 # add new user
 RUN adduser -D $USER \
     && mkdir -p /etc/sudoers.d \
-    && echo "$USER ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/$USER \
+    && echo "$USER ALL=(ALL_ALL)  ALL" > /etc/sudoers.d/$USER \
     && chmod 0440 /etc/sudoers.d/$USER
 
 FROM base AS openrc
@@ -114,5 +114,5 @@ EXPOSE 80/tcp
 
 CMD ["/sbin/init"]
 
-#USER $USER # Change default user - coming release
-#WORKDIR $HOME # Change default home-dir - coming release
+#USER $USER # Change default user - comming release
+#WORKDIR $HOME # Change default home-dir - comming release
