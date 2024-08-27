@@ -230,5 +230,5 @@ echo "... Starting 'mikrotik.sync.repos.sh'."
 $startdir/mikrotik.sync.repos.sh
 
 #
-# This is the end, my lonely friend
+# This is the end, my lonely friend, the end
 #
