@@ -8,18 +8,18 @@ FROM --platform=$TARGETPLATFORM $ALPINE_VERSION AS base
 
 # Preset Metadata parameters
 ARG BUILD
-ARG APP_VERSION=$CI_IMAGE_VERSION
-ARG DEVEL_VERSION=$CI_DEVEL_VERSION
+ARG PROD_VERSION
+ARG DEVEL_VERSION
 ARG USER=mikrotik
 ENV HOME /home/$USER
 
 # Set Metadata for docker-image
 LABEL org.opencontainers.image.authors="DL7DET <detlef@lampart.de>" \
     org.label-schema.url="https://cb3.lampart-web.de/internal/docker-projects/mikrotik-docker-images/mikrotik-alp_rc_upgrade-server" \
-    org.label-schema.version=${APP_VERSION} \
-    org.label-schema.version-devel=${DEVEL_VERSION} \
-    org.label-schema.build-date=${BUILD} \
-    org.label-schema.version_alpine=${ALPINE_VERSION} \
+    org.label-schema.version=$PROD_VERSION \
+    org.label-schema.version-devel=$DEVEL_VERSION \
+    org.label-schema.build-date=$BUILD \
+    org.label-schema.version_alpine=$ALPINE_VERSION \
     org.label-schema.vcs-url="https://cb3.lampart-web.de/internal/docker-projects/mikrotik-docker-images/mikrotik-alp_rc_upgrade-server.git" \
     org.label-schema.vcs-ref=${VCS_REF} \
     org.label-schema.docker.dockerfile="/Dockerfile" \
