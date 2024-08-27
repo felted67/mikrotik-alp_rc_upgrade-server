@@ -11,6 +11,7 @@ ARG BUILD
 ARG PROD_VERSION
 ARG DEVEL_VERSION
 ARG ALPINE_VERSION
+ARG LINUX_VERSION
 ARG COMMIT_SHA
 ENV USER=mikrotik
 ENV HOME=/home/$USER
@@ -21,7 +22,7 @@ LABEL org.opencontainers.image.licenses="MIT License"
 LABEL org.label-schema.vendor="DL7DET <detlef@lampart.de>"
 LABEL org.label-schema.name="mikrotik.upgrade.server"
 LABEL org.label-schema.url="https://cb3.lampart-web.de/internal/docker-projects/mikrotik-docker-images/mikrotik-alp_rc_upgrade-server" 
-LABEL org.label-schema.version=$ALPINE_VERSION-$PROD_VERSION 
+LABEL org.label-schema.version=$LINUX_VERSION-$PROD_VERSION 
 LABEL org.label-schema.version-prod=$PROD_VERSION 
 LABEL org.label-schema.version-devel=$DEVEL_VERSION 
 LABEL org.label-schema.build-date=$BUILD 
