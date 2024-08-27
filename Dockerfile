@@ -17,6 +17,7 @@ ENV HOME=/home/$USER
 
 # Set Metadata for docker-image
 LABEL org.opencontainers.image.authors="DL7DET <detlef@lampart.de>" 
+LABEL org.opencontainers.image.licenses="MIT License"
 LABEL org.label-schema.vendor="DL7DET <detlef@lampart.de>"
 LABEL org.label-schema.name="mikrotik.upgrade.server"
 LABEL org.label-schema.url="https://cb3.lampart-web.de/internal/docker-projects/mikrotik-docker-images/mikrotik-alp_rc_upgrade-server" 
