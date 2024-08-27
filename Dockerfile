@@ -108,9 +108,9 @@ RUN ln -s /etc/init.d/auto_init /etc/runlevels/default/auto_init
 
 EXPOSE 22/tcp
 EXPOSE 80/tcp
-# EXPOSE 443/tcp
+# EXPOSE 443/tcp # Preconfigured for (later) https:// access
 
 CMD ["/sbin/init"]
 
-#USER $USER
-#WORKDIR $HOME
+#USER $USER # Change default user - coming release
+#WORKDIR $HOME # Change default home-dir - coming release
