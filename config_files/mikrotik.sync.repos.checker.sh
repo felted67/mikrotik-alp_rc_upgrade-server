@@ -77,6 +77,10 @@ if [ ! -d $repodir/routeros ]; then
     mkdir $repodir/routeros
     echo "... REPODIR/routeros created."
 fi
+if [ ! -d $repodir/routeros/0.00 ]; then
+    mkdir $repodir/routeros/0.00
+    echo "... REPODIR/routeros/0.00 created."
+fi
 if [ ! -d $repodir/routeros/winbox ]; then
     mkdir $repodir/routeros/winbox
     echo "... REPODIR/routeros/winbox created."

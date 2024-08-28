@@ -3,7 +3,7 @@ mkdir /etc/apache2/conf.d
 mkdir -p /opt/mikrotik.upgrade.server
 mkdir -p /opt/mikrotik.upgrade.server/tools
 mkdir -p /opt/mikrotik.upgrade.server/repo
-mkdir -p /opt/mikrotik.upgrade.server/repo/routeros.0.00
+mkdir -p /opt/mikrotik.upgrade.server/repo/routeros/0.00
 mkdir -p /opt/mikrotik.upgrade.server/tools/mikrotik.configs
 mkdir -p /var/www/localhost/htdocs/mikrotikmirror
 ln -s  /opt/mikrotik.upgrade.server/repo /var/www/localhost/htdocs/mikrotikmirror/repo
@@ -24,7 +24,7 @@ mv /root/mikrotik.sync.repos.sh /opt/mikrotik.upgrade.server/tools/
 mv /root/mikrotik.sync.repos.checker.sh /opt/mikrotik.upgrade.server/tools/
 mv /root/routeros.raw /opt/mikrotik.upgrade.server/tools/mikrotik.configs/
 mv /root/routeros.0.00.conf.raw /opt/mikrotik.upgrade.server/tools/mikrotik.configs/
-mv /root/CHANGELOG.0.00 /opt/mikrotik.upgrade.server/tools/repo/routeros.0.00/
+mv /root/CHANGELOG.0.00 /opt/mikrotik.upgrade.server/tools/repo/routeros/0.00/
 mv /root/mus-documentation.pdf /var/www/localhost/htdocs/mikrotikmirror/doc/
 rm /var/www/localhost/htdocs/mikrotikmirror/doc/coming_soon
 chmod 0775 /opt/mikrotik.upgrade.server/tools/mikrotik.sync.repos.sh
