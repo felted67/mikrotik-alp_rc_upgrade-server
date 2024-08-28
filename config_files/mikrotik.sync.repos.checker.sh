@@ -11,7 +11,7 @@
 tput reset
 
 # Versioninformation
-pgmvers="v 1.3.0"
+pgmvers="v 1.4.0"
 
 # Debugging functions
 debug=1
@@ -158,7 +158,7 @@ fi
 echo
 
 # Reset index variables
-    i=0
+i=0
 
 # Generate mikrotik-config-file(s) 
 for filename in $tempdir/NEWESTa7.*; do
@@ -169,19 +169,21 @@ for filename in $tempdir/NEWESTa7.*; do
     rpcomplete="${var[0]}"
     rpversion=$(sed -n p $filename | cut -d " " -f1)
     if [[ $rpversion != *"0.00"* ]]; then
-	if [[ ! -f $configdir/routeros.$rpversion.conf ]]; then
-	    cp $configdir/routeros.raw $configdir/routeros.$rpversion.conf
-	    sed -i "s/ROSVERSION/$rpversion/g" $configdir/routeros.$rpversion.conf
-    	    if [ $debug -gt 0 ] 
-	    then
-		echo "... Generated mikrotik-config-file for version: "$rpversion    
+	    if [[ ! -f $configdir/routeros.$rpversion.conf ]]; then
+	        cp $configdir/routeros.raw $configdir/routeros.$rpversion.conf
+	        sed -i "s/ROSVERSION/$rpversion/g" $configdir/routeros.$rpversion.conf
+    	        if [ $debug -gt 0 ] 
+	            then
+		            echo "... Generated mikrotik-config-file for version: "$rpversion    
+	            fi
+	    else 
+	        if [ $debug -gt 0 ] 
+	        then
+		        echo "... Mikrotik-config-file for version: "$rpversion" already generated."    
+	        fi
 	    fi
-	else 
-	    if [ $debug -gt 0 ] 
-	    then
-		echo "... Mikrotik-config-file for version: "$rpversion" already generated."    
-	    fi
-	fi
+    else
+        cp -f $configdir/routeros.0.00.conf.raw $configdir/routeros.0.00.conf
     fi    
 done
 

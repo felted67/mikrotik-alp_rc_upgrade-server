@@ -11,7 +11,7 @@
 tput reset
 
 # Versioninformation
-pgmvers="v 1.6.0"
+pgmvers="v 1.7.0"
 
 # Debugging functions
 debug=1
@@ -213,101 +213,103 @@ isInFile=0
 
 # Start loop
 for filename in $configdir/*.conf; do
-    while IFS= read -r varname; do
-	var[$i]=$varname
-	i=$(expr $i + 1)    
+    if [[ $filename !=  "routeros.0.00.conf" ]]
+    then
+        while IFS= read -r varname; do
+	        var[$i]=$varname
+	        i=$(expr $i + 1)    
         done < "$filename"    
-    rptext="${var[0]}"
-    rptype="${var[1]}"
-    rpvers="${var[2]}"
+        rptext="${var[0]}"
+        rptype="${var[1]}"
+        rpvers="${var[2]}"
 
-    if [ $debug -gt 0 ]
-    then
-	echo
-	echo "... Downloading REPO-type: "$rptype
-	echo "... with the release-version of the packages: "$rpvers
-	echo
-    fi
+        if [ $debug -gt 0 ]
+        then
+	        echo
+	        echo "... Downloading REPO-type: "$rptype
+	        echo "... with the release-version of the packages: "$rpvers
+	        echo
+        fi
     
-    for (( j=3; j<i; j++ )); do
-	package=$(echo "${var[j]}" | sed "s/VERSION/$rpvers/g")
-	if [ $debug -gt 0 ]
-	then
-	    echo "... Loading package: "$baseurl/$rptype/$rpvers/$package
-	fi		
-	if [ $debug -lt 3 ]
-	then
-	    wget -N $baseurl/$rptype/$rpvers/$package -q -P $tempdir	
-	fi
-    done
+        for (( j=3; j<i; j++ )); do
+	        package=$(echo "${var[j]}" | sed "s/VERSION/$rpvers/g")
+	        if [ $debug -gt 0 ]
+	        then
+	            echo "... Loading package: "$baseurl/$rptype/$rpvers/$package
+	        fi		
+	        if [ $debug -lt 3 ]
+	        then
+	            wget -N $baseurl/$rptype/$rpvers/$package -q -P $tempdir	
+	        fi
+        done
 
-    if [ $debug -gt 0 ]
-    then
-        sleep 10
-    fi
+        if [ $debug -gt 0 ]
+        then
+            sleep 10
+        fi
     
-# reset index variables
-    i=0
-    j=0
+        # reset index variables
+        i=0
+        j=0
     
-# Check and create repo-dir    
-    if [ ! -d $pgmprefix/repo/$rptype/$rpvers ]; then
-	mkdir $pgmprefix/repo/$rptype/$rpvers
-	if [ $debug -gt 0 ] 
-	then
-	    echo "... Repo-directory for version: "$rpvers" created."
-	fi
-    fi
+        # Check and create repo-dir    
+        if [ ! -d $pgmprefix/repo/$rptype/$rpvers ]; then
+	        mkdir $pgmprefix/repo/$rptype/$rpvers
+	        if [ $debug -gt 0 ] 
+	        then
+	            echo "... Repo-directory for version: "$rpvers" created."
+	        fi
+        fi
 
-# Copy or move  from temp-directory to created repo-dir
-    if [ $debug -gt 1 ]
-    then
-	cp -f $tempdir/* $pgmprefix/repo/$rptype/$rpvers/
-        echo "... Downloaded packages copied to Repo-directory."
-    else
-	mv -f $tempdir/* $pgmprefix/repo/$rptype/$rpvers/
-        echo "... Downloaded packages moved to Repo-directory."
-    fi
+        # Copy or move  from temp-directory to created repo-dir
+        if [ $debug -gt 1 ]
+        then
+	        cp -f $tempdir/* $pgmprefix/repo/$rptype/$rpvers/
+            echo "... Downloaded packages copied to Repo-directory."
+        else
+	        mv -f $tempdir/* $pgmprefix/repo/$rptype/$rpvers/
+            echo "... Downloaded packages moved to Repo-directory."
+        fi
 
-# Extract all_packages* in repo-directory for update-server to recognize singles packages
-    cd $pgmprefix/repo/$rptype/$rpvers
-    unzip -o 'all_packages-*.zip' -d $pgmprefix/repo/$rptype/$rpvers/
-    if [ $debug -gt 0 ] 
-    then
-	echo "... Downloaded all-packages-*.zip extracted for update function."
-    fi
-
-# Add informational entry to CHANGELOG
-    cd $pgmprefix/repo/$rptype/$rpvers
-    version=$( cat /root/version.info )
-    isInFile=$(cat $pgmprefix/repo/$rptype/$rpvers/CHANGELOG | grep -c "+++ Provided by mikrotik.upgrade.server")
-    if [ $isInFile -eq 0 ]
-    then
-        echo -e "\n " >> $pgmprefix/repo/$rptype/$rpvers/CHANGELOG
-        echo "+++ Provided by mikrotik.upgrade.server v"$version" +++" >> $pgmprefix/repo/$rptype/$rpvers/CHANGELOG
+        # Extract all_packages* in repo-directory for update-server to recognize singles packages
+        cd $pgmprefix/repo/$rptype/$rpvers
+        unzip -o 'all_packages-*.zip' -d $pgmprefix/repo/$rptype/$rpvers/
         if [ $debug -gt 0 ] 
         then
-	    echo "... Added informational entry to CHANGELOG."
+	        echo "... Downloaded all-packages-*.zip extracted for update function."
         fi
-    else 
-        sed -i '/^+++ Provided by mikrotik.upgrade.server/d' $pgmprefix/repo/$rptype/$rpvers/CHANGELOG
-        echo "+++ Provided by mikrotik.upgrade.server v"$version" +++" >> $pgmprefix/repo/$rptype/$rpvers/CHANGELOG
-        if [ $debug -gt 0 ] 
+
+        # Add informational entry to CHANGELOG
+        cd $pgmprefix/repo/$rptype/$rpvers
+        version=$( cat /root/version.info )
+        isInFile=$(cat $pgmprefix/repo/$rptype/$rpvers/CHANGELOG | grep -c "+++ Provided by mikrotik.upgrade.server")
+        if [ $isInFile -eq 0 ]
         then
-	    echo "... Changed informational entry to CHANGELOG."
+            echo -e "\n " >> $pgmprefix/repo/$rptype/$rpvers/CHANGELOG
+            echo "+++ Provided by mikrotik.upgrade.server v"$version" +++" >> $pgmprefix/repo/$rptype/$rpvers/CHANGELOG
+            if [ $debug -gt 0 ] 
+            then
+	            echo "... Added informational entry to CHANGELOG."
+            fi
+        else 
+            sed -i '/^+++ Provided by mikrotik.upgrade.server/d' $pgmprefix/repo/$rptype/$rpvers/CHANGELOG
+            echo "+++ Provided by mikrotik.upgrade.server v"$version" +++" >> $pgmprefix/repo/$rptype/$rpvers/CHANGELOG
+            if [ $debug -gt 0 ] 
+            then
+	            echo "... Changed informational entry to CHANGELOG."
+            fi
+        fi
+
+        # Clear temp-directory for next download run
+        if [ $debug -lt 3 ] 
+        then
+	        rm -rf $tempdir/*
+	        if [ $debug -gt 0 ] 
+	        then
+	        echo "... Temp-directory has been emptied."
+	        fi
         fi
     fi
-
-# Clear temp-directory for next download run
-    if [ $debug -lt 3 ] 
-    then
-	rm -rf $tempdir/*
-	if [ $debug -gt 0 ] 
-	then
-	    echo "... Temp-directory has been emptied."
-	fi
-    fi
-
 # End of sync loop
 done
 
