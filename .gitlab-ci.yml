@@ -1,6 +1,6 @@
 stages:
   - docker-local-build
-  - docker-multiarch-build-devel
+  - docker-multiarch-build-devel-version
   - docker-multiarch-build-prod-version
   - docker-multiarch-build-prod-version-latest
 
@@ -42,7 +42,7 @@ docker-local-mikrotik-build:
   when: always
 
 docker-multiarch-mikrotik-build-devel-version:  
-  stage: docker-multiarch-build-devel
+  stage: docker-multiarch-build-devel-version
   needs: [docker-local-mikrotik-build]
   image: $DIND_TAG   
   tags:
@@ -73,7 +73,7 @@ docker-multiarch-mikrotik-build-devel-version:
   when: always
 
 docker-multiarch-mikrotik-build-prod-version:
-  stage: docker-multiarch-build-devel-version
+  stage: docker-multiarch-build-prod-version
   needs: [docker-local-mikrotik-build]
   image: $DIND_TAG
   tags:
@@ -104,7 +104,7 @@ docker-multiarch-mikrotik-build-prod-version:
   when: always
 
 docker-multiarch-mikrotik-build-prod-version-latest:
-  stage: docker-multiarch-build-devel-version-latest
+  stage: docker-multiarch-build-prod-version-latest
   needs: [docker-local-mikrotik-build]
   image: $DIND_TAG
   tags:
