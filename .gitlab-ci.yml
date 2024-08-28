@@ -1,8 +1,8 @@
 stages:
   - docker-local-build
   - docker-multiarch-build-devel
-  - docker-multiarch-build-devel-version
-  - docker-multiarch-build-devel-version-latest
+  - docker-multiarch-build-prod-version
+  - docker-multiarch-build-prod-version-latest
 
 include:  /.gitlab-ci-vars.yml  
 
@@ -41,7 +41,7 @@ docker-local-mikrotik-build:
             - $CI_REGISTRY_IMAGE-$CI_COMMIT_DEVEL-arm.tar.gz
   when: always
 
-docker-multiarch-mikrotik-build-devel:  
+docker-multiarch-mikrotik-build-devel-version:  
   stage: docker-multiarch-build-devel
   needs: [docker-local-mikrotik-build]
   image: $DIND_TAG   
@@ -72,7 +72,7 @@ docker-multiarch-mikrotik-build-devel:
         - .$CI_PROJECT_DIR/config_files/*
   when: always
 
-docker-multiarch-mikrotik-build-devel-version:
+docker-multiarch-mikrotik-build-prod-version:
   stage: docker-multiarch-build-devel-version
   needs: [docker-local-mikrotik-build]
   image: $DIND_TAG
@@ -94,7 +94,7 @@ docker-multiarch-mikrotik-build-devel-version:
     - docker info
     - rm $CI_PROJECT_DIR/config_files/version.info && touch $CI_PROJECT_DIR/config_files/version.info && echo $CI_PROD_VERSION >> $CI_PROJECT_DIR/config_files/version.info
   script:
-    - docker buildx build --no-cache --sbom=true --provenance=true --build-arg COMMIT_SHA=$CI_COMMIT_SHA --build-arg LINUX_VERSION=$CI_LINUX_VERSION --build-arg PROD_VERSION=$CI_PROD_VERSION --build-arg DEVEL_VERSION=$CI_DEVEL_VERSION --build-arg ALPINE_VERSION=$CI_ALPINE_VERSION --build-arg BUILD=$(date -u +'%Y-%m-%dT%H:%M:%SZ') --push --platform linux/arm64,linux/arm,linux/amd64 -t "$CI_REGISTRY_USER/$CI_REGISTRY_IMAGE:$CI_COMMIT_DEVEL" -t "$CI_REGISTRY_USER/$CI_REGISTRY_IMAGE:$CI_COMMIT_VERSION" .
+    - docker buildx build --no-cache --sbom=true --provenance=true --build-arg COMMIT_SHA=$CI_COMMIT_SHA --build-arg LINUX_VERSION=$CI_LINUX_VERSION --build-arg PROD_VERSION=$CI_PROD_VERSION --build-arg DEVEL_VERSION=$CI_DEVEL_VERSION --build-arg ALPINE_VERSION=$CI_ALPINE_VERSION --build-arg BUILD=$(date -u +'%Y-%m-%dT%H:%M:%SZ') --push --platform linux/arm64,linux/arm,linux/amd64 -t "$CI_REGISTRY_USER/$CI_REGISTRY_IMAGE:$CI_COMMIT_VERSION" .
   rules:
     - if: ($CI_PRODUCTION_VERSION_SWITCH == "true" && $CI_PRODUCTION_LATEST_SWITCH != "true")  
       changes:
@@ -103,7 +103,7 @@ docker-multiarch-mikrotik-build-devel-version:
         - $CI_PROJECT_DIR/config_files/*        
   when: always
 
-docker-multiarch-mikrotik-build-devel-version-latest:
+docker-multiarch-mikrotik-build-prod-version-latest:
   stage: docker-multiarch-build-devel-version-latest
   needs: [docker-local-mikrotik-build]
   image: $DIND_TAG
@@ -125,7 +125,7 @@ docker-multiarch-mikrotik-build-devel-version-latest:
     - docker info
     - rm $CI_PROJECT_DIR/config_files/version.info && touch $CI_PROJECT_DIR/config_files/version.info && echo $CI_PROD_VERSION >> $CI_PROJECT_DIR/config_files/version.info
   script:
-    - docker buildx build --no-cache --sbom=true --provenance=true --build-arg COMMIT_SHA=$CI_COMMIT_SHA --build-arg LINUX_VERSION=$CI_LINUX_VERSION --build-arg PROD_VERSION=$CI_PROD_VERSION --build-arg DEVEL_VERSION=$CI_DEVEL_VERSION --build-arg ALPINE_VERSION=$CI_ALPINE_VERSION --build-arg BUILD=$(date -u +'%Y-%m-%dT%H:%M:%SZ') --push --platform linux/arm64,linux/arm,linux/amd64  -t "$CI_REGISTRY_USER/$CI_REGISTRY_IMAGE:$CI_COMMIT_DEVEL" -t "$CI_REGISTRY_USER/$CI_REGISTRY_IMAGE:$CI_COMMIT_VERSION" -t "$CI_REGISTRY_USER/$CI_REGISTRY_IMAGE:$CI_COMMIT_LATEST" -t "$CI_REGISTRY_USER/$CI_REGISTRY_IMAGE:$CI_COMMIT_LATEST_LONG" .    
+    - docker buildx build --no-cache --sbom=true --provenance=true --build-arg COMMIT_SHA=$CI_COMMIT_SHA --build-arg LINUX_VERSION=$CI_LINUX_VERSION --build-arg PROD_VERSION=$CI_PROD_VERSION --build-arg DEVEL_VERSION=$CI_DEVEL_VERSION --build-arg ALPINE_VERSION=$CI_ALPINE_VERSION --build-arg BUILD=$(date -u +'%Y-%m-%dT%H:%M:%SZ') --push --platform linux/arm64,linux/arm,linux/amd64  -t "$CI_REGISTRY_USER/$CI_REGISTRY_IMAGE:$CI_COMMIT_VERSION" -t "$CI_REGISTRY_USER/$CI_REGISTRY_IMAGE:$CI_COMMIT_LATEST" -t "$CI_REGISTRY_USER/$CI_REGISTRY_IMAGE:$CI_COMMIT_LATEST_LONG" .    
   rules:
     - if: ($CI_PRODUCTION_LATEST_SWITCH == "true" &&  $CI_PRODUCTION_VERSION_SWITCH == "true")   
       changes:
