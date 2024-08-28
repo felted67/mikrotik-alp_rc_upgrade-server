@@ -309,7 +309,26 @@ for filename in $configdir/*.conf; do
 	        echo "... Temp-directory has been emptied."
 	        fi
         fi
-    fi
+    else
+        cd $pgmprefix/repo/routeros/0.00
+        version=$( cat /root/version.info )
+        isInFile=$(cat $pgmprefix/repo/routeros/0.00/CHANGELOG | grep -c "+++ Provided by mikrotik.upgrade.server")
+        if [ $isInFile -eq 0 ]
+        then
+            echo -e "\n " >> $pgmprefix/repo/routeros/0.00/CHANGELOG
+            echo "+++ Provided by mikrotik.upgrade.server v"$version" +++" >> $pgmprefix/repo/routeros/0.00/CHANGELOG
+            if [ $debug -gt 0 ] 
+            then
+	            echo "... Added informational entry to CHANGELOG for non-existent version 0.00."
+            fi
+        else 
+            sed -i '/^+++ Provided by mikrotik.upgrade.server/d' $pgmprefix/repo/routeros/0.00/CHANGELOG
+            echo "+++ Provided by mikrotik.upgrade.server v"$version" +++" >> $pgmprefix/repo/routeros/0.00/CHANGELOG
+            if [ $debug -gt 0 ] 
+            then
+	            echo "... Changed informational entry to CHANGELOG for non-existent version 0.00.."
+            fi
+        fi
 # End of sync loop
 done
 
