@@ -94,7 +94,7 @@ COPY ./config_files/mikrotikmirror.conf /root/
 COPY ./config_files/upgrade.mikrotik.com.conf /root/
 COPY ./config_files/routeros.raw /root/
 COPY ./config_files/routeros.0.00.conf.raw /root/
-COPY ./config_files/CHANGELOG.0.00 /root/
+COPY ./config_files/CHANGELOG.0.0 /root/
 COPY ./config_files/mikrotik.sync.repos.sh /root/
 COPY ./config_files/mikrotik.sync.repos.checker.sh /root/
 COPY ./config_files/webserver.data.tar.gz /root/
