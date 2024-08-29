@@ -11,7 +11,7 @@
 tput reset
 
 # Versioninformation
-pgmvers="v 0.0.1"
+pgmvers="v 0.3.0"
 
 # Debugging functions
 debug=1
@@ -24,6 +24,10 @@ debug=1
 # Local definitions
 #
 chkmount=/opt/mikrotik.upgrade.server/repo
+scriptstatus="not running"
+scriptnum=0
+dwnlstatus="not running"
+dwnlnum=0
 
 # Local functions
 datestamp() {
@@ -38,7 +42,8 @@ createhtmlfile() {
 <html>
   <body>
     <h4>Disk-total: $dsktot Bytes * Disk-free: $dskfre Bytes * Disk-usage: $dskuse Bytes</h4> 
-    <h4>Memory-total: $memtot Bytes  * Memory-free: $memfre Bytes * Memory-available: $memava Bytes</h4>
+    <h4>Memory-total: $memtot * Memory-used: $memuse * Memory-free: $memfre * Memory-shared : $memshr * Memory-Buffer/cache: $membuf * Memory-avail.: $memava B | -[Bytes]</h4>
+    <h4> Script-status: $scriptstatus  ---  Download-status: $dwnlstatus</h4>
   </body>
 </html>
 
@@ -49,7 +54,7 @@ EOF
 # Show startup infos
 echo "**********************************"
 echo "*         status.gen.sh          *"
-echo "***      "$pgmvers "              ***"
+echo "***          "$pgmvers "           ***"
 echo "**********************************"
 echo "*       (C) 2024 DL7DET          *"
 echo "*        Detlef Lampart          *"
@@ -62,43 +67,77 @@ echo
 sleep 10
 echo "... Starting at "$(datestamp)" ."
 
-dsktot=$( df -h | grep $chkmount | awk '{print $2}')
-dskfre=$( df -h | grep $chkmount | awk '{print $4}')
-dskuse=$( df -h | grep $chkmount | awk '{print $3}')
+dsktot=$(df -h | grep $chkmount | awk '{print $2}')
+dskfre=$(df -h | grep $chkmount | awk '{print $4}')
+dskuse=$(df -h | grep $chkmount | awk '{print $3}')
 
-memtot=$(grep -m 1 "MemTotal" /proc/meminfo | awk '{ print $2 }')
-memfre=$(grep -m 1 "MemFree" /proc/meminfo | awk '{ print $2 }')
-memava=$(grep -m 1 "MemAvailable" /proc/meminfo | awk '{ print $2 }')
+memtot=$(free -h | grep 'Mem' | awk '{ print $2 }')
+memuse=$(free -h | grep 'Mem' | awk '{ print $3 }')
+memfre=$(free -h | grep 'Mem' | awk '{ print $4 }')
+memshr=$(free -h | grep 'Mem' | awk '{ print $5 }')
+membuf=$(free -h | grep 'Mem' | awk '{ print $6 }')
+memava=$(free -h | grep 'Mem' | awk '{ print $7 }')
+
+scriptnum=$(ps -A | grep -c './mikrotik.sync.repos.checker.sh|./mikrotik.sync.repos.sh')
+if [ $scriptnum -gt 0 ]
+then 
+    scriptstatus='<font color="red">Script(s) is/are running</font>'
+else 
+    scriptstatus='<font color="green">Script(s) is/are NOT running</font>'
+fi
+
+dwnlnum=$(ps -A | grep -c 'wget -N')
+if [ $dwnlnum -gt 0 ]
+then 
+    dwnlstatus='<font color="red">Download is running</font>'
+else 
+    dwnlstatus='<font color="green">Download is NOT running</font>'
+fi
 
 echo
 if [ $debug -gt 0 ] 
     then
-    echo "... Disk total space is : "$dsktot"."
+    echo "... Disk total space is   : "$dsktot"."
 fi
 
 if [ $debug -gt 0 ] 
     then
-    echo "... Disk free space is  : "$dskfre"."
+    echo "... Disk free space is    : "$dskfre"."
 fi
 
 if [ $debug -gt 0 ] 
     then
-    echo "... Disk used space is  : "$dskuse"."
+    echo "... Disk used space is    : "$dskuse"."
 fi
 
 if [ $debug -gt 0 ] 
     then
-    echo "... Total memory is     : "$memtot"."
+    echo "... Total memory is       : "$memtot"."
 fi
 
 if [ $debug -gt 0 ] 
     then
-    echo "... Free memory is      : "$memfre"."
+    echo "... Used memory is        : "$memuse"."
 fi
 
 if [ $debug -gt 0 ] 
     then
-    echo "... Available memory is : "$memava"."
+    echo "... Free memory is        : "$memfre"."
+fi
+
+if [ $debug -gt 0 ] 
+    then
+    echo "... Shared memory is      : "$memshr"."
+fi
+
+if [ $debug -gt 0 ] 
+    then
+    echo "... Buffer/cache memory is: "$membuf"."
+fi
+
+if [ $debug -gt 0 ] 
+    then
+    echo "... Available memory is   : "$memava"."
 fi
 
 createhtmlfile
