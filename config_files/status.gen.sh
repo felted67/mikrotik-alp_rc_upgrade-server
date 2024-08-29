@@ -78,7 +78,7 @@ memshr=$(free -h | grep 'Mem' | awk '{ print $5 }')
 membuf=$(free -h | grep 'Mem' | awk '{ print $6 }')
 memava=$(free -h | grep 'Mem' | awk '{ print $7 }')
 
-scriptnum=$(ps -A | grep -c 'mikrotik.sync.repos.checker.sh|mikrotik.sync.repos.sh')
+scriptnum=$(ps -A | grep -c '{mikrotik.sync.r}')
 if [ $scriptnum -gt 1 ]
 then 
     scriptstatus='<font color="red">Script(s) is/are running</font>'
