@@ -103,7 +103,7 @@ COPY ./config_files/crond /etc/init.d/
 COPY ./config_files/crontabs.root.new /root/
 COPY ./config_files/version.info /root/
 COPY ./config_files/motd.new /root/
-COPY ./config_files/last_completed.new /tmp/
+COPY ./config_files/last_completed.new /root/
 COPY ./doc/mus-documentation.pdf /root/
 
 RUN ["ln", "-s", "/usr/share/zoneinfo/Europe/Berlin", "/etc/localtime"]

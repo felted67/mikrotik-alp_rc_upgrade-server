@@ -30,6 +30,7 @@ mv /root/status.gen.sh /usr/local/bin/
 mv /root/routeros.raw /opt/mikrotik.upgrade.server/tools/mikrotik.configs/
 mv /root/routeros.0.00.conf /opt/mikrotik.upgrade.server/tools/mikrotik.configs/
 mv /root/CHANGELOG.0.0 /opt/mikrotik.upgrade.server/repo/routeros/0.0/CHANGELOG
+mv /root/last_completed.new /tmp/last_completed
 mv /root/mus-documentation.pdf /var/www/localhost/htdocs/mikrotikmirror/doc/
 rm /var/www/localhost/htdocs/mikrotikmirror/doc/coming_soon
 chmod 0775 /opt/mikrotik.upgrade.server/tools/mikrotik.sync.repos.sh
