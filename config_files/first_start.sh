@@ -44,6 +44,7 @@ rc-service rsyslog start
 rc-update add crond
 rc-service crond start
 sleep 15
+/usr/local/bin/status.gen.sh
 /opt/mikrotik.upgrade.server/tools/mikrotik.sync.repos.checker.sh
 echo "****"
 echo "'"
