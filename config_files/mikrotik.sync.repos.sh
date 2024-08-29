@@ -11,7 +11,7 @@
 tput reset
 
 # Versioninformation
-pgmvers="v 1.7.0"
+pgmvers="v 1.8.0"
 
 # Debugging functions
 debug=1
@@ -36,6 +36,7 @@ ltversion=NEWESTa7.long-term
 stableversion=NEWESTa7.stable
 betaversion=NEWESTa7.testing
 devversion=NEWESTa7.development
+nonvconfig=$configdir/routeros.0.00.conf
 winboxversion=LATEST.3
 datestamp=$(date +"%H:%M %Z on %A, %d.%B %Y")
 
@@ -217,7 +218,7 @@ isInFile=0
 
 # Start loop
 for filename in $configdir/*.conf; do
-    if [[ $filename !=  "routeros.0.00.conf" ]]
+    if [[ $filename !=  $nonvconfig ]]
     then
         while IFS= read -r varname; do
 	        var[$i]=$varname
