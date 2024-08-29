@@ -23,7 +23,7 @@ mv /root/motd.new /etc/motd
 mv /root/mikrotik.sync.repos.sh /opt/mikrotik.upgrade.server/tools/
 mv /root/mikrotik.sync.repos.checker.sh /opt/mikrotik.upgrade.server/tools/
 mv /root/routeros.raw /opt/mikrotik.upgrade.server/tools/mikrotik.configs/
-mv /root/routeros.0.00.conf.raw /opt/mikrotik.upgrade.server/tools/mikrotik.configs/
+mv /root/routeros.0.00.conf /opt/mikrotik.upgrade.server/tools/mikrotik.configs/
 mv /root/CHANGELOG.0.0 /opt/mikrotik.upgrade.server/repo/routeros/0.0/CHANGELOG
 mv /root/mus-documentation.pdf /var/www/localhost/htdocs/mikrotikmirror/doc/
 rm /var/www/localhost/htdocs/mikrotikmirror/doc/coming_soon

@@ -185,9 +185,7 @@ for filename in $tempdir/NEWESTa7.*; do
 	        then
 		        echo "... Mikrotik-config-file for version: "$rpversion" already generated."    
 	        fi
-	    fi
-    else
-        cp -f $configdir/routeros.0.00.conf.raw $configdir/routeros.0.00.conf
+	    fi    
     fi    
 done
 

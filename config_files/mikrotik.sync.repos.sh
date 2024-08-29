@@ -333,10 +333,11 @@ for filename in $configdir/*.conf; do
 	            echo "... Changed informational entry to CHANGELOG for non-existent version 0.0."
             fi
         fi
+    fi
 # End of sync loop
 done
 
-# Some end of job informations
+# Some end of job information
 if [ $debug -gt 0 ] 
     then
     echo " All packages have been downloaded and all-packages-* have been extracted."
