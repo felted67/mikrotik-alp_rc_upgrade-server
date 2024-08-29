@@ -79,7 +79,7 @@ membuf=$(free -h | grep 'Mem' | awk '{ print $6 }')
 memava=$(free -h | grep 'Mem' | awk '{ print $7 }')
 
 scriptnum=$(ps -A | grep -c './mikrotik.sync.repos.checker.sh|./mikrotik.sync.repos.sh')
-if [ $scriptnum -gt 0 ]
+if [ $scriptnum -gt 1 ]
 then 
     scriptstatus='<font color="red">Script(s) is/are running</font>'
 else 
@@ -87,7 +87,7 @@ else
 fi
 
 dwnlnum=$(ps -A | grep -c 'wget -N')
-if [ $dwnlnum -gt 0 ]
+if [ $dwnlnum -gt 1 ]
 then 
     dwnlstatus='<font color="red">Download is running</font>'
 else 
