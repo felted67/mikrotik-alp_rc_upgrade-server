@@ -28,6 +28,7 @@ scriptstatus="not running"
 scriptnum=0
 dwnlstatus="not running"
 dwnlnum=0
+last_completed=$( cat /tmp/last_completed )
 
 # Local functions
 datestamp() {
@@ -43,7 +44,7 @@ createhtmlfile() {
   <body>
     <h4>Disk-total: $dsktot Bytes * Disk-free: $dskfre Bytes * Disk-usage: $dskuse Bytes</h4> 
     <h4>Memory-total: $memtot * Memory-used: $memuse * Memory-free: $memfre * Memory-shared : $memshr * Memory-Buffer/cache: $membuf * Memory-avail.: $memava |-[Bytes]</h4>
-    <h4> Script-status: $scriptstatus  ---  Download-status: $dwnlstatus</h4>
+    <h4> Script-status: $scriptstatus  ---  Download-status: $dwnlstatus --- Last completed: $last_completed</h4>
   </body>
 </html>
 

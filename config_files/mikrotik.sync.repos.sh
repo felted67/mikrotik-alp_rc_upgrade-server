@@ -366,6 +366,16 @@ echo " C:\ ... bye-bye"
 
 echo "Completed  at $datestamp." >> $logfile 2>&1
 
+if [ -e /tmp/last_completed ]
+then
+    rm /tmp/last_completed
+    touch /tmp/last_completed
+    echo $datestamp > /tmp/last_completed
+else
+    touch /tmp/last_completed
+    echo $datestamp > /tmp/last_completed
+fi
+
 #
 # This is the end, my lonely friend,the end
 #
