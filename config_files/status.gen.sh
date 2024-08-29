@@ -42,7 +42,7 @@ createhtmlfile() {
 <html>
   <body>
     <h4>Disk-total: $dsktot Bytes * Disk-free: $dskfre Bytes * Disk-usage: $dskuse Bytes</h4> 
-    <h4>Memory-total: $memtot * Memory-used: $memuse * Memory-free: $memfre * Memory-shared : $memshr * Memory-Buffer/cache: $membuf * Memory-avail.: $memava B | -[Bytes]</h4>
+    <h4>Memory-total: $memtot * Memory-used: $memuse * Memory-free: $memfre * Memory-shared : $memshr * Memory-Buffer/cache: $membuf * Memory-avail.: $memava |-[Bytes]</h4>
     <h4> Script-status: $scriptstatus  ---  Download-status: $dwnlstatus</h4>
   </body>
 </html>
