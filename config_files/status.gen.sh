@@ -21,10 +21,30 @@ debug=1
 # debug=3: don't download repo-files
 
 #
-# Local Definitions
+# Local definitions
 #
 chkmount=/opt/mikrotik.upgrade.server/repo
 
+# Local functions
+datestamp() {
+    local datestring=$(date +"%H:%M %Z on %A, %d.%B %Y")
+    echo $datestring
+}
+
+createhtmlfile() {
+    touch /tmp/status.html
+    cat > /tmp/status.html << EOF
+<!DOCTYPE html>
+<html>
+  <body>
+    <h4>Disk-total: $dsktot Bytes * Disk-free: $dskfre Bytes * Disk-usage: $dskuse Bytes</h4> 
+    <h4>Memory-total: $memtot Bytes  * Memory-free: $memfre Bytes * Memory-available: $memava Bytes</h4>
+  </body>
+</html>
+
+EOF
+    mv /tmp/status.html /var/www/localhost/htdocs/mikrotikmirror/index-style/
+}
 
 # Show startup infos
 echo "**********************************"
@@ -40,11 +60,15 @@ echo
 echo "... initializing."
 echo
 sleep 10
-echo "... Starting at $datestamp."
+echo "... Starting at "$(datestamp)" ."
 
-dsktot=$( df -h | grep $chkmount | awk '{print $1}')
-dskfre=$( df -h | grep $chkmount | awk '{print $2}')
+dsktot=$( df -h | grep $chkmount | awk '{print $2}')
+dskfre=$( df -h | grep $chkmount | awk '{print $4}')
 dskuse=$( df -h | grep $chkmount | awk '{print $3}')
+
+memtot=$(grep -m 1 "MemTotal" /proc/meminfo | awk '{ print $2 }')
+memfre=$(grep -m 1 "MemFree" /proc/meminfo | awk '{ print $2 }')
+memava=$(grep -m 1 "MemAvailable" /proc/meminfo | awk '{ print $2 }')
 
 echo
 if [ $debug -gt 0 ] 
@@ -54,13 +78,30 @@ fi
 
 if [ $debug -gt 0 ] 
     then
-    echo "... Disk free space is : "$dskfre"."
+    echo "... Disk free space is  : "$dskfre"."
 fi
 
 if [ $debug -gt 0 ] 
     then
-    echo "... Disk used space is : "$dskuse"."
+    echo "... Disk used space is  : "$dskuse"."
 fi
+
+if [ $debug -gt 0 ] 
+    then
+    echo "... Total memory is     : "$memtot"."
+fi
+
+if [ $debug -gt 0 ] 
+    then
+    echo "... Free memory is      : "$memfre"."
+fi
+
+if [ $debug -gt 0 ] 
+    then
+    echo "... Available memory is : "$memava"."
+fi
+
+createhtmlfile
 
 #
 # This is the end, my lonely friend, the end

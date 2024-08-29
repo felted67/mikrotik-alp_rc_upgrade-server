@@ -104,8 +104,9 @@ COPY ./config_files/version.info /root/
 COPY ./config_files/motd.new /root/
 COPY ./doc/mus-documentation.pdf /root/
 
-RUN ["ln", "-sf", "/opt/mikrotik.upgrade.server/tools/mikrotik.sync.repos.checker.sh", "/etc/periodic/daily/run"]
 RUN ["ln", "-s", "/usr/share/zoneinfo/Europe/Berlin", "/etc/localtime"]
+RUN ["ln", "-sf", "/opt/mikrotik.upgrade.server/tools/mikrotik.sync.repos.checker.sh", "/etc/periodic/daily/run"]
+RUN ["ln", "-sf", "/usr/local/status.gen.sh", "/etc/periodic/15min/run"]
 RUN chown root:root /etc/init.d/crond && chmod 0775 /etc/init.d/crond
 RUN chown root:root /etc/init.d/auto_init && chmod 0755 /etc/init.d/auto_init
 RUN chown root:root /sbin/first_start.sh && chmod 0700 /sbin/first_start.sh
