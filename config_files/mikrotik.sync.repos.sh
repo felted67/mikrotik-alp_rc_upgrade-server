@@ -38,7 +38,12 @@ betaversion=NEWESTa7.testing
 devversion=NEWESTa7.development
 nonvconfig=$configdir/routeros.0.00.conf
 winboxversion=LATEST.3
-datestamp=$(date +"%H:%M %Z on %A, %d.%B %Y")
+
+# Local functions
+datestamp() {
+    local datestring=$(date +"%H:%M %Z on %A, %d.%B %Y")
+    echo $datestring
+}
 
 # Show startup infos
 echo "**********************************"
