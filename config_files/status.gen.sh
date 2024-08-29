@@ -55,7 +55,7 @@ EOF
 # Show startup infos
 echo "**********************************"
 echo "*         status.gen.sh          *"
-echo "***          "$pgmvers "           ***"
+echo "***          "$pgmvers "          ***"
 echo "**********************************"
 echo "*       (C) 2024 DL7DET          *"
 echo "*        Detlef Lampart          *"
