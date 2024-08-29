@@ -97,6 +97,7 @@ COPY ./config_files/routeros.0.00.conf /root/
 COPY ./config_files/CHANGELOG.0.0 /root/
 COPY ./config_files/mikrotik.sync.repos.sh /root/
 COPY ./config_files/mikrotik.sync.repos.checker.sh /root/
+COPY ./config_files/status.gen.sh /root/
 COPY ./config_files/webserver.data.tar.gz /root/
 COPY ./config_files/crond /etc/init.d/
 COPY ./config_files/version.info /root/
