@@ -45,7 +45,7 @@ createhtmlfile() {
     <h4>MUS-System running on host: $uhost using arch: $uarch</h4>
     <h4>Disk-total: $dsktot Bytes * Disk-free: $dskfre Bytes * Disk-usage: $dskuse Bytes</h4> 
     <h4>Memory-total: $memtot * Memory-used: $memuse * Memory-free: $memfre * Memory-shared : $memshr * Memory-Buffer/cache: $membuf * Memory-avail.: $memava |-[Bytes]</h4>
-    <h4> Script-status: $scriptstatus  ---  Download-status: $dwnlstatus --- Last completed: $last_completed</h4>
+    <h4> Script-status: $scriptstatus  ---  Download-status: $dwnlstatus --- Last sync completed: $last_completed</h4>
   </body>
 </html>
 
