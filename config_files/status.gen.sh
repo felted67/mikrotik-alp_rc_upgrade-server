@@ -112,47 +112,47 @@ fi
 
 if [ $debug -gt 0 ] 
     then
-    echo "... Disk total space is   : "$dsktot"."
+    echo "... Disk total space is   : "$dsktot"Bytes."
 fi
 
 if [ $debug -gt 0 ] 
     then
-    echo "... Disk free space is    : "$dskfre"."
+    echo "... Disk free space is    : "$dskfre"Bytes."
 fi
 
 if [ $debug -gt 0 ] 
     then
-    echo "... Disk used space is    : "$dskuse"."
+    echo "... Disk used space is    : "$dskuse"Bytes."
 fi
 
 if [ $debug -gt 0 ] 
     then
-    echo "... Total memory is       : "$memtot"."
+    echo "... Total memory is       : "$memtot"Bytes."
 fi
 
 if [ $debug -gt 0 ] 
     then
-    echo "... Used memory is        : "$memuse"."
+    echo "... Used memory is        : "$memuse"Bytes."
 fi
 
 if [ $debug -gt 0 ] 
     then
-    echo "... Free memory is        : "$memfre"."
+    echo "... Free memory is        : "$memfre"Bytes."
 fi
 
 if [ $debug -gt 0 ] 
     then
-    echo "... Shared memory is      : "$memshr"."
+    echo "... Shared memory is      : "$memshr"Bytes."
 fi
 
 if [ $debug -gt 0 ] 
     then
-    echo "... Buffer/cache memory is: "$membuf"."
+    echo "... Buffer/cache memory is: "$membuf"Bytes."
 fi
 
 if [ $debug -gt 0 ] 
     then
-    echo "... Available memory is   : "$memava"."
+    echo "... Available memory is   : "$memava"Bytes."
 fi
 
 createhtmlfile
