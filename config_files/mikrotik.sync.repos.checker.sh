@@ -56,7 +56,7 @@ echo
 echo "... initializing."
 echo
 sleep 10
-echo "... Starting at $datestamp."
+echo "... Starting at "$(datestamp)"."
 
 # Useful logging
 logdir=$startdir/mikrotik.sync.log

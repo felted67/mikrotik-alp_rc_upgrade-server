@@ -59,7 +59,7 @@ echo
 echo "... initializing."
 echo
 sleep 10
-echo "... Starting at $datestamp."
+echo "... Starting at "$(datestamp)"."
 echo
 
 # Useful logging
@@ -356,7 +356,7 @@ fi
 
 echo
 echo " Script(s) ended successfully..."
-echo " Completed  at $datestamp." 
+echo " Completed  at "$(datestamp)"." 
 echo
 echo " C:\ ... bye-bye"
 
@@ -364,16 +364,16 @@ echo " C:\ ... bye-bye"
 #gzip -f $logfile
 #mv $logfile.gz $logfile-$(date +%Y%m%d).gz
 
-echo "Completed  at $datestamp." >> $logfile 2>&1
+echo "Completed  at "$(datestamp)"-" >> $logfile 2>&1
 
 if [ -e /tmp/last_completed ]
 then
     rm /tmp/last_completed
     touch /tmp/last_completed
-    echo $datestamp > /tmp/last_completed
+    echo $(datestamp) > /tmp/last_completed
 else
     touch /tmp/last_completed
-    echo $datestamp > /tmp/last_completed
+    echo $(datestamp) > /tmp/last_completed
 fi
 
 #
