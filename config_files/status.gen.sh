@@ -17,8 +17,6 @@ pgmvers="v 0.4.0"
 debug=1
 # debug=0: debug off/quiet/no annoying text
 # debug=1: informational (default) 
-# debug=2: don't be destructive
-# debug=3: don't download repo-files
 
 #
 # Local definitions
@@ -30,7 +28,9 @@ dwnlstatus="not running"
 dwnlnum=0
 last_completed=$( cat /tmp/last_completed )
 
+#
 # Local functions
+#
 datestamp() {
     local datestring=$(date +"%H:%M %Z on %A, %d.%B %Y")
     echo $datestring
@@ -69,6 +69,8 @@ echo
 sleep 10
 echo "... Starting at "$(datestamp)" ."
 
+# Fetch and generate variables for status
+trap '' 2   # Disable use of CTRL-C
 uhost=$(uname -n)
 uarch=$(uname -m)
 
@@ -98,7 +100,14 @@ then
 else 
     dwnlstatus='<font color="green">Download is NOT running</font>'
 fi
+trap 2  # Enable CTRL-C again
 
+# Create HTML-status-inlay for webserver
+trap '' 2   # Disable use of CTRL-C
+createhtmlfile
+trap 2  # Enable CTRL-C again
+
+# Display status-variable on console
 echo
 if [ $debug -gt 0 ] 
     then
@@ -154,8 +163,6 @@ if [ $debug -gt 0 ]
     then
     echo "... Available memory is   : "$memava"Bytes."
 fi
-
-createhtmlfile
 
 #
 # This is the end, my lonely friend, the end

@@ -39,7 +39,9 @@ devversion=NEWESTa7.development
 nonvconfig=$configdir/routeros.0.00.conf
 winboxversion=LATEST.3
 
+#
 # Local functions
+#
 datestamp() {
     local datestring=$(date +"%H:%M %Z on %A, %d.%B %Y")
     echo $datestring
@@ -74,6 +76,7 @@ exec 2> >(tee -a ${logfile} >&2)
 echo " Starting at $(date -u)." >> $logfile 2>&1
 
 # Check and create needed directories
+trap '' 2   # Disable use of CTRL-C 
 if [ ! -d $tempdir ]; then
     mkdir $tempdir
     echo "... TEMPDIR created."
@@ -95,6 +98,7 @@ if [ ! -d $winboxdir ]; then
     echo "... WINBOXDIR created."
 fi
 echo
+trap 2  # Enable CTRL-C again
 
 # Check if internet-connection is possible, if not exit
 ping -q -c5 8.8.8.8 > /dev/null
@@ -191,6 +195,7 @@ if [ $debug -lt 3 ]
 fi
 
 # Check if *.conf-file is DOS-mode file and convert to unix-mode
+trap '' 2   # Disable use of CTRL-C 
 isInFile=0
 for filename in $configdir/*.conf; do
     isInFile=$(cat $filename | grep -c "\r")    
@@ -203,6 +208,7 @@ for filename in $configdir/*.conf; do
         fi
     fi
 done
+trap 2  # Enable CTRL-C again
 
 
 # Give some nice informations on the screen
@@ -222,6 +228,7 @@ j=0
 isInFile=0
 
 # Start loop
+trap '' 2   # Disable use of CTRL-C 
 for filename in $configdir/*.conf; do
     if [[ $filename !=  $nonvconfig ]]
     then
@@ -342,6 +349,7 @@ for filename in $configdir/*.conf; do
     fi
 # End of sync loop
 done
+trap 2  # Enable CTRL-C again
 
 # Some end of job information
 if [ $debug -gt 0 ] 

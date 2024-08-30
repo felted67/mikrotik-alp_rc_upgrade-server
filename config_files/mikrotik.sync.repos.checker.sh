@@ -36,7 +36,9 @@ betaversion=NEWESTa7.testing
 devversion=NEWESTa7.development
 winboxversion=LATEST.3
 
+#
 # Local functions
+#
 datestamp() {
     local datestring=$(date +"%H:%M %Z on %A, %d.%B %Y")
     echo $datestring
@@ -169,7 +171,8 @@ echo
 # Reset index variables
 i=0
 
-# Generate mikrotik-config-file(s) 
+# Generate mikrotik-config-file(s)
+trap '' 2   # Disable use of CTRL-C 
 for filename in $tempdir/NEWESTa7.*; do
     while IFS= read -r varname; do
     var[$i]=$varname
@@ -193,6 +196,7 @@ for filename in $tempdir/NEWESTa7.*; do
 	    fi    
     fi    
 done
+trap 2  # Enable CTRL-C again
 
 # Copy latest versions LATESTa7.XXX to repo-dir
 cp $tempdir/$ltversion $repodir/routeros/
