@@ -27,6 +27,7 @@ scriptnum=0
 dwnlstatus="not running"
 dwnlnum=0
 last_completed=$( cat /tmp/last_completed )
+dsklmt=5
 
 #
 # Local functions
@@ -43,7 +44,7 @@ createhtmlfile() {
 <html>
   <body>
     <h4>MUS-System running on host: <font color="green">$uhost</font> using arch: <font color="green">$uarch</font></h4>
-    <h4>Disk-total: $dsktot Bytes * Disk-free: $dskfre Bytes * Disk-usage: $dskuse Bytes</h4> 
+    <h4>Disk-total: $dsktot Bytes * Disk-free: $dskfrestr Bytes * Disk-usage: $dskuse Bytes</h4> 
     <h4>Memory-total: $memtot * Memory-used: $memuse * Memory-free: $memfre * Memory-shared : $memshr * Memory-buffer/cache: $membuf * Memory-avail.: $memava |-[Bytes]</h4>
     <h4> Script-status: $scriptstatus  ---  Download-status: $dwnlstatus --- Last sync completed: $last_completed</h4>
   </body>
@@ -76,6 +77,7 @@ uarch=$(uname -m)
 
 dsktot=$(df -h | grep $chkmount | awk '{print $2}')
 dskfre=$(df -h | grep $chkmount | awk '{print $4}')
+dskcrt=$(echo $dskfre | cut -d'.' -f1)
 dskuse=$(df -h | grep $chkmount | awk '{print $3}')
 
 memtot=$(free -h | grep 'Mem' | awk '{ print $2 }')
@@ -99,6 +101,13 @@ then
     dwnlstatus='<font color="red">Download is running</font>'
 else 
     dwnlstatus='<font color="green">Download is NOT running</font>'
+fi
+
+if [[ $dskcrt -lt $dsklmt ]]
+then
+    dskfrestr='<font color="red">'$dskfre'</font>' 
+else
+    dskfrestr='<font color="black">'$dskfre'</font>'
 fi
 trap 2  # Enable CTRL-C again
 
