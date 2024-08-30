@@ -14,6 +14,7 @@ ARG ALPINE_VERSION
 ARG LINUX_VERSION
 ARG COMMIT_SHA
 ENV USER=mikrotik
+ENV WEBUSER=apache
 ENV HOME=/home/$USER
 
 # Set Metadata for docker-image
@@ -42,11 +43,15 @@ RUN echo 'https://ftp.halifax.rwth-aachen.de/alpine/v3.20/main/' >> /etc/apk/rep
 # install sudo as root
 RUN apk add --update sudo
 
-# add new user
+# add new user "mikrotik"
 RUN adduser -D $USER \
     && mkdir -p /etc/sudoers.d \
-    && echo "$USER ALL=(ALL_ALL)  ALL" > /etc/sudoers.d/$USER \
+    && echo "$USER ALL=(ALL:ALL)  ALL" > /etc/sudoers.d/$USER \
     && chmod 0440 /etc/sudoers.d/$USER
+
+# add new user "apache" to /etc/sudoers.d
+RUN echo "$WEBUSER ALL = NOPASSWD: /usr/local/bin/status.gen.sh" > /etc/sudoers.d/$WEBUSER \
+    && chmod 0440 /etc/sudoers.d/$WEBUSER
 
 FROM base AS openrc
 
