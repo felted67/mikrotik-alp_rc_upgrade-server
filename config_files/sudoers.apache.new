@@ -1,2 +1,0 @@
-apache ALL = NOPASSWD: /usr/local/bin/status.gen.web.sh
-
