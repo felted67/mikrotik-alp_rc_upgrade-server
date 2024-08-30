@@ -41,7 +41,7 @@ chmod 0775 /opt/mikrotik.upgrade.server/tools/mikrotik.sync.repos.checker.sh
 chmod 0775 /usr/local/bin/status.gen.sh
 ln -s /opt/mikrotik.upgrade.server/tools/mikrotik.sync.repos.sh /usr/local/bin/mus-sync
 ln -s /opt/mikrotik.upgrade.server/tools/mikrotik.sync.repos.checker.sh /usr/local/bin/mus-start
-ls -s /usr/local/bin/status.gen.sh /usr/local/bin/mus-status
+ln -s /usr/local/bin/status.gen.sh /usr/local/bin/mus-status
 chown -r apache:apache /var/www/localhost/htdocs/
 echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
 rc-update add sshd 
