@@ -92,6 +92,7 @@ COPY ./config_files/httpd.new.conf /etc/apache2/
 COPY ./config_files/mpm.new.conf /etc/apache2/conf.d/
 COPY ./config_files/mikrotikmirror.conf /root/
 COPY ./config_files/upgrade.mikrotik.com.conf /root/
+COPY ./config_files/status-update.cgi /root/
 COPY ./config_files/routeros.raw /root/
 COPY ./config_files/routeros.0.00.conf /root/
 COPY ./config_files/CHANGELOG.0.0 /root/
@@ -110,7 +111,6 @@ RUN ["ln", "-s", "/usr/share/zoneinfo/Europe/Berlin", "/etc/localtime"]
 RUN ["ln", "-sf", "/opt/mikrotik.upgrade.server/tools/mikrotik.sync.repos.checker.sh", "/etc/periodic/daily/run"]
 RUN ["mkdir", "-p", "/etc/periodic/2min"]
 RUN ["mkdir", "-p", "/etc/periodic/5min"]
-RUN ["ln", "-sf", "/usr/local/bin/status.gen.sh", "/etc/periodic/2min/run"]
 RUN chown root:root /etc/init.d/crond && chmod 0775 /etc/init.d/crond
 RUN chown root:root /etc/init.d/auto_init && chmod 0755 /etc/init.d/auto_init
 RUN chown root:root /sbin/first_start.sh && chmod 0700 /sbin/first_start.sh

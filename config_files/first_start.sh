@@ -17,6 +17,9 @@ mv /etc/apache2/conf.d/mpm.conf /etc/apache2/conf.d/mpm.conf.orig
 mv /etc/apache2/conf.d/mpm.new.conf /etc/apache2/conf.d/mpm.conf
 mv /root/mikrotikmirror.conf /etc/apache2/conf.d/
 mv /root/upgrade.mikrotik.com.conf /etc/apache2/conf.d/
+mv /root/status-update.cgi /var/www/localhost/cgi-bin
+chown apache:apache /var/www/localhost/cgi-bin/status-update.cgi
+chmod 0554 /var/www/localhost/cgi-bin/status-update.cgi
 tar xvfz /root/webserver.data.tar.gz --directory /var/www/localhost/htdocs/mikrotikmirror/
 rm /root/webserver.data.tar.gz
 version=$( cat /root/version.info )
@@ -36,11 +39,9 @@ rm /var/www/localhost/htdocs/mikrotikmirror/doc/coming_soon
 chmod 0775 /opt/mikrotik.upgrade.server/tools/mikrotik.sync.repos.sh
 chmod 0775 /opt/mikrotik.upgrade.server/tools/mikrotik.sync.repos.checker.sh
 chmod 0775 /usr/local/bin/status.gen.sh
-ln -s /opt/mikrotik.upgrade.server/tools/mikrotik.sync.repos.sh /usr/local/bin/
-ln -s /opt/mikrotik.upgrade.server/tools/mikrotik.sync.repos.checker.sh /usr/local/bin/
+ln -s /opt/mikrotik.upgrade.server/tools/mikrotik.sync.repos.sh /usr/local/bin/mus-sync
+ln -s /opt/mikrotik.upgrade.server/tools/mikrotik.sync.repos.checker.sh /usr/local/bin/mus-start
 ls -s /usr/local/bin/status.gen.sh /usr/local/bin/mus-status
-ls -s /usr/local/bin/mikrotik.sync.repos.checker.sh /usr/local/bin/mus-start
-ls -s /usr/local/bin/mikrotik.sync.repos.sh /usr/local/bin/mus-sync
 chown -r apache:apache /var/www/localhost/htdocs/
 echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
 rc-update add sshd 

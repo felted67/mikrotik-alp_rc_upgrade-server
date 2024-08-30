@@ -7,16 +7,24 @@
 #*         MIT License            *
 #**********************************
 
+# Debugging functions
+if [ -z "$1" ]
+then
+    debug=1
+else
+    debug=0
+fi
+# debug=0: debug off/quiet/no annoying text
+# debug=1: informational (default)
+
 # Clear screen
-tput reset
+if [ $debug -gt 0 ]
+then
+    tput reset
+fi
 
 # Versioninformation
-pgmvers="v 0.4.0"
-
-# Debugging functions
-debug=1
-# debug=0: debug off/quiet/no annoying text
-# debug=1: informational (default) 
+pgmvers="v 0.5.0"
 
 #
 # Local definitions
@@ -55,6 +63,8 @@ EOF
 }
 
 # Show startup infos
+if [ $debug -gt 0 ]
+then
 echo "**********************************"
 echo "*         status.gen.sh          *"
 echo "***          "$pgmvers "          ***"
@@ -69,6 +79,7 @@ echo "... initializing."
 echo
 sleep 10
 echo "... Starting at "$(datestamp)" ."
+fi
 
 # Fetch and generate variables for status
 trap '' 2   # Disable use of CTRL-C
