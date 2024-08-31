@@ -39,10 +39,12 @@ mv /root/mus-documentation.pdf /var/www/localhost/htdocs/mus/doc/
 rm /var/www/localhost/htdocs/mus/doc/coming_soon
 chmod 0775 /opt/mikrotik.upgrade.server/tools/mikrotik.sync.repos.sh
 chmod 0775 /opt/mikrotik.upgrade.server/tools/mikrotik.sync.repos.checker.sh
-chmod 0775 /usr/local/bin/status.gen.sh
+chmod 0775 /opt/mikrotik.upgrade.server/tools/status.gen.sh
+chmod 0775 /opt/mikrotik.upgrade.server/tools/mus-cron-job.sh
 ln -s /opt/mikrotik.upgrade.server/tools/mikrotik.sync.repos.sh /usr/local/bin/mus-sync
 ln -s /opt/mikrotik.upgrade.server/tools/mikrotik.sync.repos.checker.sh /usr/local/bin/mus-start
 ln -s /opt/mikrotik.upgrade.server/tools/status.gen.sh /usr/local/bin/mus-status
+ln -s /opt/mikrotik.upgrade.server/tools/status.gen.sh /usr/local/bin/status.gen.sh
 chown -r apache:apache /var/www/localhost/htdocs/
 echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
 rc-update add sshd 
@@ -54,8 +56,8 @@ rc-service rsyslog start
 rc-update add crond
 rc-service crond start
 sleep 15
-/usr/local/bin/status.gen.sh
-/opt/mikrotik.upgrade.server/tools/mikrotik.sync.repos.checker.sh
+/opt/mikrotik.upgrade.server/tools/status.gen.sh 0
+/opt/mikrotik.upgrade.server/tools/mikrotik.sync.repos.checker.sh 0
 echo "****"
 echo "'"
 echo "Don't forget to set root-ssh password !!!"
