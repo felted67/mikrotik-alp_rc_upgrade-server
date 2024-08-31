@@ -30,7 +30,7 @@ sed -i "s/VERSION/$version/g" /root/motd.new
 mv /root/motd.new /etc/motd
 mv /root/mikrotik.sync.repos.sh /opt/mikrotik.upgrade.server/tools/
 mv /root/mikrotik.sync.repos.checker.sh /opt/mikrotik.upgrade.server/tools/
-mv /root/status.gen.sh /usr/local/bin/
+mv /root/status.gen.sh /opt/mikrotik.upgrade.server/tools/
 mv /root/routeros.raw /opt/mikrotik.upgrade.server/tools/mikrotik.configs/
 mv /root/routeros.0.00.conf /opt/mikrotik.upgrade.server/tools/mikrotik.configs/
 mv /root/CHANGELOG.0.0 /opt/mikrotik.upgrade.server/repo/routeros/0.0/CHANGELOG
@@ -42,7 +42,7 @@ chmod 0775 /opt/mikrotik.upgrade.server/tools/mikrotik.sync.repos.checker.sh
 chmod 0775 /usr/local/bin/status.gen.sh
 ln -s /opt/mikrotik.upgrade.server/tools/mikrotik.sync.repos.sh /usr/local/bin/mus-sync
 ln -s /opt/mikrotik.upgrade.server/tools/mikrotik.sync.repos.checker.sh /usr/local/bin/mus-start
-ln -s /usr/local/bin/status.gen.sh /usr/local/bin/mus-status
+ln -s /opt/mikrotik.upgrade.server/tools/status.gen.sh /usr/local/bin/mus-status
 chown -r apache:apache /var/www/localhost/htdocs/
 echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
 rc-update add sshd 
