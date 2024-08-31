@@ -11,7 +11,7 @@ mv /etc/crontabs/root /etc/crontabs/root.orig
 mv /root/crontabs.root.new /etc/crontabs/root
 chmod 0600 /etc/crontabs/root
 chown root:root /etc/crontabs/root
-mv /root/cond.job.new /opt/mikrotik.upgrade.server/tools/mus-cron-job.sh
+mv /root/crond.job.new /opt/mikrotik.upgrade.server/tools/mus-cron-job.sh
 mv /etc/apache2/httpd.conf /etc/apache2/httpd.conf.orig
 mv /etc/apache2/httpd.new.conf /etc/apache2/httpd.conf
 mv /etc/apache2/conf.d/mpm.conf /etc/apache2/conf.d/mpm.conf.orig
