@@ -7,6 +7,9 @@
 #*         MIT License            *
 #**********************************
 
+# Versioninformation
+pgmvers="v 0.5.0"
+
 # Debugging functions
 if [ -z "$1" ]
 then
@@ -22,9 +25,6 @@ if [ $debug -gt 0 ]
 then
     tput reset
 fi
-
-# Versioninformation
-pgmvers="v 0.5.0"
 
 #
 # Local definitions
@@ -59,7 +59,7 @@ createhtmlfile() {
 </html>
 
 EOF
-    mv /tmp/status.html /var/www/localhost/htdocs/mikrotikmirror/index-style/
+    mv /tmp/status.html /var/www/localhost/htdocs/mus/index-style/
 }
 
 # Show startup infos

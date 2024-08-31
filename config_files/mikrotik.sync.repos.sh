@@ -7,23 +7,33 @@
 #*         MIT License            *
 #**********************************
 
-# Clear screen
-tput reset
-
 # Versioninformation
-pgmvers="v 1.8.0"
+pgmvers="v 1.9.0"
 
 # Debugging functions
-debug=1
-# debug=0: debug off/quiet/no annoying text
-# debug=1: informational (default) 
-# debug=2: don't be destructive
-# debug=3: don't download repo-files
+presetdebug=1
+# presetdebug=0: debug off/quiet/no annoying text
+# presetdebug=1: informational (default) 
+# presetdebug=2: don't be destructive
+# presetdebug=3: don't download repo-files
+
+# Debugging functions
+if [ -z "$1" ]
+then
+    debug=$presetdebug
+else
+    debug=0
+fi
+
+# Clear screen
+if [ $debug -gt 0 ] 
+then
+    tput reset
+fi
 
 #
 # Local Definitions
 #
-
 pgmprefix=/opt/mikrotik.upgrade.server
 startdir=$pgmprefix/tools
 configdir=$startdir/mikrotik.configs
@@ -38,6 +48,8 @@ betaversion=NEWESTa7.testing
 devversion=NEWESTa7.development
 nonvconfig=$configdir/routeros.0.00.conf
 winboxversion=LATEST.3
+logdir=$startdir/mikrotik.sync.log
+logfile=$logdir/mikrotik.sync.repos.log
 
 #
 # Local functions
@@ -48,25 +60,26 @@ datestamp() {
 }
 
 # Show startup infos
-echo "**********************************"
-echo "***   Mikrotik.sync.repos.sh   ***"
-echo "***      "$pgmvers "              ***"
-echo "**********************************"
-echo "*        (C) 2024 DL7DET         *"
-echo "*         Detlef Lampart         *"
-echo "**********************************"
-echo "*          MIT License           *"
-echo "**********************************"
-echo
-echo "... initializing."
-echo
-sleep 10
-echo "... Starting at "$(datestamp)"."
-echo
+if [ $debug -gt 0 ] 
+then
+    echo "**********************************"
+    echo "***   Mikrotik.sync.repos.sh   ***"
+    echo "***      "$pgmvers "              ***"
+    echo "**********************************"
+    echo "*        (C) 2024 DL7DET         *"
+    echo "*         Detlef Lampart         *"
+    echo "**********************************"
+    echo "*          MIT License           *"
+    echo "**********************************"
+    echo
+    echo "... initializing."
+    echo
+    sleep 10
+    echo "... Starting at "$(datestamp)"."
+    echo
+fi
 
 # Useful logging
-logdir=$startdir/mikrotik.sync.log
-logfile=$logdir/mikrotik.sync.repos.log
 if [ ! -d $logdir ]; then
     mkdir $logdir
     echo "... LOGDIR created."
@@ -79,25 +92,43 @@ echo " Starting at $(date -u)." >> $logfile 2>&1
 trap '' 2   # Disable use of CTRL-C 
 if [ ! -d $tempdir ]; then
     mkdir $tempdir
-    echo "... TEMPDIR created."
+    if [ $debug -gt 0 ] 
+    then
+        echo "... TEMPDIR created."
+    fi
 fi
 if [ ! -d $repodir ]; then
     mkdir $repodir
-    echo "... REPODIR created."
+    if [ $debug -gt 0 ] 
+    then
+        echo "... REPODIR created."
+    fi
 fi
 if [ ! -d $repodir/routeros ]; then
     mkdir $repodir/routeros
-    echo "... REPODIR/routeros created."
+    if [ $debug -gt 0 ] 
+    then
+        echo "... REPODIR/routeros created."
+    fi
 fi
 if [ ! -d $repodir/routeros/0.0 ]; then
     mkdir $repodir/routeros/0.0
-    echo "... REPODIR/routeros/0.0 created."
+    if [ $debug -gt 0 ] 
+    then
+        echo "... REPODIR/routeros/0.0 created."
+    fi
 fi
 if [ ! -d $winboxdir ]; then
     mkdir $winboxdir
-    echo "... WINBOXDIR created."
+    if [ $debug -gt 0 ] 
+    then
+        echo "... WINBOXDIR created."
+    fi
 fi
-echo
+if [ $debug -gt 0 ] 
+then
+    echo
+fi
 trap 2  # Enable CTRL-C again
 
 # Check if internet-connection is possible, if not exit
@@ -144,10 +175,16 @@ fi
 if [ $debug -gt 1 ]
 then
     cp -f $tempdir/* $winboxdir/
-    echo "... Downloaded WINBOX®-packages copied to Winbox-directory."
+    if [ $debug -gt 0 ] 
+    then
+        echo "... Downloaded WINBOX®-packages copied to Winbox-directory."
+    fi
 else
     mv -f $tempdir/* $winboxdir/
-    echo "... Downloaded WINBOX®-packages moved to Winbox-directory."
+    if [ $debug -gt 0 ] 
+    then
+        echo "... Downloaded WINBOX®-packages moved to Winbox-directory."
+    fi
 fi
 
 # Rename WINBOX®-files to reflect version
@@ -156,7 +193,10 @@ then
     wbversion=$( cat $winboxdir/$winboxversion )
     cp -f $winboxdir/winbox.exe $winboxdir/winbox_$wbversion.exe
     cp -f $winboxdir/winbox64.exe $winboxdir/winbox64_$wbversion.exe
-    echo "... WINBOX®-files renamed to reflect current version."
+    if [ $debug -gt 0 ] 
+    then
+        echo "... WINBOX®-files renamed to reflect current version."
+    fi
 fi
 
 # Empty TEMP-directory from previous run
@@ -164,7 +204,10 @@ if [ $debug -lt 3 ]
     then
     rm -rf $tempdir/*
 fi
-echo
+if [ $debug -gt 0 ] 
+then
+    echo
+fi
 
 # Get latest versions LATESTa7.XXX from download.mikrotik.com
 wget -N $baseurl/routeros/$ltversion -q -P $repodir/routeros/
@@ -212,10 +255,13 @@ trap 2  # Enable CTRL-C again
 
 
 # Give some nice informations on the screen
-echo
-echo "... Starting Sync-Loop ..."
-echo "... Downloading repo-packages."
-echo "... Please be patient - could take some time."
+if [ $debug -gt 0 ] 
+then
+    echo
+    echo "... Starting Sync-Loop ..."
+    echo "... Downloading repo-packages."
+    echo "... Please be patient - could take some time."
+fi
 
 #
 # Start loop for read parameters
@@ -285,7 +331,10 @@ for filename in $configdir/*.conf; do
             echo "... Downloaded packages copied to Repo-directory."
         else
 	        mv -f $tempdir/* $pgmprefix/repo/$rptype/$rpvers/
-            echo "... Downloaded packages moved to Repo-directory."
+            if [ $debug -gt 0 ] 
+            then    
+                echo "... Downloaded packages moved to Repo-directory."
+            fi
         fi
 
         # Extract all_packages* in repo-directory for update-server to recognize singles packages
@@ -353,7 +402,7 @@ trap 2  # Enable CTRL-C again
 
 # Some end of job information
 if [ $debug -gt 0 ] 
-    then
+then
     echo " All packages have been downloaded and all-packages-* have been extracted."
     echo " Please link the repo-directory to your webserver and configure the webserver"
     echo " to serve the repo-directory as root-dir. Then you can add 'upgrade.mikrotik.com'"
@@ -362,17 +411,19 @@ if [ $debug -gt 0 ]
     echo
 fi
 
-echo
-echo " Script(s) ended successfully..."
-echo " Completed  at "$(datestamp)"." 
-echo
-echo " C:\ ... bye-bye"
-
+if [ $debug -gt 0 ] 
+then
+    echo
+    echo " Script(s) ended successfully..."
+    echo " Completed  at "$(datestamp)"." 
+    echo
+    echo " C:\ ... bye-bye"
+fi
 # Optional compression of logfile for space-saving
 #gzip -f $logfile
 #mv $logfile.gz $logfile-$(date +%Y%m%d).gz
 
-echo "Completed  at "$(datestamp)"-" >> $logfile 2>&1
+echo "Completed  at "$(date -u)"-" >> $logfile 2>&1
 
 if [ -e /tmp/last_completed ]
 then

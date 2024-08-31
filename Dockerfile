@@ -95,7 +95,7 @@ COPY ./config_files/first_start.sh /sbin/
 
 COPY ./config_files/httpd.new.conf /etc/apache2/
 COPY ./config_files/mpm.new.conf /etc/apache2/conf.d/
-COPY ./config_files/mikrotikmirror.conf /root/
+COPY ./config_files/mus.conf /root/
 COPY ./config_files/upgrade.mikrotik.com.conf /root/
 COPY ./config_files/status-update.cgi /root/
 COPY ./config_files/routeros.raw /root/
@@ -107,13 +107,14 @@ COPY ./config_files/status.gen.sh /root/
 COPY ./config_files/webserver.data.tar.gz /root/
 COPY ./config_files/crond /etc/init.d/
 COPY ./config_files/crontabs.root.new /root/
+COPY ./config_files/crond.job.new /root/
 COPY ./config_files/version.info /root/
 COPY ./config_files/motd.new /root/
 COPY ./config_files/last_completed.new /root/
 COPY ./doc/mus-documentation.pdf /root/
 
 RUN ["ln", "-s", "/usr/share/zoneinfo/Europe/Berlin", "/etc/localtime"]
-RUN ["ln", "-sf", "/opt/mikrotik.upgrade.server/tools/mikrotik.sync.repos.checker.sh", "/etc/periodic/daily/run"]
+RUN ["ln", "-sf", "/opt/mikrotik.upgrade.server/tools/mus-cron-job.sh", "/etc/periodic/daily/run"]
 RUN ["mkdir", "-p", "/etc/periodic/2min"]
 RUN ["mkdir", "-p", "/etc/periodic/5min"]
 RUN chown root:root /etc/init.d/crond && chmod 0775 /etc/init.d/crond

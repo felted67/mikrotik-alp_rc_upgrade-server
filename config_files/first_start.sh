@@ -5,25 +5,26 @@ mkdir -p /opt/mikrotik.upgrade.server/tools
 mkdir -p /opt/mikrotik.upgrade.server/repo
 mkdir -p /opt/mikrotik.upgrade.server/repo/routeros/0.0
 mkdir -p /opt/mikrotik.upgrade.server/tools/mikrotik.configs
-mkdir -p /var/www/localhost/htdocs/mikrotikmirror
-ln -s  /opt/mikrotik.upgrade.server/repo /var/www/localhost/htdocs/mikrotikmirror/repo
+mkdir -p /var/www/localhost/htdocs/mus
+ln -s  /opt/mikrotik.upgrade.server/repo /var/www/localhost/htdocs/mus/repo
 mv /etc/crontabs/root /etc/crontabs/root.orig
 mv /root/crontabs.root.new /etc/crontabs/root
 chmod 0600 /etc/crontabs/root
 chown root:root /etc/crontabs/root
+mv /root/cond.job.new /opt/mikrotik.upgrade.server/tools/mus-cron-job.sh
 mv /etc/apache2/httpd.conf /etc/apache2/httpd.conf.orig
 mv /etc/apache2/httpd.new.conf /etc/apache2/httpd.conf
 mv /etc/apache2/conf.d/mpm.conf /etc/apache2/conf.d/mpm.conf.orig
 mv /etc/apache2/conf.d/mpm.new.conf /etc/apache2/conf.d/mpm.conf
-mv /root/mikrotikmirror.conf /etc/apache2/conf.d/
+mv /root/mus.conf /etc/apache2/conf.d/
 mv /root/upgrade.mikrotik.com.conf /etc/apache2/conf.d/
 mv /root/status-update.cgi /var/www/localhost/cgi-bin
 chown apache:apache /var/www/localhost/cgi-bin/status-update.cgi
 chmod 0554 /var/www/localhost/cgi-bin/status-update.cgi
-tar xvfz /root/webserver.data.tar.gz --directory /var/www/localhost/htdocs/mikrotikmirror/
+tar xvfz /root/webserver.data.tar.gz --directory /var/www/localhost/htdocs/mus/
 rm /root/webserver.data.tar.gz
 version=$( cat /root/version.info )
-sed -i "s/VERSION/$version/g" /var/www/localhost/htdocs/mikrotikmirror/index-style/header.html
+sed -i "s/VERSION/$version/g" /var/www/localhost/htdocs/mus/index-style/header.html
 mv /etc/motd /etc/motd.orig
 sed -i "s/VERSION/$version/g" /root/motd.new
 mv /root/motd.new /etc/motd
@@ -34,8 +35,8 @@ mv /root/routeros.raw /opt/mikrotik.upgrade.server/tools/mikrotik.configs/
 mv /root/routeros.0.00.conf /opt/mikrotik.upgrade.server/tools/mikrotik.configs/
 mv /root/CHANGELOG.0.0 /opt/mikrotik.upgrade.server/repo/routeros/0.0/CHANGELOG
 mv /root/last_completed.new /tmp/last_completed
-mv /root/mus-documentation.pdf /var/www/localhost/htdocs/mikrotikmirror/doc/
-rm /var/www/localhost/htdocs/mikrotikmirror/doc/coming_soon
+mv /root/mus-documentation.pdf /var/www/localhost/htdocs/mus/doc/
+rm /var/www/localhost/htdocs/mus/doc/coming_soon
 chmod 0775 /opt/mikrotik.upgrade.server/tools/mikrotik.sync.repos.sh
 chmod 0775 /opt/mikrotik.upgrade.server/tools/mikrotik.sync.repos.checker.sh
 chmod 0775 /usr/local/bin/status.gen.sh

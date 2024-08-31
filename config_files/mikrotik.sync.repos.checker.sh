@@ -7,23 +7,33 @@
 #*         MIT License            *
 #**********************************
 
-# Clear screen
-tput reset
-
 # Versioninformation
-pgmvers="v 1.4.0"
+pgmvers="v 1.5.0"
 
 # Debugging functions
-debug=1
-# debug=0: debug off/quiet/no annoying text
-# debug=1: informational (default) 
-# debug=2: don't be destructive
-# debug=3: don't download repo-files
+presetdebug=1
+# presetdebug=0: debug off/quiet/no annoying text
+# presetdebug=1: informational (default) 
+# presetdebug=2: don't be destructive
+# presetdebug=3: don't download repo-files
+
+# Debugging functions
+if [ -z "$1" ]
+then
+    debug=$presetdebug
+else
+    debug=0
+fi
+
+# Clear screen
+if [ $debug -gt 0 ] 
+then
+    tput reset
+fi
 
 #
 # Local Definitions
 #
-
 pgmprefix=/opt/mikrotik.upgrade.server
 startdir=$pgmprefix/tools
 configdir=$startdir/mikrotik.configs
@@ -35,6 +45,8 @@ stableversion=NEWESTa7.stable
 betaversion=NEWESTa7.testing
 devversion=NEWESTa7.development
 winboxversion=LATEST.3
+logdir=$startdir/mikrotik.sync.log
+logfile=$logdir/mikrotik.sync.repos.checker.log
 
 #
 # Local functions
@@ -45,24 +57,25 @@ datestamp() {
 }
 
 # Show startup infos
-echo "**********************************"
-echo "* Mikrotik.sync.repos.checker.sh *"
-echo "***      "$pgmvers "              ***"
-echo "**********************************"
-echo "*       (C) 2024 DL7DET          *"
-echo "*        Detlef Lampart          *"
-echo "**********************************"
-echo "*         MIT License            *"
-echo "**********************************"
-echo
-echo "... initializing."
-echo
-sleep 10
-echo "... Starting at "$(datestamp)"."
+if [ $debug -gt 0 ] 
+then
+    echo "**********************************"
+    echo "* Mikrotik.sync.repos.checker.sh *"
+    echo "***      "$pgmvers "              ***"
+    echo "**********************************"
+    echo "*       (C) 2024 DL7DET          *"
+    echo "*        Detlef Lampart          *"
+    echo "**********************************"
+    echo "*         MIT License            *"
+    echo "**********************************"
+    echo
+    echo "... initializing."
+    echo
+    sleep 10
+    echo "... Starting at "$(datestamp)"."
+fi
 
 # Useful logging
-logdir=$startdir/mikrotik.sync.log
-logfile=$logdir/mikrotik.sync.repos.checker.log
 if [ ! -d $logdir ]; then
     mkdir $logdir
     echo "... LOGDIR created."
@@ -74,29 +87,50 @@ echo " Starting at $(date -u)." >> $logfile 2>&1
 # Check, create and symlink needed directories
 if [ ! -d $tempdir ]; then
     mkdir $tempdir
-    echo "... TEMPDIR created."
+    if [ $debug -gt 0 ] 
+    then
+        echo "... TEMPDIR created."
+    fi
 fi
 if [ ! -d $repodir ]; then
     mkdir $repodir
-    echo "... REPODIR created."
+    if [ $debug -gt 0 ] 
+    then
+        echo "... REPODIR created."
+    fi
 fi
 if [ ! -d $repodir/routeros ]; then
     mkdir $repodir/routeros
-    echo "... REPODIR/routeros created."
+    if [ $debug -gt 0 ] 
+    then
+        echo "... REPODIR/routeros created."
+    fi
 fi
 if [ ! -d $repodir/routeros/0.0 ]; then
     mkdir $repodir/routeros/0.0
-    echo "... REPODIR/routeros/0.0 created."
+    if [ $debug -gt 0 ] 
+    then
+        echo "... REPODIR/routeros/0.0 created."
+    fi
 fi
 if [ ! -d $repodir/routeros/winbox ]; then
     mkdir $repodir/routeros/winbox
-    echo "... REPODIR/routeros/winbox created."
+    if [ $debug -gt 0 ] 
+    then
+        echo "... REPODIR/routeros/winbox created."
+    fi
 fi
 if [ ! -d $repodir/winbox ]; then
     ln -s $repodir/routeros/winbox $repodir/winbox
-    echo "... Symlink REPODIR/routeros/winbox to REPODIR/winbox created."
+    if [ $debug -gt 0 ] 
+    then
+        echo "... Symlink REPODIR/routeros/winbox to REPODIR/winbox created."
+    fi
 fi
-echo
+if [ $debug -gt 0 ] 
+then
+    echo
+fi
 
 # Empty TEMP-directory from previous run
 if [ $debug -lt 3 ] 
@@ -135,38 +169,44 @@ fi
 
 
 # Give some nice informations on the screen
-echo "... Checking latest versions."
-echo "... Downloading latest version-files."
+if [ $debug -gt 0 ] 
+    then
+        echo "... Checking latest versions."
+        echo "... Downloading latest version-files."
+    fi
 
 # Get latest versions LATESTa7.XXX from download.mikrotik.com
 wget -N $baseurl/routeros/$ltversion -q -P $tempdir/
 if [ $debug -gt 0 ] 
     then
-    echo "... Downloaded LATEST-version-file for long-term version."
+        echo "... Downloaded LATEST-version-file for long-term version."
 fi
 wget -N $baseurl/routeros/$stableversion -q -P $tempdir/
 if [ $debug -gt 0 ] 
     then
-    echo "... Downloaded LATEST-version-file for stable version."
+        echo "... Downloaded LATEST-version-file for stable version."
 fi
 wget -N $baseurl/routeros/$betaversion -q -P $tempdir/
 if [ $debug -gt 0 ] 
     then
-    echo "... Downloaded LATEST-version-file for beta version."
+        echo "... Downloaded LATEST-version-file for beta version."
 fi
 wget -N $baseurl/routeros/$devversion -q -P $tempdir/
 if [ $debug -gt 0 ] 
     then
-    echo "... Downloaded LATEST-version-file for development version."
+        echo "... Downloaded LATEST-version-file for development version."
 fi
 
 # Get latest version for WINBOX 'LATEST.3' from download.mikrotik.com
 wget -N $baseurl/routeros/winbox/$winboxversion -q -P $tempdir/
 if [ $debug -gt 0 ] 
     then
-    echo "... Downloaded LATEST-WINBOX-version-file."
+        echo "... Downloaded LATEST-WINBOX-version-file."
 fi
-echo
+if [ $debug -gt 0 ] 
+then
+    echo
+fi
 
 # Reset index variables
 i=0
@@ -231,13 +271,16 @@ if [ $debug -lt 3 ]
     rm -rf $tempdir/*
 fi
 
-echo
-echo "... All mikrotik-config-file(s) generated."
-echo "... All LATEST-file(s) copied to repo-dir."
-echo "... Ready to start 'mikrotik.sync.repos.sh."
-sleep 5
-echo 
-echo "... Starting 'mikrotik.sync.repos.sh'."
+if [ $debug -gt 0 ] 
+then
+    echo
+    echo "... All mikrotik-config-file(s) generated."
+    echo "... All LATEST-file(s) copied to repo-dir."
+    echo "... Ready to start 'mikrotik.sync.repos.sh."
+    sleep 5
+    echo 
+    echo "... Starting 'mikrotik.sync.repos.sh'."
+fi
 
 # Start mikrotik.sync.repos.sh to download packages 
 $startdir/mikrotik.sync.repos.sh
