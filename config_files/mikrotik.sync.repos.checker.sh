@@ -133,28 +133,38 @@ then
 fi
 
 # Empty TEMP-directory from previous run
-if [ $debug -lt 3 ] 
-    then
-    rm -rf $tempdir/*
-fi
+rm -rf $tempdir/*
 
 # Check if internet-connection is possible, if not exit
 ping -q -c5 8.8.8.8 > /dev/null
 if [ $? -ne 0 ]
+then
+    echo "... NO internet-connection available. Please check routes !"
+    echo "... Script stopped - please check your configuration !!!"
+    if [[ -e /tmp/last_error ]]
     then
-        echo "... NO internet-connection available. Please check routes !"
-        echo "... Script stopped - please check your configuration !!!"
-        exit 7
+        echo "NO INTERNET CONNECTION-CHECK CONFIG" > /tmp/last_error
+    else 
+        rm /tmp/last_error
+        echo "NO INTERNET CONNECTION-CHECK CONFIG" > /tmp/last_error
+    fi
+    exit 7
 fi
 
 # Check if dns-resolution is possible, if not exit
 ping -q -c5 google.com > /dev/null
 if [ $? -gt 0 ]
-    then
-        echo "... NO name resolution (DNS) available. Please check DNS-configuration !"
-        echo "... Script stopped - please check your configuration !!!"
-        echo
-        exit 7
+then
+    echo "... NO name resolution (DNS) available. Please check DNS-configuration !"
+    echo "... Script stopped - please check your configuration !!!"
+    if [[ -e /tmp/last_error ]]
+    then 
+        echo "NO DNS RESOLUTION-CHECK CONFIG" > /tmp/last_error
+    else
+        rm /tmp/last_error
+        echo "NO DNS RESOLUTION-CHECK CONFIG" > /tmp/last_error    
+    fi
+    exit 7
 fi
 
 # Check if Mikrotik®-master-servers are reachable, if not exit
@@ -164,9 +174,23 @@ if [ $? -gt 0 ]
     then
         echo "... MIKROTIK®-master-servers a not reachable. Please check status !"
         echo "... Script stopped - please check your configuration !!!"
+        if [[ -e /tmp/last_error ]]
+        then 
+    	    echo "NO MASTER SERVER REACHABLE" > /tmp/last_error
+    	else
+    	    rm /tmp/last_error
+    	    echo "NO MASTER SERVER REACHABLE" > /tmp/last_error    
+        fi
         exit 7
 fi
 
+if [[ -e /tmp/last_error ]]
+then 
+    echo "OK" > /tmp/last_error
+else
+        rm /tmp/last_error
+        echo "OK" > /tmp/last_error    
+fi
 
 # Give some nice informations on the screen
 if [ $debug -gt 0 ] 

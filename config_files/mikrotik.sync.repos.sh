@@ -131,33 +131,64 @@ then
 fi
 trap 2  # Enable CTRL-C again
 
+# Empty TEMP-directory from previous run
+rm -rf $tempdir/*
+
 # Check if internet-connection is possible, if not exit
 ping -q -c5 8.8.8.8 > /dev/null
 if [ $? -ne 0 ]
+then
+    echo "... NO internet-connection available. Please check routes !"
+    echo "... Script stopped - please check your configuration !!!"
+    if [[ -e /tmp/last_error ]]
     then
-        echo "... NO internet-connection available. Please check routes !"
-        echo "... Script stopped - please check your configuration !!!"
-        exit 7
+        echo "NO INTERNET CONNECTION" > /tmp/last_error
+    else 
+        rm /tmp/last_error
+        echo "NO INTERNET CONNECTION" > /tmp/last_error
+    fi
+    exit 7
 fi
 
 # Check if dns-resolution is possible, if not exit
 ping -q -c5 google.com > /dev/null
 if [ $? -gt 0 ]
-    then
-        echo "... NO name resolution (DNS) available. Please check DNS-configuration !"
-        echo "... Script stopped - please check your configuration !!!"
-        echo
-        exit 7
+then
+    echo "... NO name resolution (DNS) available. Please check DNS-configuration !"
+    echo "... Script stopped - please check your configuration !!!"
+    if [[ -e /tmp/last_error ]]
+    then 
+        echo "NO DNS RESOLUTION" > /tmp/last_error
+    else
+        rm /tmp/last_error
+        echo "NO DNS RESOLUTION" > /tmp/last_error    
+    fi
+    exit 7
 fi
 
 # Check if Mikrotik®-master-servers are reachable, if not exit
 
-ping -q -c5 download.mikrotik.com > /dev/null
+ping -q -c10 download.mikrotik.com > /dev/null
 if [ $? -gt 0 ]
     then
-        echo "... The MIKROTIK®-master-servers are not reachable. Please check status !"
-        echo "... Script stopped - please check your configuration and/or the reachability of the servers !!!"
+        echo "... MIKROTIK®-master-servers a not reachable. Please check status !"
+        echo "... Script stopped - please check your configuration !!!"
+        if [[ -e /tmp/last_error ]]
+        then 
+    	    echo "NO SERVER REACHABLE" > /tmp/last_error
+    	else
+    	    rm /tmp/last_error
+    	    echo "NO SERVER REACHABLE" > /tmp/last_error    
+        fi
         exit 7
+fi
+
+if [[ -e /tmp/last_error ]]
+then 
+    echo "OK" > /tmp/last_error
+else
+        rm /tmp/last_error
+        echo "OK" > /tmp/last_error    
 fi
 
 # Download WINBOX®-packages

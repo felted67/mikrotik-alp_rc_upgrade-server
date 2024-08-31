@@ -111,6 +111,7 @@ COPY ./config_files/crond.job.new /root/
 COPY ./config_files/version.info /root/
 COPY ./config_files/motd.new /root/
 COPY ./config_files/last_completed.new /root/
+COPY ./config_files/error.new /root/
 COPY ./doc/mus-documentation.pdf /root/
 
 RUN ["ln", "-s", "/usr/share/zoneinfo/Europe/Berlin", "/etc/localtime"]

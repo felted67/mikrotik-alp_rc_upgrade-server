@@ -8,7 +8,7 @@
 #**********************************
 
 # Versioninformation
-pgmvers="v 0.5.0"
+pgmvers="v 0.5.2"
 
 # Debugging functions
 if [[ -z "$1" || "$1" != "0" ]]
@@ -50,7 +50,7 @@ createhtmlfile() {
 <!DOCTYPE html>
 <html>
   <body>
-    <h4>MUS-System running on host: <font color="green">$uhost</font> using arch: <font color="green">$uarch</font></h4>
+    <h4>MUS-System running on host: <font color="green">$uhost</font> using arch: <font color="green">$uarch</font> - MUS-System status: $last_error</h4>
     <h4>Disk-total: $dsktot Bytes * Disk-free: $dskfrestr Bytes * Disk-usage: $dskuse Bytes</h4> 
     <h4>Memory-total: $memtot * Memory-used: $memuse * Memory-free: $memfre * Memory-shared : $memshr * Memory-buffer/cache: $membuf * Memory-avail.: $memava |-[Bytes]</h4>
     <h4> Script-status: $scriptstatus  ---  Download-status: $dwnlstatus --- Last sync completed: $last_completed</h4>
@@ -125,6 +125,19 @@ then
     last_completed=$( cat /tmp/last_completed )
 else
     last_completed="*** Never completed ***"
+fi
+
+if [[ -e /tmp/last_error ]]
+then
+    error=$( cat /tmp/last_error)
+    if [[ $error != "OK" ]]
+    then
+	    last_error='<font color="red">'$error'</font>'
+    else
+	    last_error='<font color="green">'$error'</font>'
+    fi
+else
+    last_error='<font color="green">OK</font>'
 fi
 
 # Create HTML-status-inlay for webserver
