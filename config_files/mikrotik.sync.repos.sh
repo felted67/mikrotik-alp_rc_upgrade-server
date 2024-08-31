@@ -371,6 +371,27 @@ for filename in $configdir/*.conf; do
         # Extract all_packages* in repo-directory for update-server to recognize singles packages
         cd $pgmprefix/repo/$rptype/$rpvers
         unzip -o 'all_packages-*.zip' -d $pgmprefix/repo/$rptype/$rpvers/
+        unzip_status=$?
+        if [ $unzip_status -gt 0 ]
+        then
+            if [ $debug -gt 0 ] 
+            then
+	            echo "... Unzip error encountered during extraction. Error code:"$unzip_status
+                echo "... Script stopped - please check files manually !!!"
+            else
+                echo "... Unzip error during unzip. Error code:"$unzip_status
+            fi
+
+            if [[ -e /tmp/last_error ]]
+            then
+                echo "UNZIP ERROR:"$unzip_status > /tmp/last_error
+            else 
+                rm -f /tmp/last_error
+                echo "UNZIP ERROR:"$unzip_status > /tmp/last_error
+            fi
+            exit 8
+        fi
+
         if [ $debug -gt 0 ] 
         then
 	        echo "... Downloaded all-packages-*.zip extracted for update function."
