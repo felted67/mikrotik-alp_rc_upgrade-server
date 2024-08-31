@@ -8,7 +8,7 @@
 #**********************************
 
 # Versioninformation
-pgmvers="v 1.5.0"
+pgmvers="v 1.5.1"
 
 # Debugging functions
 presetdebug=1
@@ -18,7 +18,7 @@ presetdebug=1
 # presetdebug=3: don't download repo-files
 
 # Debugging functions
-if [ -z "$1" ]
+if [[ -z "$1" || $1 != "0" ]]
 then
     debug=$presetdebug
 else
@@ -283,7 +283,12 @@ then
 fi
 
 # Start mikrotik.sync.repos.sh to download packages 
-$startdir/mikrotik.sync.repos.sh
+if [ $debug -eq 0 ]
+then
+    $startdir/mikrotik.sync.repos.sh 0
+else
+    $startdir/mikrotik.sync.repos.sh
+fi
 
 #
 # This is the end, my lonely friend, the end

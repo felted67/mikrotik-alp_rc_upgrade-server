@@ -11,7 +11,7 @@
 pgmvers="v 0.5.0"
 
 # Debugging functions
-if [ -z "$1" ]
+if [[ -z "$1" || "$1" != "0" ]]
 then
     debug=1
 else
@@ -34,7 +34,6 @@ scriptstatus="not running"
 scriptnum=0
 dwnlstatus="not running"
 dwnlnum=0
-last_completed=$( cat /tmp/last_completed )
 dsklmt=5
 
 #
@@ -78,7 +77,7 @@ echo
 echo "... initializing."
 echo
 sleep 10
-echo "... Starting at "$(datestamp)" ."
+echo "... Starting at "$(datestamp)"."
 fi
 
 # Fetch and generate variables for status
@@ -120,10 +119,15 @@ then
 else
     dskfrestr='<font color="black">'$dskfre'</font>'
 fi
-trap 2  # Enable CTRL-C again
+
+if [[ -e /tmp/last_completed ]]
+then
+    last_completed=$( cat /tmp/last_completed )
+else
+    last_completed="*** Never completed ***"
+fi
 
 # Create HTML-status-inlay for webserver
-trap '' 2   # Disable use of CTRL-C
 createhtmlfile
 trap 2  # Enable CTRL-C again
 
@@ -131,57 +135,67 @@ trap 2  # Enable CTRL-C again
 echo
 if [ $debug -gt 0 ] 
     then
-    echo "... Hostname is           : "$uhost"."
+    echo "... Hostname is           : "$uhost
 fi
 
 if [ $debug -gt 0 ] 
     then
-    echo "... System architecure is : "$uarch"."
+    echo "... System architecure is : "$uarch
 fi
 
 if [ $debug -gt 0 ] 
     then
-    echo "... Disk total space is   : "$dsktot"Bytes."
+    echo "... Disk total space is   : "$dsktot"Bytes"
 fi
 
 if [ $debug -gt 0 ] 
     then
-    echo "... Disk free space is    : "$dskfre"Bytes."
+    echo "... Disk free space is    : "$dskfre"Bytes"
 fi
 
 if [ $debug -gt 0 ] 
     then
-    echo "... Disk used space is    : "$dskuse"Bytes."
+    echo "... Disk used space is    : "$dskuse"Bytes"
 fi
 
 if [ $debug -gt 0 ] 
     then
-    echo "... Total memory is       : "$memtot"Bytes."
+    echo "... Total memory is       : "$memtot"Bytes"
 fi
 
 if [ $debug -gt 0 ] 
     then
-    echo "... Used memory is        : "$memuse"Bytes."
+    echo "... Used memory is        : "$memuse"Bytes"
 fi
 
 if [ $debug -gt 0 ] 
     then
-    echo "... Free memory is        : "$memfre"Bytes."
+    echo "... Free memory is        : "$memfre"Bytes"
 fi
 
 if [ $debug -gt 0 ] 
     then
-    echo "... Shared memory is      : "$memshr"Bytes."
+    echo "... Shared memory is      : "$memshr"Bytes"
 fi
 
 if [ $debug -gt 0 ] 
     then
-    echo "... Buffer/cache memory is: "$membuf"Bytes."
+    echo "... Buffer/cache memory is: "$membuf"Bytes"
 fi
 
 if [ $debug -gt 0 ] 
     then
-    echo "... Available memory is   : "$memava"Bytes."
+    echo "... Available memory is   : "$memava"Bytes"
+fi
+
+if [ $debug -gt 0 ] 
+    then
+    echo "... Last sync completed   : "$last_completed"."
+fi
+
+if [ $debug -gt 0 ] 
+    then
+    echo
 fi
 
 #

@@ -8,7 +8,7 @@
 #**********************************
 
 # Versioninformation
-pgmvers="v 1.9.0"
+pgmvers="v 1.9.1"
 
 # Debugging functions
 presetdebug=1
@@ -18,7 +18,7 @@ presetdebug=1
 # presetdebug=3: don't download repo-files
 
 # Debugging functions
-if [ -z "$1" ]
+if [[ -z "$1" || $1 != "0" ]]
 then
     debug=$presetdebug
 else
