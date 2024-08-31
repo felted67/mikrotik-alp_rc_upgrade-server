@@ -209,6 +209,12 @@ fi
 if [ $debug -gt 0 ] 
     then
     echo
+    echo "... MUS-System status     : "$error"."
+fi
+
+if [ $debug -gt 0 ] 
+    then
+    echo
 fi
 
 #
