@@ -144,7 +144,7 @@ then
     then
         echo "NO INTERNET CONNECTION" > /tmp/last_error
     else 
-        rm /tmp/last_error
+        rm -f /tmp/last_error
         echo "NO INTERNET CONNECTION" > /tmp/last_error
     fi
     exit 7
@@ -160,7 +160,7 @@ then
     then 
         echo "NO DNS RESOLUTION" > /tmp/last_error
     else
-        rm /tmp/last_error
+        rm -f /tmp/last_error
         echo "NO DNS RESOLUTION" > /tmp/last_error    
     fi
     exit 7
@@ -177,7 +177,7 @@ if [ $? -gt 0 ]
         then 
     	    echo "NO SERVER REACHABLE" > /tmp/last_error
     	else
-    	    rm /tmp/last_error
+    	    rm -f /tmp/last_error
     	    echo "NO SERVER REACHABLE" > /tmp/last_error    
         fi
         exit 7
@@ -187,7 +187,7 @@ if [[ -e /tmp/last_error ]]
 then 
     echo "OK" > /tmp/last_error
 else
-        rm /tmp/last_error
+        rm -f /tmp/last_error
         echo "OK" > /tmp/last_error    
 fi
 

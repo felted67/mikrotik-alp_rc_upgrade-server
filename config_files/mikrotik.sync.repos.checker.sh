@@ -145,7 +145,7 @@ then
     then
         echo "NO INTERNET CONNECTION-CHECK CONFIG" > /tmp/last_error
     else 
-        rm /tmp/last_error
+        rm -f /tmp/last_error
         echo "NO INTERNET CONNECTION-CHECK CONFIG" > /tmp/last_error
     fi
     exit 7
@@ -161,7 +161,7 @@ then
     then 
         echo "NO DNS RESOLUTION-CHECK CONFIG" > /tmp/last_error
     else
-        rm /tmp/last_error
+        rm -f /tmp/last_error
         echo "NO DNS RESOLUTION-CHECK CONFIG" > /tmp/last_error    
     fi
     exit 7
@@ -178,7 +178,7 @@ if [ $? -gt 0 ]
         then 
     	    echo "NO MASTER SERVER REACHABLE" > /tmp/last_error
     	else
-    	    rm /tmp/last_error
+    	    rm -f /tmp/last_error
     	    echo "NO MASTER SERVER REACHABLE" > /tmp/last_error    
         fi
         exit 7
@@ -188,7 +188,7 @@ if [[ -e /tmp/last_error ]]
 then 
     echo "OK" > /tmp/last_error
 else
-        rm /tmp/last_error
+        rm -f /tmp/last_error
         echo "OK" > /tmp/last_error    
 fi
 
