@@ -8,7 +8,7 @@
 #**********************************
 
 # Versioninformation
-pgmvers="v 0.5.2"
+pgmvers="v 0.6.0"
 
 # Debugging functions
 if [[ -z "$1" || "$1" != "0" ]]
