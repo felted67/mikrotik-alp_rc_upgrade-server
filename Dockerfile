@@ -107,7 +107,7 @@ COPY ./config_files/mus-status-gen.sh /root/
 COPY ./config_files/webserver.data.tar.gz /root/
 COPY ./config_files/crond /etc/init.d/
 COPY ./config_files/crontabs.root.new /root/
-COPY ./config_files/crond.job.new /root/
+COPY ./config_files/mus-cron-job.sh /root/
 COPY ./config_files/version.info /root/
 COPY ./config_files/motd.new /root/
 COPY ./config_files/last_completed.new /root/
