@@ -8,7 +8,7 @@
 #**********************************
 
 # Versioninformation
-pgmvers="v 2.0.0"
+pgmvers="v 2.1.0"
 
 # Debugging functions
 presetdebug=1
@@ -50,7 +50,9 @@ nonvconfig=$configdir/routeros.0.00.conf
 winboxversion=LATEST.3
 logdir=$startdir/mus.log
 logfile=$logdir/mus-sync.log
-scriptnum=0
+startpid=/var/run/mus-start.pid
+syncpid=/var/run/mus-sync.pid
+muspid=0
 
 #
 # Local functions
@@ -60,6 +62,14 @@ datestamp() {
     echo $datestring
 }
 
+createpid() {
+    echo $BASHPID > $syncpid
+}
+
+removepid() {
+    rm -f $syncpid
+}
+ 
 # Show startup infos
 if [ $debug -gt 0 ] 
 then
@@ -90,12 +100,14 @@ exec 2> >(tee -a ${logfile} >&2)
 echo " Starting at $(date -u)." >> $logfile 2>&1
 
 # Check if another process is running and then exit immediatly
-scriptnum=$(ps -A | grep -c '{mus-s')
-if [ $scriptnum -gt 1 ]
+if [[ -e $syncpid || -e $startpid ]]
 then 
     echo "... Another instance of MUS is running. EXITING with error-code 1."
     echo "... Only one instance at the same time is supported !"
+    echo "... Perhaps you have to remove the pid-file in /var/run !"
     exit 1
+else
+    createpid
 fi
 
 # Check and create needed directories
@@ -489,13 +501,15 @@ echo "Completed  at "$(date -u)"-" >> $logfile 2>&1
 
 if [ -e /tmp/last_completed ]
 then
-    rm /tmp/last_completed
+    rm -f /tmp/last_completed
     touch /tmp/last_completed
     echo $(datestamp) > /tmp/last_completed
 else
     touch /tmp/last_completed
     echo $(datestamp) > /tmp/last_completed
 fi
+
+removepid
 
 #
 # This is the end, my lonely friend,the end

@@ -50,7 +50,7 @@ RUN adduser -D $USER \
     && chmod 0440 /etc/sudoers.d/$USER
 
 # add new user "apache" to /etc/sudoers.d
-RUN echo "$WEBUSER ALL = NOPASSWD: /usr/local/bin/status.gen.sh" > /etc/sudoers.d/$WEBUSER \
+RUN echo "$WEBUSER ALL = NOPASSWD: /usr/local/bin/mus-gen-status.sh" > /etc/sudoers.d/$WEBUSER \
     && chmod 0440 /etc/sudoers.d/$WEBUSER
 
 FROM base AS openrc

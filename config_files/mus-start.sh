@@ -8,7 +8,7 @@
 #**********************************
 
 # Versioninformation
-pgmvers="v 2.0.0"
+pgmvers="v 2.1.0"
 
 # Debugging functions
 presetdebug=1
@@ -47,7 +47,9 @@ devversion=NEWESTa7.development
 winboxversion=LATEST.3
 logdir=$startdir/mus.log
 logfile=$logdir/mus-start.log
-scriptnum=0
+startpid=/var/run/mus-start.pid
+syncpid=/var/run/mus-sync.pid
+muspid=0
 
 #
 # Local functions
@@ -55,6 +57,14 @@ scriptnum=0
 datestamp() {
     local datestring=$(date +"%H:%M %Z on %A, %d.%B %Y")
     echo $datestring
+}
+
+createpid() {
+    echo $BASHPID > $startpid
+}
+
+removepid() {
+    rm -f $startpid
 }
 
 # Show startup infos
@@ -86,12 +96,14 @@ exec 2> >(tee -a ${logfile} >&2)
 echo " Starting at $(date -u)." >> $logfile 2>&1
 
 # Check if another process is running and then exit immediatly
-scriptnum=$(ps -A | grep -c '{mus-s')
-if [ $scriptnum -gt 1 ]
+if [[ -e $startpid || -e $syncpid ]]
 then 
     echo "... Another instance of MUS is running. EXITING with error-code 1."
     echo "... Only one instance at the same time is supported !"
+    echo "... Perhaps you have to remove the pid-files in /var/run/ !"
     exit 1
+else
+    createpid    
 fi
 
 # Check, create and symlink needed directories
@@ -158,6 +170,7 @@ then
         rm -f /tmp/last_error
         echo "NO INTERNET CONNECTION-CHECK CONFIG" > /tmp/last_error
     fi
+    removepid
     exit 7
 fi
 
@@ -174,6 +187,7 @@ then
         rm -f /tmp/last_error
         echo "NO DNS RESOLUTION-CHECK CONFIG" > /tmp/last_error    
     fi
+    removepid
     exit 7
 fi
 
@@ -181,17 +195,18 @@ fi
 
 ping -q -c5 download.mikrotik.com > /dev/null
 if [ $? -gt 0 ]
-    then
-        echo "... MIKROTIK®-master-servers a not reachable. Please check status !"
-        echo "... Script stopped - please check your configuration !!!"
-        if [[ -e /tmp/last_error ]]
-        then 
-    	    echo "NO MASTER SERVER REACHABLE" > /tmp/last_error
-    	else
-    	    rm -f /tmp/last_error
-    	    echo "NO MASTER SERVER REACHABLE" > /tmp/last_error    
-        fi
-        exit 7
+then
+    echo "... MIKROTIK®-master-servers a not reachable. Please check status !"
+    echo "... Script stopped - please check your configuration !!!"
+    if [[ -e /tmp/last_error ]]
+    then 
+        echo "NO MASTER SERVER REACHABLE" > /tmp/last_error
+    else
+        rm -f /tmp/last_error
+        echo "NO MASTER SERVER REACHABLE" > /tmp/last_error    
+    fi
+    removepid
+    exit 7
 fi
 
 if [[ -e /tmp/last_error ]]
@@ -319,8 +334,10 @@ fi
 # Start mikrotik.sync.repos.sh to download packages 
 if [ $debug -eq 0 ]
 then
+    removepid
     $startdir/mus-sync.sh 0
 else
+    removepid
     $startdir/mus-sync.sh
 fi
 

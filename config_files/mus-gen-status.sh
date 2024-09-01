@@ -8,7 +8,7 @@
 #**********************************
 
 # Versioninformation
-pgmvers="v 0.6.0"
+pgmvers="v 0.7.0"
 
 # Debugging functions
 if [[ -z "$1" || "$1" != "0" ]]
@@ -31,10 +31,13 @@ fi
 #
 chkmount=/opt/mikrotik.upgrade.server/repo
 scriptstatus="not running"
-scriptnum=0
 dwnlstatus="not running"
 dwnlnum=0
 dsklmt=5
+startpid=/var/run/mus-start.pid
+syncpid=/var/run/mus-sync.pid
+statpid=/var/run/mus-stat.pid
+muspid=0
 
 #
 # Local functions
@@ -42,6 +45,15 @@ dsklmt=5
 datestamp() {
     local datestring=$(date +"%H:%M %Z on %A, %d.%B %Y")
     echo $datestring
+}
+
+createpid() {
+    touch $statpid
+    echo $BASHPID > $statpid
+}
+
+removepid() {
+    rm -f $statpid
 }
 
 createhtmlfile() {
@@ -81,11 +93,13 @@ echo "... Starting at "$(datestamp)"."
 fi
 
 # Check if another process is running and then exit immediatly
-scriptnum=$(ps -A | grep -c '{mus-g')
-if [ $scriptnum -gt 1 ]
+if [[ -e $statpid ]]
 then 
     echo "... Another instance of mus-gen-status.sh is running. EXITING with error-code 0."
+    echo "... Perhaps you have to remove the pid-file in /var/run !"
     exit 0
+else
+    createpid
 fi
 
 # Fetch and generate variables for status
@@ -105,8 +119,7 @@ memshr=$(free -h | grep 'Mem' | awk '{ print $5 }')
 membuf=$(free -h | grep 'Mem' | awk '{ print $6 }')
 memava=$(free -h | grep 'Mem' | awk '{ print $7 }')
 
-scriptnum=$(ps -A | grep -c '{mus-s')
-if [ $scriptnum -gt 1 ]
+if [[ -e $startpid || -e $syncpid ]]
 then 
     scriptstatus='<font color="red">Script(s) is/are running</font>'
 else 
@@ -224,6 +237,8 @@ if [ $debug -gt 0 ]
     then
     echo
 fi
+
+removepid
 
 #
 # This is the end, my lonely friend, the end
