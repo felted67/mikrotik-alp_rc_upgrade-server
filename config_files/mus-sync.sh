@@ -64,7 +64,7 @@ datestamp() {
 if [ $debug -gt 0 ] 
 then
     echo "**********************************"
-    echo "*           mus-sync             *"
+    echo "*        mus-sync.sh             *"
     echo "***      "$pgmvers "              ***"
     echo "**********************************"
     echo "*        (C) 2024 DL7DET         *"

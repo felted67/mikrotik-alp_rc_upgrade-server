@@ -61,7 +61,7 @@ datestamp() {
 if [ $debug -gt 0 ] 
 then
     echo "**********************************"
-    echo "*          mus-start             *"
+    echo "*        mus-start.sh            *"
     echo "***      "$pgmvers "              ***"
     echo "**********************************"
     echo "*       (C) 2024 DL7DET          *"
