@@ -1,4 +1,4 @@
 #!/bin/sh
 echo "Content-type: text/plain"
 echo ""
-sudo /usr/local/bin/status.gen.sh 0
+sudo /usr/local/bin/mus-status-gen.sh 0

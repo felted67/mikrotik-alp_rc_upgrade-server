@@ -1,6 +1,6 @@
 #!/bin/bash
 #**********************************
-#* mikrotik.sync.repos.checker.sh *
+#*          mus-start             *
 #**********************************
 #*       (C) 2024 DL7DET          *
 #*        Detlef Lampart          *
@@ -45,8 +45,9 @@ stableversion=NEWESTa7.stable
 betaversion=NEWESTa7.testing
 devversion=NEWESTa7.development
 winboxversion=LATEST.3
-logdir=$startdir/mikrotik.sync.log
-logfile=$logdir/mikrotik.sync.repos.checker.log
+logdir=$startdir/mus.log
+logfile=$logdir/mus-start.log
+scriptnum=0
 
 #
 # Local functions
@@ -60,7 +61,7 @@ datestamp() {
 if [ $debug -gt 0 ] 
 then
     echo "**********************************"
-    echo "* Mikrotik.sync.repos.checker.sh *"
+    echo "*          mus-start             *"
     echo "***      "$pgmvers "              ***"
     echo "**********************************"
     echo "*       (C) 2024 DL7DET          *"
@@ -83,6 +84,15 @@ fi
 exec > >(tee -a ${logfile} )
 exec 2> >(tee -a ${logfile} >&2)
 echo " Starting at $(date -u)." >> $logfile 2>&1
+
+# Check if another process is running and then exit immediatly
+scriptnum=$(ps -A | grep -c '{mus-start}')
+if [ $scriptnum -gt 1 ]
+then 
+    echo "... Another instance of MUS is running. EXITING ..."
+    echo "... Only one instance at the same time is supported !"
+    exit 1
+fi
 
 # Check, create and symlink needed directories
 if [ ! -d $tempdir ]; then
@@ -300,18 +310,18 @@ then
     echo
     echo "... All mikrotik-config-file(s) generated."
     echo "... All LATEST-file(s) copied to repo-dir."
-    echo "... Ready to start 'mikrotik.sync.repos.sh."
+    echo "... Ready to start 'mus-sync.sh."
     sleep 5
     echo 
-    echo "... Starting 'mikrotik.sync.repos.sh'."
+    echo "... Starting 'mus-sync.sh'."
 fi
 
 # Start mikrotik.sync.repos.sh to download packages 
 if [ $debug -eq 0 ]
 then
-    $startdir/mikrotik.sync.repos.sh 0
+    $startdir/mus-sync.sh 0
 else
-    $startdir/mikrotik.sync.repos.sh
+    $startdir/mus-sync.sh
 fi
 
 #

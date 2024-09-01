@@ -1,6 +1,6 @@
 #!/bin/bash
 #**********************************
-#*         status.gen.sh          *
+#*       mus-status-gen.sh        *
 #**********************************
 #*       (C) 2024 DL7DET          *
 #*        Detlef Lampart          *
@@ -65,7 +65,7 @@ EOF
 if [ $debug -gt 0 ]
 then
 echo "**********************************"
-echo "*         status.gen.sh          *"
+echo "*       mus-status-gen.sh        *"
 echo "***          "$pgmvers "          ***"
 echo "**********************************"
 echo "*       (C) 2024 DL7DET          *"

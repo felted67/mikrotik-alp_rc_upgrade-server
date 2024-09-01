@@ -11,7 +11,7 @@ mv /etc/crontabs/root /etc/crontabs/root.orig
 mv /root/crontabs.root.new /etc/crontabs/root
 chmod 0600 /etc/crontabs/root
 chown root:root /etc/crontabs/root
-mv /root/crond.job.new /opt/mikrotik.upgrade.server/tools/mus-cron-job.sh
+mv /root/mus-cron-job.sh /opt/mikrotik.upgrade.server/tools/mus-cron-job.sh
 mv /etc/apache2/httpd.conf /etc/apache2/httpd.conf.orig
 mv /etc/apache2/httpd.new.conf /etc/apache2/httpd.conf
 mv /etc/apache2/conf.d/mpm.conf /etc/apache2/conf.d/mpm.conf.orig
@@ -28,9 +28,9 @@ sed -i "s/VERSION/$version/g" /var/www/localhost/htdocs/mus/index-style/header.h
 mv /etc/motd /etc/motd.orig
 sed -i "s/VERSION/$version/g" /root/motd.new
 mv /root/motd.new /etc/motd
-mv /root/mikrotik.sync.repos.sh /opt/mikrotik.upgrade.server/tools/
-mv /root/mikrotik.sync.repos.checker.sh /opt/mikrotik.upgrade.server/tools/
-mv /root/status.gen.sh /opt/mikrotik.upgrade.server/tools/
+mv /root/mus-start.sh /opt/mikrotik.upgrade.server/tools/
+mv /root/mus-sync.sh /opt/mikrotik.upgrade.server/tools/
+mv /root/mus-status-gen.sh /opt/mikrotik.upgrade.server/tools/
 mv /root/routeros.raw /opt/mikrotik.upgrade.server/tools/mikrotik.configs/
 mv /root/routeros.0.00.conf /opt/mikrotik.upgrade.server/tools/mikrotik.configs/
 mv /root/CHANGELOG.0.0 /opt/mikrotik.upgrade.server/repo/routeros/0.0/CHANGELOG
@@ -38,14 +38,14 @@ mv /root/last_completed.new /tmp/last_completed
 mv /root/error.new /tmp/last_error
 mv /root/mus-documentation.pdf /var/www/localhost/htdocs/mus/doc/
 rm /var/www/localhost/htdocs/mus/doc/coming_soon
-chmod 0775 /opt/mikrotik.upgrade.server/tools/mikrotik.sync.repos.sh
-chmod 0775 /opt/mikrotik.upgrade.server/tools/mikrotik.sync.repos.checker.sh
-chmod 0775 /opt/mikrotik.upgrade.server/tools/status.gen.sh
+chmod 0775 /opt/mikrotik.upgrade.server/tools/mus-start.sh
+chmod 0775 /opt/mikrotik.upgrade.server/tools/mus-sync.sh
+chmod 0775 /opt/mikrotik.upgrade.server/tools/mus-status-gen.sh
 chmod 0775 /opt/mikrotik.upgrade.server/tools/mus-cron-job.sh
-ln -s /opt/mikrotik.upgrade.server/tools/mikrotik.sync.repos.sh /usr/local/bin/mus-sync
-ln -s /opt/mikrotik.upgrade.server/tools/mikrotik.sync.repos.checker.sh /usr/local/bin/mus-start
-ln -s /opt/mikrotik.upgrade.server/tools/status.gen.sh /usr/local/bin/mus-status
-ln -s /opt/mikrotik.upgrade.server/tools/status.gen.sh /usr/local/bin/status.gen.sh
+ln -s /opt/mikrotik.upgrade.server/tools/mus-start.sh /usr/local/bin/mus-start
+ln -s /opt/mikrotik.upgrade.server/tools/mus-sync.sh /usr/local/bin/mus-sync
+ln -s /opt/mikrotik.upgrade.server/tools/mus-status-gen.sh /usr/local/bin/mus-status-gen
+ln -s /opt/mikrotik.upgrade.server/tools/mus-status-gen.sh /usr/local/bin/
 chown -r apache:apache /var/www/localhost/htdocs/
 echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
 rc-update add sshd 
@@ -57,8 +57,8 @@ rc-service rsyslog start
 rc-update add crond
 rc-service crond start
 sleep 15
-/opt/mikrotik.upgrade.server/tools/status.gen.sh 0
-/opt/mikrotik.upgrade.server/tools/mikrotik.sync.repos.checker.sh 0
+/opt/mikrotik.upgrade.server/tools/mus-status-gen.sh 0
+/opt/mikrotik.upgrade.server/tools/mus-start.sh 0
 echo "****"
 echo "'"
 echo "Don't forget to set root-ssh password !!!"

@@ -1,6 +1,6 @@
 #!/bin/bash
 #**********************************
-#***   Mikrotik.sync.repos.sh   ***
+#*           mus-sync             *
 #**********************************
 #*       (C) 2024 DL7DET          *
 #*        Detlef Lampart          *
@@ -48,8 +48,9 @@ betaversion=NEWESTa7.testing
 devversion=NEWESTa7.development
 nonvconfig=$configdir/routeros.0.00.conf
 winboxversion=LATEST.3
-logdir=$startdir/mikrotik.sync.log
-logfile=$logdir/mikrotik.sync.repos.log
+logdir=$startdir/mus.log
+logfile=$logdir/mus-sync.log
+scriptnum=0
 
 #
 # Local functions
@@ -63,7 +64,7 @@ datestamp() {
 if [ $debug -gt 0 ] 
 then
     echo "**********************************"
-    echo "***   Mikrotik.sync.repos.sh   ***"
+    echo "*           mus-sync             *"
     echo "***      "$pgmvers "              ***"
     echo "**********************************"
     echo "*        (C) 2024 DL7DET         *"
@@ -87,6 +88,15 @@ fi
 exec > >(tee -a ${logfile} )
 exec 2> >(tee -a ${logfile} >&2)
 echo " Starting at $(date -u)." >> $logfile 2>&1
+
+# Check if another process is running and then exit immediatly
+scriptnum=$(ps -A | grep -c '{mus-sync}')
+if [ $scriptnum -gt 1 ]
+then 
+    echo "... Another instance of MUS is running. EXITING ..."
+    echo "... Only one instance at the same time is supported !"
+    exit 1
+fi
 
 # Check and create needed directories
 trap '' 2   # Disable use of CTRL-C 
