@@ -30,7 +30,7 @@ sed -i "s/VERSION/$version/g" /root/motd.new
 mv /root/motd.new /etc/motd
 mv /root/mus-start.sh /opt/mikrotik.upgrade.server/tools/
 mv /root/mus-sync.sh /opt/mikrotik.upgrade.server/tools/
-mv /root/mus-status-gen.sh /opt/mikrotik.upgrade.server/tools/
+mv /root/mus-gen-status.sh /opt/mikrotik.upgrade.server/tools/
 mv /root/routeros.raw /opt/mikrotik.upgrade.server/tools/mikrotik.configs/
 mv /root/routeros.0.00.conf /opt/mikrotik.upgrade.server/tools/mikrotik.configs/
 mv /root/CHANGELOG.0.0 /opt/mikrotik.upgrade.server/repo/routeros/0.0/CHANGELOG
@@ -40,12 +40,12 @@ mv /root/mus-documentation.pdf /var/www/localhost/htdocs/mus/doc/
 rm /var/www/localhost/htdocs/mus/doc/coming_soon
 chmod 0775 /opt/mikrotik.upgrade.server/tools/mus-start.sh
 chmod 0775 /opt/mikrotik.upgrade.server/tools/mus-sync.sh
-chmod 0775 /opt/mikrotik.upgrade.server/tools/mus-status-gen.sh
+chmod 0775 /opt/mikrotik.upgrade.server/tools/mus-gen-status.sh
 chmod 0775 /opt/mikrotik.upgrade.server/tools/mus-cron-job.sh
 ln -s /opt/mikrotik.upgrade.server/tools/mus-start.sh /usr/local/bin/mus-start
 ln -s /opt/mikrotik.upgrade.server/tools/mus-sync.sh /usr/local/bin/mus-sync
-ln -s /opt/mikrotik.upgrade.server/tools/mus-status-gen.sh /usr/local/bin/mus-status-gen
-ln -s /opt/mikrotik.upgrade.server/tools/mus-status-gen.sh /usr/local/bin/
+ln -s /opt/mikrotik.upgrade.server/tools/mus-gen-status.sh /usr/local/bin/mus-gen-status
+ln -s /opt/mikrotik.upgrade.server/tools/mus-gen-status.sh /usr/local/bin/
 chown -r apache:apache /var/www/localhost/htdocs/
 echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
 rc-update add sshd 
@@ -57,11 +57,12 @@ rc-service rsyslog start
 rc-update add crond
 rc-service crond start
 sleep 15
-/opt/mikrotik.upgrade.server/tools/mus-status-gen.sh 0
+/opt/mikrotik.upgrade.server/tools/mus-gen-status.sh 0
 /opt/mikrotik.upgrade.server/tools/mus-start.sh 0
 echo "****"
 echo "'"
-echo "Don't forget to set root-ssh password !!!"
+echo "Don't forget to set root-ssh password"
+echo "if you need to use ssh/sftp-access !!!" 
 echo "*"
 echo "****"
 echo "*"

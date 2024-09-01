@@ -86,10 +86,10 @@ exec 2> >(tee -a ${logfile} >&2)
 echo " Starting at $(date -u)." >> $logfile 2>&1
 
 # Check if another process is running and then exit immediatly
-scriptnum=$(ps -A | grep -c '{mus-start}')
+scriptnum=$(ps -A | grep -c '{mus-s')
 if [ $scriptnum -gt 1 ]
 then 
-    echo "... Another instance of MUS is running. EXITING ..."
+    echo "... Another instance of MUS is running. EXITING with error-code 1."
     echo "... Only one instance at the same time is supported !"
     exit 1
 fi

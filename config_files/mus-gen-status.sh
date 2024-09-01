@@ -1,6 +1,6 @@
 #!/bin/bash
 #**********************************
-#*       mus-status-gen.sh        *
+#*       mus-gen-status.sh        *
 #**********************************
 #*       (C) 2024 DL7DET          *
 #*        Detlef Lampart          *
@@ -65,7 +65,7 @@ EOF
 if [ $debug -gt 0 ]
 then
 echo "**********************************"
-echo "*       mus-status-gen.sh        *"
+echo "*       mus-gen-status.sh        *"
 echo "***          "$pgmvers "          ***"
 echo "**********************************"
 echo "*       (C) 2024 DL7DET          *"
@@ -78,6 +78,14 @@ echo "... initializing."
 echo
 sleep 10
 echo "... Starting at "$(datestamp)"."
+fi
+
+# Check if another process is running and then exit immediatly
+scriptnum=$(ps -A | grep -c '{mus-g')
+if [ $scriptnum -gt 1 ]
+then 
+    echo "... Another instance of mus-gen-status.sh is running. EXITING with error-code 0."
+    exit 0
 fi
 
 # Fetch and generate variables for status
