@@ -157,6 +157,7 @@ trap 2  # Enable CTRL-C again
 rm -rf $tempdir/*
 
 # Check if internet-connection is possible, if not exit
+trap '' 2   # Disable use of CTRL-C 
 ping -q -c5 8.8.8.8 > /dev/null
 if [ $? -ne 0 ]
 then
@@ -189,7 +190,6 @@ then
 fi
 
 # Check if Mikrotik®-master-servers are reachable, if not exit
-
 ping -q -c10 download.mikrotik.com > /dev/null
 if [ $? -gt 0 ]
     then
@@ -204,7 +204,6 @@ if [ $? -gt 0 ]
         fi
         exit 7
 fi
-
 if [[ -e /tmp/last_error ]]
 then 
     echo "OK" > /tmp/last_error
@@ -212,6 +211,7 @@ else
         rm -f /tmp/last_error
         echo "OK" > /tmp/last_error    
 fi
+trap 2  # Enable CTRL-C again
 
 # Download WINBOX®-packages
 if [ $debug -gt 0 ]
