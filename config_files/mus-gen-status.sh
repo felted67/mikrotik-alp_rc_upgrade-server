@@ -34,9 +34,11 @@ scriptstatus="not running"
 dwnlstatus="not running"
 dwnlnum=0
 dsklmt=5
-startpid=/var/run/mus-start.pid
-syncpid=/var/run/mus-sync.pid
-statpid=/var/run/mus-stat.pid
+rundir=/var/run
+startpid=$rundir/mus-start.pid
+syncpid=$rundir/mus-sync.pid
+dwnlpid=$rundir/mus-dwnl.pid
+statpid=$rundir/mus-stat.pid
 muspid=0
 
 #
@@ -48,12 +50,11 @@ datestamp() {
 }
 
 createpid() {
-    touch $statpid
-    echo $BASHPID > $statpid
+    echo $BASHPID > $1
 }
 
 removepid() {
-    rm -f $statpid
+    rm -f $1
 }
 
 createhtmlfile() {
@@ -99,7 +100,7 @@ then
     echo "... Perhaps you have to remove the pid-file in /var/run !"
     exit 0
 else
-    createpid
+    createpid $statpid
 fi
 
 # Fetch and generate variables for status
@@ -126,8 +127,7 @@ else
     scriptstatus='<font color="green">Script(s) is/are NOT running</font>'
 fi
 
-dwnlnum=$(ps -A | grep -c 'wget -N')
-if [ $dwnlnum -gt 1 ]
+if [[ -e $dwnlpid ]]
 then 
     dwnlstatus='<font color="red">Download is running</font>'
 else 
@@ -238,7 +238,7 @@ if [ $debug -gt 0 ]
     echo
 fi
 
-removepid
+removepid $statpid
 
 #
 # This is the end, my lonely friend, the end

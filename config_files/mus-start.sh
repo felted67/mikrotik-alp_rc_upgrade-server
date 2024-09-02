@@ -227,21 +227,28 @@ if [ $debug -gt 0 ]
     fi
 
 # Get latest versions LATESTa7.XXX from download.mikrotik.com
+createpid $dwnlpid
 wget -N $baseurl/routeros/$ltversion -q -P $tempdir/
+removepid $dwnlpid
 if [ $debug -gt 0 ] 
     then
         echo "... Downloaded LATEST-version-file for long-term version."
 fi
+createpid $dwnlpid
 wget -N $baseurl/routeros/$stableversion -q -P $tempdir/
+removepid $dwnlpid
 if [ $debug -gt 0 ] 
     then
         echo "... Downloaded LATEST-version-file for stable version."
 fi
+createpid $dwnlpid
 wget -N $baseurl/routeros/$betaversion -q -P $tempdir/
+removepid $dwnlpid
 if [ $debug -gt 0 ] 
     then
         echo "... Downloaded LATEST-version-file for beta version."
 fi
+createpid $dwnlpid
 wget -N $baseurl/routeros/$devversion -q -P $tempdir/
 if [ $debug -gt 0 ] 
     then
@@ -249,7 +256,9 @@ if [ $debug -gt 0 ]
 fi
 
 # Get latest version for WINBOX 'LATEST.3' from download.mikrotik.com
+createpid $dwnlpid
 wget -N $baseurl/routeros/winbox/$winboxversion -q -P $tempdir/
+removepid $dwnlpid
 if [ $debug -gt 0 ] 
     then
         echo "... Downloaded LATEST-WINBOX-version-file."

@@ -222,8 +222,10 @@ then
 fi		
 if [ $debug -lt 3 ]
 then
+    createpid $dwnlpid
     wget -N $winboxurl/winbox -q -O $tempdir/winbox.exe 
     wget -N $winboxurl/winbox64 -q -O $tempdir/winbox64.exe	
+    removepid $dwnlpid
 fi
 
 # Copy or move from temp-directory to created WINBOX®-dir
@@ -265,22 +267,30 @@ then
 fi
 
 # Get latest versions LATESTa7.XXX from download.mikrotik.com
+createpid $dwnlpid
 wget -N $baseurl/routeros/$ltversion -q -P $repodir/routeros/
+removepid $dwnlpid
 if [ $debug -gt 0 ] 
     then
     echo "... Downloaded LATEST-file long-term version."
 fi
+createpid $dwnlpid
 wget -N $baseurl/routeros/$stableversion -q -P $repodir/routeros/
+removepid $dwnlpid
 if [ $debug -gt 0 ] 
     then
     echo "... Downloaded LATEST-file stable version."
 fi
+createpid $dwnlpid
 wget -N $baseurl/routeros/$betaversion -q -P $repodir/routeros/
+removepid $dwnlpid
 if [ $debug -gt 0 ] 
     then
     echo "... Downloaded LATEST-file beta version."
 fi
+createpid $dwnlpid
 wget -N $baseurl/routeros/$devversion -q -P $repodir/routeros/
+removepid $dwnlpid
 if [ $debug -gt 0 ] 
     then
     echo "... Downloaded LATEST-file development version."
@@ -357,8 +367,10 @@ for filename in $configdir/*.conf; do
 	        fi		
 	        if [ $debug -lt 3 ]
 	        then
+                createpid $dwnlpid
 	            wget -N $baseurl/$rptype/$rpvers/$package -q -P $tempdir	
-	        fi
+                removepid $dwnlpid
+            fi
         done
 
         if [ $debug -gt 0 ]
