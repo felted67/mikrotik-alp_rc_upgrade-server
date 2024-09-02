@@ -47,8 +47,10 @@ devversion=NEWESTa7.development
 winboxversion=LATEST.3
 logdir=$startdir/mus.log
 logfile=$logdir/mus-start.log
-startpid=/var/run/mus-start.pid
-syncpid=/var/run/mus-sync.pid
+rundir=/var/run
+startpid=$rundir/mus-start.pid
+syncpid=$rundir/mus-sync.pid
+dwnlpid=$rundir/mus-dwnl.pid
 muspid=0
 
 #
@@ -60,11 +62,11 @@ datestamp() {
 }
 
 createpid() {
-    echo $BASHPID > $startpid
+    echo $BASHPID > $1
 }
 
 removepid() {
-    rm -f $startpid
+    rm -f $1
 }
 
 # Show startup infos
@@ -103,7 +105,7 @@ then
     echo "... Perhaps you have to remove the pid-files in /var/run/ !"
     exit 1
 else
-    createpid    
+    createpid $startpid   
 fi
 
 # Check, create and symlink needed directories
@@ -170,7 +172,7 @@ then
         rm -f /tmp/last_error
         echo "NO INTERNET CONNECTION-CHECK CONFIG" > /tmp/last_error
     fi
-    removepid
+    removepid $startpid
     exit 7
 fi
 
@@ -187,7 +189,7 @@ then
         rm -f /tmp/last_error
         echo "NO DNS RESOLUTION-CHECK CONFIG" > /tmp/last_error    
     fi
-    removepid
+    removepid $startpid
     exit 7
 fi
 
@@ -205,7 +207,7 @@ then
         rm -f /tmp/last_error
         echo "NO MASTER SERVER REACHABLE" > /tmp/last_error    
     fi
-    removepid
+    removepid $startpid
     exit 7
 fi
 
@@ -334,10 +336,10 @@ fi
 # Start mikrotik.sync.repos.sh to download packages 
 if [ $debug -eq 0 ]
 then
-    removepid
+    removepid $startpid
     $startdir/mus-sync.sh 0
 else
-    removepid
+    removepid $startpid
     $startdir/mus-sync.sh
 fi
 

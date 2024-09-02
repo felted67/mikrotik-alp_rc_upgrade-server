@@ -50,8 +50,10 @@ nonvconfig=$configdir/routeros.0.00.conf
 winboxversion=LATEST.3
 logdir=$startdir/mus.log
 logfile=$logdir/mus-sync.log
-startpid=/var/run/mus-start.pid
-syncpid=/var/run/mus-sync.pid
+rundir=/var/run
+startpid=$rundir/mus-start.pid
+syncpid=$rundir/mus-sync.pid
+dwnlpid=$rundir/mus-dwnl.pid
 muspid=0
 
 #
@@ -63,11 +65,11 @@ datestamp() {
 }
 
 createpid() {
-    echo $BASHPID > $syncpid
+    echo $BASHPID > $1
 }
 
 removepid() {
-    rm -f $syncpid
+    rm -f $1
 }
  
 # Show startup infos
@@ -107,7 +109,7 @@ then
     echo "... Perhaps you have to remove the pid-file in /var/run !"
     exit 1
 else
-    createpid
+    createpid $syncpid
 fi
 
 # Check and create needed directories
@@ -508,8 +510,8 @@ else
     touch /tmp/last_completed
     echo $(datestamp) > /tmp/last_completed
 fi
-
-removepid
+ 
+removepid $syncpid
 
 #
 # This is the end, my lonely friend,the end
