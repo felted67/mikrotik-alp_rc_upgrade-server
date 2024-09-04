@@ -40,11 +40,16 @@ configdir=$startdir/mikrotik.configs
 baseurl=https://download.mikrotik.com
 tempdir=$startdir/temp
 repodir=$pgmprefix/repo
-ltversion=NEWESTa7.long-term
-stableversion=NEWESTa7.stable
-betaversion=NEWESTa7.testing
-devversion=NEWESTa7.development
-winboxversion=LATEST.3
+lt7version=NEWESTa7.long-term
+lt6version=NEWEST6.long-term
+stable6version=NEWEST6.stable
+stable7version=NEWESTa7.stable
+beta7version=NEWESTa7.testing
+beta6version=NEWEST6.testing
+dev7version=NEWESTa7.development
+dev6version=NEWEST6.development
+winbox3version=LATEST.3
+winbox4version=LATEST.4
 logdir=$startdir/mus.log
 logfile=$logdir/mus-start.log
 rundir=/var/run
@@ -67,6 +72,73 @@ createpid() {
 
 removepid() {
     rm -f $1
+}
+
+checkinternetconnection() {
+    # Check if internet-connection is possible, if not exit
+    ping -q -c5 8.8.8.8 > /dev/null
+    if [ $? -ne 0 ]
+    then
+        echo "... NO internet-connection available. Please check routes !"
+        echo "... Script stopped - please check your configuration !!!"
+        if [[ -e /tmp/last_error ]]
+        then
+            echo "NO INTERNET CONNECTION-CHECK CONFIG" > /tmp/last_error
+        else 
+            rm -f /tmp/last_error
+            echo "NO INTERNET CONNECTION-CHECK CONFIG" > /tmp/last_error
+        fi
+        removepid $startpid
+        exit 7
+    fi
+
+    # Check if dns-resolution is possible, if not exit
+    ping -q -c5 google.com > /dev/null
+    if [ $? -gt 0 ]
+    then
+        echo "... NO name resolution (DNS) available. Please check DNS-configuration !"
+        echo "... Script stopped - please check your configuration !!!"
+        if [[ -e /tmp/last_error ]]
+        then 
+            echo "NO DNS RESOLUTION-CHECK CONFIG" > /tmp/last_error
+        else
+            rm -f /tmp/last_error
+            echo "NO DNS RESOLUTION-CHECK CONFIG" > /tmp/last_error    
+        fi
+        removepid $startpid
+        exit 7
+    fi
+
+    # Check if Mikrotik®-master-servers are reachable, if not exit
+
+    ping -q -c5 download.mikrotik.com > /dev/null
+    if [ $? -gt 0 ]
+    then
+        echo "... MIKROTIK®-master-servers a not reachable. Please check status !"
+        echo "... Script stopped - please check your configuration !!!"
+        if [[ -e /tmp/last_error ]]
+        then 
+            echo "NO MASTER SERVER REACHABLE" > /tmp/last_error
+        else
+            rm -f /tmp/last_error
+            echo "NO MASTER SERVER REACHABLE" > /tmp/last_error    
+        fi
+        removepid $startpid
+        exit 7
+    fi
+
+    if [[ -e /tmp/last_error ]]
+    then 
+        echo "OK" > /tmp/last_error
+    else
+        rm -f /tmp/last_error
+        echo "OK" > /tmp/last_error    
+    fi
+}
+
+emptytemp() {
+    # Empty TEMP-directory from previous run
+    rm -rf $tempdir/*
 }
 
 # Show startup infos
@@ -156,68 +228,7 @@ then
     echo
 fi
 
-# Empty TEMP-directory from previous run
-rm -rf $tempdir/*
-
-# Check if internet-connection is possible, if not exit
-ping -q -c5 8.8.8.8 > /dev/null
-if [ $? -ne 0 ]
-then
-    echo "... NO internet-connection available. Please check routes !"
-    echo "... Script stopped - please check your configuration !!!"
-    if [[ -e /tmp/last_error ]]
-    then
-        echo "NO INTERNET CONNECTION-CHECK CONFIG" > /tmp/last_error
-    else 
-        rm -f /tmp/last_error
-        echo "NO INTERNET CONNECTION-CHECK CONFIG" > /tmp/last_error
-    fi
-    removepid $startpid
-    exit 7
-fi
-
-# Check if dns-resolution is possible, if not exit
-ping -q -c5 google.com > /dev/null
-if [ $? -gt 0 ]
-then
-    echo "... NO name resolution (DNS) available. Please check DNS-configuration !"
-    echo "... Script stopped - please check your configuration !!!"
-    if [[ -e /tmp/last_error ]]
-    then 
-        echo "NO DNS RESOLUTION-CHECK CONFIG" > /tmp/last_error
-    else
-        rm -f /tmp/last_error
-        echo "NO DNS RESOLUTION-CHECK CONFIG" > /tmp/last_error    
-    fi
-    removepid $startpid
-    exit 7
-fi
-
-# Check if Mikrotik®-master-servers are reachable, if not exit
-
-ping -q -c5 download.mikrotik.com > /dev/null
-if [ $? -gt 0 ]
-then
-    echo "... MIKROTIK®-master-servers a not reachable. Please check status !"
-    echo "... Script stopped - please check your configuration !!!"
-    if [[ -e /tmp/last_error ]]
-    then 
-        echo "NO MASTER SERVER REACHABLE" > /tmp/last_error
-    else
-        rm -f /tmp/last_error
-        echo "NO MASTER SERVER REACHABLE" > /tmp/last_error    
-    fi
-    removepid $startpid
-    exit 7
-fi
-
-if [[ -e /tmp/last_error ]]
-then 
-    echo "OK" > /tmp/last_error
-else
-        rm -f /tmp/last_error
-        echo "OK" > /tmp/last_error    
-fi
+checkinternetconnection
 
 # Give some nice informations on the screen
 if [ $debug -gt 0 ] 
@@ -226,47 +237,109 @@ if [ $debug -gt 0 ]
         echo "... Downloading latest version-files."
     fi
 
+emptytemp
+
+# Get latest versions LATEST6.XXX from download.mikrotik.com
+createpid $dwnlpid
+wget -N $baseurl/routeros/$lt6version -q -P $tempdir/
+removepid $dwnlpid
+if [ $debug -gt 0 ] 
+    then
+        echo "... Downloaded LATEST-version6-file for long-term version."
+fi
+createpid $dwnlpid
+wget -N $baseurl/routeros/$stable6version -q -P $tempdir/
+removepid $dwnlpid
+if [ $debug -gt 0 ] 
+    then
+        echo "... Downloaded LATEST-version6-file for stable version."
+fi
+createpid $dwnlpid
+wget -N $baseurl/routeros/$beta6version -q -P $tempdir/
+removepid $dwnlpid
+if [ $debug -gt 0 ] 
+    then
+        echo "... Downloaded LATEST-version6-file for beta version."
+fi
+createpid $dwnlpid
+wget -N $baseurl/routeros/$dev6version -q -P $tempdir/
+if [ $debug -gt 0 ] 
+    then
+        echo "... Downloaded LATEST-version6-file for development version."
+fi
+
 # Get latest versions LATESTa7.XXX from download.mikrotik.com
 createpid $dwnlpid
-wget -N $baseurl/routeros/$ltversion -q -P $tempdir/
+wget -N $baseurl/routeros/$lt7version -q -P $tempdir/
 removepid $dwnlpid
 if [ $debug -gt 0 ] 
     then
-        echo "... Downloaded LATEST-version-file for long-term version."
+        echo "... Downloaded LATEST-version7-file for long-term version."
 fi
 createpid $dwnlpid
-wget -N $baseurl/routeros/$stableversion -q -P $tempdir/
+wget -N $baseurl/routeros/$stable7version -q -P $tempdir/
 removepid $dwnlpid
 if [ $debug -gt 0 ] 
     then
-        echo "... Downloaded LATEST-version-file for stable version."
+        echo "... Downloaded LATEST-version7-file for stable version."
 fi
 createpid $dwnlpid
-wget -N $baseurl/routeros/$betaversion -q -P $tempdir/
+wget -N $baseurl/routeros/$beta7version -q -P $tempdir/
 removepid $dwnlpid
 if [ $debug -gt 0 ] 
     then
-        echo "... Downloaded LATEST-version-file for beta version."
+        echo "... Downloaded LATEST-version7-file for beta version."
 fi
 createpid $dwnlpid
-wget -N $baseurl/routeros/$devversion -q -P $tempdir/
+wget -N $baseurl/routeros/$dev7version -q -P $tempdir/
 if [ $debug -gt 0 ] 
     then
-        echo "... Downloaded LATEST-version-file for development version."
+        echo "... Downloaded LATEST-version7-file for development version."
 fi
 
 # Get latest version for WINBOX 'LATEST.3' from download.mikrotik.com
 createpid $dwnlpid
-wget -N $baseurl/routeros/winbox/$winboxversion -q -P $tempdir/
+wget -N $baseurl/routeros/winbox/$winbox3version -q -P $tempdir/
 removepid $dwnlpid
 if [ $debug -gt 0 ] 
     then
-        echo "... Downloaded LATEST-WINBOX-version-file."
+        echo "... Downloaded LATEST-WINBOX3-version-file."
 fi
 if [ $debug -gt 0 ] 
 then
     echo
 fi
+
+# Reset index variables
+i=0
+
+# Generate mikrotik-routeros-6-config-file(s)
+trap '' 2   # Disable use of CTRL-C 
+for filename in $tempdir/NEWEST6.*; do
+    while IFS= read -r varname; do
+    var[$i]=$varname
+    i=$(expr $i + 1)    
+        done < "$filename"       
+    rpcomplete="${var[0]}"
+    rpversion=$(sed -n p $filename | cut -d " " -f1)
+    if [[ $rpversion != *"0.00"* ]]; then
+	    if [[ ! -f $configdir/routeros.$rpversion.conf ]]; then
+	        cp $configdir/routeros.raw $configdir/routeros.$rpversion.conf
+	        sed -i "s/ROSVERSION/$rpversion/g" $configdir/routeros.$rpversion.conf
+    	        if [ $debug -gt 0 ] 
+	            then
+		            echo "... Generated mikrotik-config-file for version: "$rpversion    
+	            fi
+	    else 
+	        if [ $debug -gt 0 ] 
+	        then
+		        echo "... Mikrotik-config-file for version: "$rpversion" already generated."    
+	        fi
+	    fi    
+    fi    
+done
+trap 2  # Enable CTRL-C again
+
 
 # Reset index variables
 i=0
@@ -298,37 +371,59 @@ for filename in $tempdir/NEWESTa7.*; do
 done
 trap 2  # Enable CTRL-C again
 
-# Copy latest versions LATESTa7.XXX to repo-dir
-cp $tempdir/$ltversion $repodir/routeros/
+# Copy latest versions LATEST6.XXX to repo-dir
+cp $tempdir/$lt6version $repodir/routeros/
 if [ $debug -gt 0 ] 
     then
     echo "... Copied LATEST-file long-term version to repo-dir."
 fi
-cp $tempdir/$stableversion $repodir/routeros/
+cp $tempdir/$stable6version $repodir/routeros/
 if [ $debug -gt 0 ] 
     then
     echo "... Copied LATEST-file stable version to repo-dir."
 fi
-cp $tempdir/$betaversion $repodir/routeros/
+cp $tempdir/$beta6version $repodir/routeros/
 if [ $debug -gt 0 ] 
     then
     echo "... Copied LATEST-file beta version to repo-dir."
 fi
-cp $tempdir/$devversion $repodir/routeros/
+cp $tempdir/$dev6version $repodir/routeros/
 if [ $debug -gt 0 ] 
     then
     echo "... Copied LATEST-file development version to repo-dir."
 fi
-cp $tempdir/$winboxversion $repodir/routeros/winbox/
+
+# Copy latest versions LATESTa7.XXX to repo-dir
+cp $tempdir/$lt7version $repodir/routeros/
 if [ $debug -gt 0 ] 
     then
-    echo "... Copied LATEST-WINBOX-file to repo/winbox-dir."
+    echo "... Copied LATEST-file long-term version to repo-dir."
+fi
+cp $tempdir/$stable7version $repodir/routeros/
+if [ $debug -gt 0 ] 
+    then
+    echo "... Copied LATEST-file stable version to repo-dir."
+fi
+cp $tempdir/$beta7version $repodir/routeros/
+if [ $debug -gt 0 ] 
+    then
+    echo "... Copied LATEST-file beta version to repo-dir."
+fi
+cp $tempdir/$dev7version $repodir/routeros/
+if [ $debug -gt 0 ] 
+    then
+    echo "... Copied LATEST-file development version to repo-dir."
+fi
+cp $tempdir/$winbox3version $repodir/routeros/winbox/
+if [ $debug -gt 0 ] 
+    then
+    echo "... Copied LATEST-WINBOX3-file to repo/winbox-dir."
 fi
 
 # Empty TEMP-directory from previous run
 if [ $debug -lt 3 ] 
     then
-    rm -rf $tempdir/*
+    emptytemp
 fi
 
 if [ $debug -gt 0 ] 

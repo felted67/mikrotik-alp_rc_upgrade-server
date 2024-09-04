@@ -42,10 +42,6 @@ winboxurl=https://mt.lv
 tempdir=$startdir/temp
 repodir=$pgmprefix/repo
 winboxdir=$pgmprefix/repo/routeros/winbox
-ltversion=NEWESTa7.long-term
-stableversion=NEWESTa7.stable
-betaversion=NEWESTa7.testing
-devversion=NEWESTa7.development
 nonvconfig=$configdir/routeros.0.00.conf
 winboxversion=LATEST.3
 logdir=$startdir/mus.log
@@ -71,7 +67,73 @@ createpid() {
 removepid() {
     rm -f $1
 }
- 
+
+checkinternetconnection() {
+    # Check if internet-connection is possible, if not exit
+    ping -q -c5 8.8.8.8 > /dev/null
+    if [ $? -ne 0 ]
+    then
+        echo "... NO internet-connection available. Please check routes !"
+        echo "... Script stopped - please check your configuration !!!"
+        if [[ -e /tmp/last_error ]]
+        then
+            echo "NO INTERNET CONNECTION-CHECK CONFIG" > /tmp/last_error
+        else 
+            rm -f /tmp/last_error
+            echo "NO INTERNET CONNECTION-CHECK CONFIG" > /tmp/last_error
+        fi
+        removepid $startpid
+        exit 7
+    fi
+
+    # Check if dns-resolution is possible, if not exit
+    ping -q -c5 google.com > /dev/null
+    if [ $? -gt 0 ]
+    then
+        echo "... NO name resolution (DNS) available. Please check DNS-configuration !"
+        echo "... Script stopped - please check your configuration !!!"
+        if [[ -e /tmp/last_error ]]
+        then 
+            echo "NO DNS RESOLUTION-CHECK CONFIG" > /tmp/last_error
+        else
+            rm -f /tmp/last_error
+            echo "NO DNS RESOLUTION-CHECK CONFIG" > /tmp/last_error    
+        fi
+        removepid $startpid
+        exit 7
+    fi
+
+    # Check if Mikrotik®-master-servers are reachable, if not exit
+    ping -q -c5 download.mikrotik.com > /dev/null
+    if [ $? -gt 0 ]
+    then
+        echo "... MIKROTIK®-master-servers a not reachable. Please check status !"
+        echo "... Script stopped - please check your configuration !!!"
+        if [[ -e /tmp/last_error ]]
+        then 
+            echo "NO MASTER SERVER REACHABLE" > /tmp/last_error
+        else
+            rm -f /tmp/last_error
+            echo "NO MASTER SERVER REACHABLE" > /tmp/last_error    
+        fi
+        removepid $startpid
+        exit 7
+    fi
+
+    if [[ -e /tmp/last_error ]]
+    then 
+        echo "OK" > /tmp/last_error
+    else
+        rm -f /tmp/last_error
+        echo "OK" > /tmp/last_error    
+    fi
+}
+
+emptytemp() {
+    # Empty TEMP-directory from previous run
+    rm -rf $tempdir/*
+}
+
 # Show startup infos
 if [ $debug -gt 0 ] 
 then
@@ -156,64 +218,10 @@ fi
 trap 2  # Enable CTRL-C again
 
 # Empty TEMP-directory from previous run
-rm -rf $tempdir/*
+emptytemp
 
 # Check if internet-connection is possible, if not exit
-trap '' 2   # Disable use of CTRL-C 
-ping -q -c5 8.8.8.8 > /dev/null
-if [ $? -ne 0 ]
-then
-    echo "... NO internet-connection available. Please check routes !"
-    echo "... Script stopped - please check your configuration !!!"
-    if [[ -e /tmp/last_error ]]
-    then
-        echo "NO INTERNET CONNECTION" > /tmp/last_error
-    else 
-        rm -f /tmp/last_error
-        echo "NO INTERNET CONNECTION" > /tmp/last_error
-    fi
-    exit 7
-fi
-
-# Check if dns-resolution is possible, if not exit
-ping -q -c5 google.com > /dev/null
-if [ $? -gt 0 ]
-then
-    echo "... NO name resolution (DNS) available. Please check DNS-configuration !"
-    echo "... Script stopped - please check your configuration !!!"
-    if [[ -e /tmp/last_error ]]
-    then 
-        echo "NO DNS RESOLUTION" > /tmp/last_error
-    else
-        rm -f /tmp/last_error
-        echo "NO DNS RESOLUTION" > /tmp/last_error    
-    fi
-    exit 7
-fi
-
-# Check if Mikrotik®-master-servers are reachable, if not exit
-ping -q -c10 download.mikrotik.com > /dev/null
-if [ $? -gt 0 ]
-    then
-        echo "... MIKROTIK®-master-servers a not reachable. Please check status !"
-        echo "... Script stopped - please check your configuration !!!"
-        if [[ -e /tmp/last_error ]]
-        then 
-    	    echo "NO SERVER REACHABLE" > /tmp/last_error
-    	else
-    	    rm -f /tmp/last_error
-    	    echo "NO SERVER REACHABLE" > /tmp/last_error    
-        fi
-        exit 7
-fi
-if [[ -e /tmp/last_error ]]
-then 
-    echo "OK" > /tmp/last_error
-else
-        rm -f /tmp/last_error
-        echo "OK" > /tmp/last_error    
-fi
-trap 2  # Enable CTRL-C again
+checkinternetconnection
 
 # Download WINBOX®-packages
 if [ $debug -gt 0 ]
@@ -259,47 +267,11 @@ fi
 # Empty TEMP-directory from previous run
 if [ $debug -lt 3 ] 
     then
-    rm -rf $tempdir/*
+    emptytemp
 fi
 if [ $debug -gt 0 ] 
 then
     echo
-fi
-
-# Get latest versions LATESTa7.XXX from download.mikrotik.com
-createpid $dwnlpid
-wget -N $baseurl/routeros/$ltversion -q -P $repodir/routeros/
-removepid $dwnlpid
-if [ $debug -gt 0 ] 
-    then
-    echo "... Downloaded LATEST-file long-term version."
-fi
-createpid $dwnlpid
-wget -N $baseurl/routeros/$stableversion -q -P $repodir/routeros/
-removepid $dwnlpid
-if [ $debug -gt 0 ] 
-    then
-    echo "... Downloaded LATEST-file stable version."
-fi
-createpid $dwnlpid
-wget -N $baseurl/routeros/$betaversion -q -P $repodir/routeros/
-removepid $dwnlpid
-if [ $debug -gt 0 ] 
-    then
-    echo "... Downloaded LATEST-file beta version."
-fi
-createpid $dwnlpid
-wget -N $baseurl/routeros/$devversion -q -P $repodir/routeros/
-removepid $dwnlpid
-if [ $debug -gt 0 ] 
-    then
-    echo "... Downloaded LATEST-file development version."
-fi
-
-# Empty TEMP-directory from previous run
-if [ $debug -lt 3 ] 
-    then
-    rm -rf $tempdir/*
 fi
 
 # Check if *.conf-file is DOS-mode file and convert to unix-mode
@@ -317,7 +289,6 @@ for filename in $configdir/*.conf; do
     fi
 done
 trap 2  # Enable CTRL-C again
-
 
 # Give some nice informations on the screen
 if [ $debug -gt 0 ] 
@@ -457,7 +428,7 @@ for filename in $configdir/*.conf; do
         # Clear temp-directory for next download run
         if [ $debug -lt 3 ] 
         then
-	        rm -rf $tempdir/*
+	        emptytemp
 	        if [ $debug -gt 0 ] 
 	        then
 	        echo "... Temp-directory has been emptied."
