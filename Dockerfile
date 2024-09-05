@@ -102,6 +102,7 @@ COPY ./config_files/routeros.raw /root/
 COPY ./config_files/routeros.0.00.conf /root/
 COPY ./config_files/CHANGELOG.0.0 /root/
 COPY ./config_files/mus-start.sh /root/
+COPY ./config_files/mus-start-bg.sh /root/
 COPY ./config_files/mus-sync.sh /root/
 COPY ./config_files/mus-gen-status.sh /root/
 COPY ./config_files/webserver.data.tar.gz /root/

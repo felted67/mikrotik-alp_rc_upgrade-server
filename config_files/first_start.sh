@@ -29,6 +29,7 @@ mv /etc/motd /etc/motd.orig
 sed -i "s/VERSION/$version/g" /root/motd.new
 mv /root/motd.new /etc/motd
 mv /root/mus-start.sh /opt/mikrotik.upgrade.server/tools/
+mv /root/mus-start-bg.sh /opt/mikrotik.upgrade.server/tools/
 mv /root/mus-sync.sh /opt/mikrotik.upgrade.server/tools/
 mv /root/mus-gen-status.sh /opt/mikrotik.upgrade.server/tools/
 mv /root/routeros.raw /opt/mikrotik.upgrade.server/tools/mikrotik.configs/
@@ -39,10 +40,12 @@ mv /root/error.new /tmp/last_error
 mv /root/mus-documentation.pdf /var/www/localhost/htdocs/mus/doc/
 rm /var/www/localhost/htdocs/mus/doc/coming_soon
 chmod 0775 /opt/mikrotik.upgrade.server/tools/mus-start.sh
+chmod 0775 /opt/mikrotik.upgrade.server/tools/mus-start-bg.sh
 chmod 0775 /opt/mikrotik.upgrade.server/tools/mus-sync.sh
 chmod 0775 /opt/mikrotik.upgrade.server/tools/mus-gen-status.sh
 chmod 0775 /opt/mikrotik.upgrade.server/tools/mus-cron-job.sh
 ln -s /opt/mikrotik.upgrade.server/tools/mus-start.sh /usr/local/bin/mus-start
+ln -s /opt/mikrotik.upgrade.server/tools/mus-start-bg.sh /usr/local/bin/mus-start-bg
 ln -s /opt/mikrotik.upgrade.server/tools/mus-sync.sh /usr/local/bin/mus-sync
 ln -s /opt/mikrotik.upgrade.server/tools/mus-gen-status.sh /usr/local/bin/mus-gen-status
 ln -s /opt/mikrotik.upgrade.server/tools/mus-gen-status.sh /usr/local/bin/
