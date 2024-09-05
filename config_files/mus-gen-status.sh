@@ -57,6 +57,25 @@ removepid() {
     rm -f $1
 }
 
+statuscheck() {
+#local startps=$(ps -A | grep -cF '/bin/bash /opt/mikrotik.upgrade.server/tools/mus-start')
+#local syncps=$(ps -A | grep -cF '/bin/bash /opt/mikrotik.upgrade.server/tools/mus-sync')
+
+if [[ -e $startpid || -e $syncpid ]]
+then 
+    scriptstatus='<font color="orange">Scripts are running</font>'
+else 
+    scriptstatus='<font color="green">Scripts are idle</font>'
+fi
+
+if [[ -e $dwnlpid ]]
+then 
+    dwnlstatus='<font color="orange">Download is running</font>'
+else 
+    dwnlstatus='<font color="green">Download is idle</font>'
+fi
+}
+
 createhtmlfile() {
     touch /tmp/status.html
     cat > /tmp/status.html << EOF
@@ -120,19 +139,7 @@ memshr=$(free -h | grep 'Mem' | awk '{ print $5 }')
 membuf=$(free -h | grep 'Mem' | awk '{ print $6 }')
 memava=$(free -h | grep 'Mem' | awk '{ print $7 }')
 
-if [[ -e $startpid || -e $syncpid ]]
-then 
-    scriptstatus='<font color="red">Script(s) is/are running</font>'
-else 
-    scriptstatus='<font color="green">Script(s) is/are NOT running</font>'
-fi
-
-if [[ -e $dwnlpid ]]
-then 
-    dwnlstatus='<font color="red">Download is running</font>'
-else 
-    dwnlstatus='<font color="green">Download is NOT running</font>'
-fi
+statuscheck
 
 if [[ $dskcrt -lt $dsklmt ]]
 then
