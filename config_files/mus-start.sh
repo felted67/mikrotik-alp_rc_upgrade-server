@@ -8,7 +8,7 @@
 #**********************************
 
 # Versioninformation
-pgmvers="v 2.1.0"
+pgmvers="v 2.2.0"
 
 # Debugging functions
 presetdebug=1
