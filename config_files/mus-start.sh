@@ -506,10 +506,10 @@ fi
 if [ $debug -eq 0 ]
 then
     removepid $startpid
-    #$startdir/mus-sync.sh 0
+    $startdir/mus-sync.sh 0
 else
     removepid $startpid
-    #$startdir/mus-sync.sh
+    $startdir/mus-sync.sh
 fi
 
 #
