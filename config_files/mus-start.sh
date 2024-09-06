@@ -389,7 +389,7 @@ i=0
 
 # Generate mikrotik-winbox-4-config-file(s)
 trap '' 2   # Disable use of CTRL-C 
-for filename in $tempdir/LATEST.4; do
+for filename in $tempdir/LATEST.*; do
     while IFS= read -r varname; do
     var[$i]=$varname
     i=$(expr $i + 1)    
@@ -457,6 +457,8 @@ if [ $debug -gt 0 ]
     then
     echo "... Copied LATEST-file development version to repo-dir."
 fi
+
+# Copy latest winbox-versions LATEST.X to repo-dir
 cp $tempdir/$winbox3version $repodir/routeros/winbox/
 if [ $debug -gt 0 ] 
     then
@@ -489,10 +491,10 @@ fi
 if [ $debug -eq 0 ]
 then
     removepid $startpid
-    $startdir/mus-sync.sh 0
+    #$startdir/mus-sync.sh 0
 else
     removepid $startpid
-    $startdir/mus-sync.sh
+    #$startdir/mus-sync.sh
 fi
 
 #
