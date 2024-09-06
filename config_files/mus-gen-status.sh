@@ -63,14 +63,14 @@ statuscheck() {
 
 if [[ -e $startpid || -e $syncpid ]]
 then 
-    scriptstatus='<font color="orange">Scripts are running</font>'
+    scriptstatus='<font color="maroon">Scripts are running</font>'
 else 
     scriptstatus='<font color="green">Scripts are idle</font>'
 fi
 
 if [[ -e $dwnlpid ]]
 then 
-    dwnlstatus='<font color="orange">Download is running</font>'
+    dwnlstatus='<font color="maroon">Download is running</font>'
 else 
     dwnlstatus='<font color="green">Download is idle</font>'
 fi
