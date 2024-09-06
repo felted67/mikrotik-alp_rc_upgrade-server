@@ -387,7 +387,7 @@ trap 2  # Enable CTRL-C again
 # Reset index variables
 i=0
 
-# Generate mikrotik-winbox-4-config-file(s)
+# Generate mikrotik-winbox-config-file(s)
 trap '' 2   # Disable use of CTRL-C 
 for filename in $tempdir/LATEST.*; do
     while IFS= read -r varname; do
@@ -396,10 +396,25 @@ for filename in $tempdir/LATEST.*; do
         done < "$filename"       
     wbcomplete="${var[0]}"
     wbversion=$(sed -n p $filename | cut -d " " -f1)
-    if [[ $wbversion != *"0.00"* ]]; then
+    if [[ $wbversion == *"3"* ]]; then
 	    if [[ ! -f $configdir/winbox.$wbversion.conf ]]; then
-	        cp $configdir/winbox4.raw $configdir/winbox4.$wbversion.conf
-	        sed -i "s/WINBOXVERSION/$wbversion/g" $configdir/winbox4.$wbversion.conf
+	        cp $configdir/winbox3.raw $configdir/winbox.$wbversion.conf
+	        sed -i "s/WINBOXVERSION/$wbversion/g" $configdir/winbox.$wbversion.conf
+    	        if [ $debug -gt 0 ] 
+	            then
+		            echo "... Generated mikrotik-winbox3-config-file for version: "$wbversion    
+	            fi
+	    else 
+	        if [ $debug -gt 0 ] 
+	        then
+		        echo "... Mikrotik-winbox3-config-file for version: "$wbversion" already generated."    
+	        fi
+	    fi    
+    fi
+    if [[ $wbversion == *"4"* ]]; then
+	    if [[ ! -f $configdir/winbox.$wbversion.conf ]]; then
+	        cp $configdir/winbox4.raw $configdir/winbox.$wbversion.conf
+	        sed -i "s/WINBOXVERSION/$wbversion/g" $configdir/winbox.$wbversion.conf
     	        if [ $debug -gt 0 ] 
 	            then
 		            echo "... Generated mikrotik-winbox4-config-file for version: "$wbversion    
