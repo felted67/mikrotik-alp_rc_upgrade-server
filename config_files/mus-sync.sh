@@ -38,13 +38,10 @@ pgmprefix=/opt/mikrotik.upgrade.server
 startdir=$pgmprefix/tools
 configdir=$startdir/mikrotik.configs
 baseurl=https://download.mikrotik.com
-winboxurl=https://mt.lv
 tempdir=$startdir/temp
 repodir=$pgmprefix/repo
 winboxdir=$repodir/routeros/winbox
 nonvconfig=$configdir/routeros.0.00.conf
-winbox3version=LATEST.3
-winbox4version=LATEST.4
 logdir=$startdir/mus.log
 logfile=$logdir/mus-sync.log
 rundir=/var/run
@@ -224,46 +221,113 @@ emptytemp
 # Check if internet-connection is possible, if not exit
 checkinternetconnection
 
-# Download WINBOX®-packages
-if [ $debug -gt 0 ]
-then
-    echo "... Loading WINBOX®packages: winbox64.exe/winbox.exe"
-fi		
-if [ $debug -lt 3 ]
-then
-    createpid $dwnlpid
-    wget -N $winboxurl/winbox -q -O $tempdir/winbox.exe 
-    wget -N $winboxurl/winbox64 -q -O $tempdir/winbox64.exe	
-    removepid $dwnlpid
-fi
+#
+# Start loop for read parameters
+# Read each winbox.**.config-file 
+# 
 
-# Copy or move from temp-directory to created WINBOX®-dir
-if [ $debug -gt 1 ]
-then
-    cp -f $tempdir/* $winboxdir/
-    if [ $debug -gt 0 ] 
-    then
-        echo "... Downloaded WINBOX®-packages copied to Winbox-directory."
-    fi
-else
-    mv -f $tempdir/* $winboxdir/
-    if [ $debug -gt 0 ] 
-    then
-        echo "... Downloaded WINBOX®-packages moved to Winbox-directory."
-    fi
-fi
+# Reset index variables
+i=0
+j=0
+isInFile=0
 
-# Rename WINBOX®-files to reflect version
-if [ $debug -lt 3 ]
-then
-    wbversion=$( cat $winboxdir/$winboxversion )
-    cp -f $winboxdir/winbox.exe $winboxdir/winbox_$wbversion.exe
-    cp -f $winboxdir/winbox64.exe $winboxdir/winbox64_$wbversion.exe
-    if [ $debug -gt 0 ] 
+# Start loop
+trap '' 2   # Disable use of CTRL-C 
+for filename in $configdir/winbox.**.conf; do
+    while IFS= read -r varname; do
+	    var[$i]=$varname
+	    i=$(expr $i + 1)    
+    done < "$filename"    
+    wbtext="${var[0]}"
+    wbtype="${var[1]}"
+    wbvers="${var[2]}"
+
+    if [ $debug -gt 0 ]
     then
-        echo "... WINBOX®-files renamed to reflect current version."
+	    echo
+	    echo "... Downloading REPO-type: "$wbtype
+	    echo "... with the release-version of the WINBOX®-tool: "$wbvers
+	    echo
     fi
-fi
+    
+    for (( j=3; j<i; j++ )); do
+	    package=$(echo "${var[j]}" | sed "s/VERSION/$wbvers/g")
+	    if [ $debug -gt 0 ]
+	    then
+	        echo "... Loading package: "$baseurl/$wbtype/$wbvers/$package
+	    fi		
+	    if [ $debug -lt 3 ]
+	    then
+            createpid $dwnlpid
+	        wget -N $baseurl/$wbtype/$wbvers/$package -q -P $tempdir	
+            removepid $dwnlpid
+        fi
+    done
+
+    if [ $debug -gt 0 ]
+    then
+        sleep 10
+    fi
+    
+    # reset index variables
+    i=0
+    j=0
+    
+    # Check and create repo-dir    
+    if [ ! -d $pgmprefix/repo/$wbtype/$wbvers ]; then
+	    mkdir $pgmprefix/repo/$wbtype/$wbvers
+	    if [ $debug -gt 0 ] 
+	    then
+	        echo "... Repo-directory for version: "$wbvers" created."
+	    fi
+    fi
+
+    # Copy or move  from temp-directory to created repo-dir
+    if [ $debug -gt 1 ]
+    then
+	    cp -f $tempdir/* $pgmprefix/repo/$wbtype/$wbvers/
+        echo "... Downloaded packages copied to Repo-directory."
+    else
+	    mv -f $tempdir/* $pgmprefix/repo/$wbtype/$wbvers/
+        if [ $debug -gt 0 ] 
+        then    
+            echo "... Downloaded packages moved to Repo-directory."
+        fi
+    fi
+
+    # Add informational entry to CHANGELOG
+    cd $pgmprefix/repo/$wbtype/$wbvers
+    version=$( cat /root/version.info )
+    isInFile=$(cat $pgmprefix/repo/$wbtype/$wbvers/CHANGELOG | grep -c "+++ Provided by mikrotik.upgrade.server")
+    if [ $isInFile -eq 0 ]
+    then
+        echo -e "\n " >> $pgmprefix/repo/$wbtype/$wbvers/CHANGELOG
+        echo "+++ Provided by mikrotik.upgrade.server v"$version" +++" >> $pgmprefix/repo/$wbtype/$wbvers/CHANGELOG
+        if [ $debug -gt 0 ] 
+        then
+            echo "... Added informational entry to CHANGELOG."
+        fi
+    else 
+        sed -i '/^+++ Provided by mikrotik.upgrade.server/d' $pgmprefix/repo/$wbtype/$wbvers/CHANGELOG
+        echo "+++ Provided by mikrotik.upgrade.server v"$version" +++" >> $pgmprefix/repo/$wbtype/$wbvers/CHANGELOG
+        if [ $debug -gt 0 ] 
+        then
+	        echo "... Changed informational entry to CHANGELOG."
+        fi
+    fi
+
+    # Clear temp-directory for next download run
+    if [ $debug -lt 3 ] 
+    then
+	    emptytemp
+	    if [ $debug -gt 0 ] 
+	    then
+	    echo "... Temp-directory has been emptied."
+	    fi
+    fi
+# End of sync loop
+done
+trap 2  # Enable CTRL-C again
 
 # Empty TEMP-directory from previous run
 if [ $debug -lt 3 ] 
@@ -302,7 +366,7 @@ fi
 
 #
 # Start loop for read parameters
-# Read each *.config-file 
+# Read each routeros.**.config-file 
 # 
 
 # Reset index variables
@@ -312,7 +376,7 @@ isInFile=0
 
 # Start loop
 trap '' 2   # Disable use of CTRL-C 
-for filename in $configdir/*.conf; do
+for filename in $configdir/routeros.**.conf; do
     if [[ $filename !=  $nonvconfig ]]
     then
         while IFS= read -r varname; do

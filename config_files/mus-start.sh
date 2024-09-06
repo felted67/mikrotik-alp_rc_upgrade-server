@@ -396,7 +396,7 @@ for filename in $tempdir/LATEST.*; do
         done < "$filename"       
     wbcomplete="${var[0]}"
     wbversion=$(sed -n p $filename | cut -d " " -f1)
-    if [[ $wbversion == *"3"* ]]; then
+    if [[ $wbversion == "3."* ]]; then
 	    if [[ ! -f $configdir/winbox.$wbversion.conf ]]; then
 	        cp $configdir/winbox3.raw $configdir/winbox.$wbversion.conf
 	        sed -i "s/WINBOXVERSION/$wbversion/g" $configdir/winbox.$wbversion.conf
@@ -411,7 +411,7 @@ for filename in $tempdir/LATEST.*; do
 	        fi
 	    fi    
     fi
-    if [[ $wbversion == *"4"* ]]; then
+    if [[ $wbversion == "4."* ]]; then
 	    if [[ ! -f $configdir/winbox.$wbversion.conf ]]; then
 	        cp $configdir/winbox4.raw $configdir/winbox.$wbversion.conf
 	        sed -i "s/WINBOXVERSION/$wbversion/g" $configdir/winbox.$wbversion.conf
