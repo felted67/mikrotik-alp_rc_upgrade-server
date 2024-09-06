@@ -310,6 +310,19 @@ then
     echo
 fi
 
+# Get latest version for WINBOX 'LATEST.4' from download.mikrotik.com
+createpid $dwnlpid
+wget -N $baseurl/routeros/winbox/$winbox4version -q -P $tempdir/
+removepid $dwnlpid
+if [ $debug -gt 0 ] 
+    then
+        echo "... Downloaded LATEST-WINBOX4-version-file."
+fi
+if [ $debug -gt 0 ] 
+then
+    echo
+fi
+
 # Reset index variables
 i=0
 
@@ -344,7 +357,7 @@ trap 2  # Enable CTRL-C again
 # Reset index variables
 i=0
 
-# Generate mikrotik-config-file(s)
+# Generate mikrotik-routeros-7-config-file(s)
 trap '' 2   # Disable use of CTRL-C 
 for filename in $tempdir/NEWESTa7.*; do
     while IFS= read -r varname; do
@@ -365,6 +378,36 @@ for filename in $tempdir/NEWESTa7.*; do
 	        if [ $debug -gt 0 ] 
 	        then
 		        echo "... Mikrotik-config-file for version: "$rpversion" already generated."    
+	        fi
+	    fi    
+    fi    
+done
+trap 2  # Enable CTRL-C again
+
+# Reset index variables
+i=0
+
+# Generate mikrotik-winbox-4-config-file(s)
+trap '' 2   # Disable use of CTRL-C 
+for filename in $tempdir/LATEST.4; do
+    while IFS= read -r varname; do
+    var[$i]=$varname
+    i=$(expr $i + 1)    
+        done < "$filename"       
+    wbcomplete="${var[0]}"
+    wbversion=$(sed -n p $filename | cut -d " " -f1)
+    if [[ $wbversion != *"0.00"* ]]; then
+	    if [[ ! -f $configdir/winbox.$wbversion.conf ]]; then
+	        cp $configdir/winbox4.raw $configdir/winbox4.$wbversion.conf
+	        sed -i "s/WINBOXVERSION/$wbversion/g" $configdir/winbox4.$wbversion.conf
+    	        if [ $debug -gt 0 ] 
+	            then
+		            echo "... Generated mikrotik-winbox4-config-file for version: "$wbversion    
+	            fi
+	    else 
+	        if [ $debug -gt 0 ] 
+	        then
+		        echo "... Mikrotik-winbox4-config-file for version: "$wbversion" already generated."    
 	        fi
 	    fi    
     fi    
@@ -418,6 +461,11 @@ cp $tempdir/$winbox3version $repodir/routeros/winbox/
 if [ $debug -gt 0 ] 
     then
     echo "... Copied LATEST-WINBOX3-file to repo/winbox-dir."
+fi
+cp $tempdir/$winbox4version $repodir/routeros/winbox/
+if [ $debug -gt 0 ] 
+    then
+    echo "... Copied LATEST-WINBOX4-file to repo/winbox-dir."
 fi
 
 # Empty TEMP-directory from previous run
