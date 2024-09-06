@@ -99,6 +99,7 @@ COPY ./config_files/mus.conf /root/
 COPY ./config_files/upgrade.mikrotik.com.conf /root/
 COPY ./config_files/status-update.cgi /root/
 COPY ./config_files/routeros.raw /root/
+COPY ./config_files/winbox3.raw /root/
 COPY ./config_files/winbox4.raw /root/
 COPY ./config_files/routeros.0.00.conf /root/
 COPY ./config_files/CHANGELOG.0.0 /root/

@@ -33,6 +33,7 @@ mv /root/mus-start-bg.sh /opt/mikrotik.upgrade.server/tools/
 mv /root/mus-sync.sh /opt/mikrotik.upgrade.server/tools/
 mv /root/mus-gen-status.sh /opt/mikrotik.upgrade.server/tools/
 mv /root/routeros.raw /opt/mikrotik.upgrade.server/tools/mikrotik.configs/
+mv /root/winbox3.raw /opt/mikrotik.upgrade.server/tools/mikrotik.configs/
 mv /root/winbox4.raw /opt/mikrotik.upgrade.server/tools/mikrotik.configs/
 mv /root/routeros.0.00.conf /opt/mikrotik.upgrade.server/tools/mikrotik.configs/
 mv /root/CHANGELOG.0.0 /opt/mikrotik.upgrade.server/repo/routeros/0.0/CHANGELOG
