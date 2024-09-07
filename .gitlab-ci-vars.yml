@@ -5,8 +5,8 @@ variables:
   
   DIND_TAG: 'docker:27.2.0-dind'                      # usable DinD-image
 
-  CI_PRODUCTION_LATEST_SWITCH: 'false'  # switch to build PRODUCTION-version & LATEST-PRODUCTION-version
-  CI_PRODUCTION_VERSION_SWITCH: 'false' # switch to build PRODUCTION-version
+  CI_PRODUCTION_LATEST_SWITCH: 'true'  # switch to build PRODUCTION-version & LATEST-PRODUCTION-version
+  CI_PRODUCTION_VERSION_SWITCH: 'true' # switch to build PRODUCTION-version
   # When both switches are off => build only DEVEL-version
 
   CI_LINUX_VERSION: 'v3.20.3'        # left part of version  
