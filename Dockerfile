@@ -81,7 +81,7 @@ RUN apk add --no-cache openrc \
     && sed -i 's/VSERVER/DOCKER/Ig' /lib/rc/sh/init.sh
 
 RUN apk update && \
-    apk add --no-cache openssh mc unzip wget htop
+    apk add --no-cache openssh mc unzip wget htop axel curl
     
 RUN apk update && \
     apk --no-cache add apache2 apache2-proxy apache-mod-fcgid tzdata
