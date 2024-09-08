@@ -3,7 +3,7 @@
 # (C) 2023-2024 DL7DET
 #
 
-ARG ALPINE_VERSION
+ARG ALPINE_VERSION='alpine:default'
 FROM --platform=$TARGETPLATFORM $ALPINE_VERSION AS base
 
 # Preset Metadata parameters and build-arg parameters
