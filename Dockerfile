@@ -3,7 +3,7 @@
 # (C) 2023-2024 DL7DET
 #
 
-ARG ALPINE_VERSION='alpine:latest'
+ARG ALPINE_VERSION
 FROM --platform=$TARGETPLATFORM $('alpine:latest':$ALPINE_VERSION) AS base
 
 # Preset Metadata parameters and build-arg parameters
