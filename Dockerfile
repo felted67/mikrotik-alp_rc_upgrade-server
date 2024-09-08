@@ -4,7 +4,7 @@
 #
 
 ARG ALPINE_VERSION='alpine:default'
-FROM --platform=$TARGETPLATFORM $ALPINE_VERSION AS base
+FROM $ALPINE_VERSION AS base
 
 # Preset Metadata parameters and build-arg parameters
 ARG BUILD
