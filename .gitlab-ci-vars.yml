@@ -3,7 +3,7 @@
 variables:
   CI_REGISTRY_IMAGE: 'mikrotik-alp_rc_upgrade-server' # name of docker hub image-registry
   
-  DIND_TAG: 'docker:27.2.1-dind'                      # usable DinD-image
+  DIND_TAG: 'docker:27.3.1-dind'                      # usable DinD-image
 
   CI_PRODUCTION_LATEST_SWITCH: 'false'  # switch to build PRODUCTION-version & LATEST-PRODUCTION-version
   CI_PRODUCTION_VERSION_SWITCH: 'false' # switch to build PRODUCTION-version
