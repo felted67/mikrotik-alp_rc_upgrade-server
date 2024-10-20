@@ -10,7 +10,7 @@ start() {
 
 stop() {
 	ebegin "Stopping auto_init"
-	;
+	# no stop command needed
 	eend $?
 }
 
