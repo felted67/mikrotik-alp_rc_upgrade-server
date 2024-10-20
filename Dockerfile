@@ -121,8 +121,8 @@ RUN ["ln", "-s", "/usr/share/zoneinfo/Europe/Berlin", "/etc/localtime"]
 RUN ["ln", "-sf", "/opt/mikrotik.upgrade.server/tools/mus-cron-job.sh", "/etc/periodic/daily/run"]
 RUN ["mkdir", "-p", "/etc/periodic/2min"]
 RUN ["mkdir", "-p", "/etc/periodic/5min"]
-RUN chown root:root /etc/init.d/crond && chmod 0775 /etc/init.d/crond
-RUN chown root:root /etc/init.d/auto_init && chmod 0755 /etc/init.d/auto_init
+RUN chown root:root /etc/init.d/crond && chmod 0755 /etc/init.d/crond
+RUN chown root:root /etc/init.d/auto_init && chmod 0700 /etc/init.d/auto_init
 RUN chown root:root /sbin/first_start.sh && chmod 0700 /sbin/first_start.sh
 RUN chown root:root /sbin/auto_init.sh && chmod 0700 /sbin/auto_init.sh
 

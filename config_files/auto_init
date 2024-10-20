@@ -1,2 +1,25 @@
 #!/sbin/openrc-run
-command=/sbin/auto_init.sh
+name="Auto_init process for controlling run ./first_start.sh"
+pid_file="/run/auto_init.pid"
+
+start() {
+	ebegin "Starting auto_init"
+	/sbin/auto_init.sh
+	eend $?
+}
+
+stop() {
+	ebegin "Stopping auto_init"
+	;
+	eend $?
+}
+
+status() {
+	if [ -e $pid_file ]; then
+	    einfo 'status: started'
+	    return 0
+	else
+	    einfo 'status: stopped'
+	    return 3
+	fi
+}
