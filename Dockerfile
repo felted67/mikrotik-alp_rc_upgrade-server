@@ -36,8 +36,8 @@ LABEL org.label-schema.usage="https://github.com/felted67/mikrotik-alp_rc_upgrad
 LABEL org.label-schema.url="https://github.com/felted67/mikrotik-alp_rc_upgrade-server" 
 LABEL org.label-schema.schema-version="1.0"
 
-RUN echo 'https://ftp.halifax.rwth-aachen.de/alpine/v3.20/main/' >> /etc/apk/repositories \
-    && echo 'https://ftp.halifax.rwth-aachen.de/alpine/v3.20/community' >> /etc/apk/repositories \
+RUN echo 'https://ftp.halifax.rwth-aachen.de/alpine/v3.21/main/' >> /etc/apk/repositories \
+    && echo 'https://ftp.halifax.rwth-aachen.de/alpine/v3.21/community' >> /etc/apk/repositories \
     && apk add --no-cache --update --upgrade su-exec ca-certificates
 
 # install sudo as root
